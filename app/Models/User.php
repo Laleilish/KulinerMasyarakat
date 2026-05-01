@@ -14,19 +14,35 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    protected $fillable = ['name', 'email', 'password', 'role'];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $hidden = ['password'];
+
+    public function restaurant()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Restaurant::class);
     }
+
+    public function submit_place()
+    {
+        return $this->hasMany(Submit_place::class);
+    }
+
+    public function splitBill()
+    {
+        return $this->hasMany(Submit_place::class);
+    }
+
+    // Helper cek role
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isOwner()
+    {
+        return $this->role === 'owner';
+    }
+
 }
