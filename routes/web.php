@@ -11,3 +11,6 @@ Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.in
 
 Route::get('/login', fn() => view('auth.login'))->name('login');
 Route::post('/logout', fn() => redirect('/'))->name('logout');
+
+Route::get('/auth/{provider}/redirect', fn($provider) => back())
+    ->name('social.redirect');

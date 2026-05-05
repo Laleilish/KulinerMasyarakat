@@ -14,9 +14,9 @@
     /* Color Palette — Brand */
 
     /* Merah utama*/
-    --red-logo:        #960913;
-    --color-primary-light:  #e5212e;
-    --color-primary-dark:   #6d060d;
+    --color-red-logo:   #960913;
+    --color-red-light:  #e5212e;
+    --color-red-dark:   #6d060d;
 
     /* Hijau sekunder */
     --color-secondary:      #02B176;
@@ -25,8 +25,8 @@
     /* Color Palette — Neutral / UI */
 
     /* Krem */
-    --color-cream:          #FDEFDB;
-    --color-cream-dark:     #f8e4c4;
+    --color-cream-bg:          #FDF4E7;
+    --color-cream-dark:     #FDEFDB;
 
     /* Teks gelap utama */
     --color-dark:           #040818;
@@ -36,9 +36,12 @@
     --color-muted-light:    #8fa0b8;
 
     /* Border Radius */
-    --radius-brand: 9999px;
-    --radius-card:  12px;    
-    --radius-sm:    6px;     
+    --radius-full: 9999px;
+    --radius-3xl: 24px;
+    --radius-2xl: 16px;
+    --radius-xl:  12px;    
+    --radius-md:   6px;
+    --radius-sm:   4px;
 
     /* Spacing */
     --spacing-section: 5rem;
