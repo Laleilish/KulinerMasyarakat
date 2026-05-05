@@ -6,6 +6,48 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Typography */
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-brand: 'Plus Jakarta Sans', sans-serif;
+
+    /* Color Palette — Brand */
+
+    /* Merah utama*/
+    --color-red-logo:   #960913;
+    --color-red-light:  #e5212e;
+    --color-red-dark:   #6d060d;
+
+    /* Hijau sekunder */
+    --color-secondary:      #02B176;
+    --color-secondary-dark: #029962;
+
+    /* Color Palette — Neutral / UI */
+
+    /* Krem */
+    --color-cream-bg:          #FDF4E7;
+    --color-cream-dark:     #FDEFDB;
+
+    /* Teks gelap utama */
+    --color-dark:           #040818;
+
+    /* Teks abu-abu / muted / inactive nav */
+    --color-muted:          #5D6E86;
+    --color-muted-light:    #8fa0b8;
+
+    /* Border Radius */
+    --radius-full: 9999px;
+    --radius-3xl: 24px;
+    --radius-2xl: 16px;
+    --radius-xl:  12px;    
+    --radius-md:   6px;
+    --radius-sm:   4px;
+
+    /* Spacing */
+    --spacing-section: 5rem;
+
+    /* Shadow */
+    --shadow-navbar: 0 2px 8px 0 rgba(4, 8, 24, 0.08);
+    --shadow-card:   0 4px 20px 0 rgba(4, 8, 24, 0.10);
 }
+
