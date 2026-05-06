@@ -10,13 +10,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+#[Fillable(["name", "email", "password"])]
+#[Hidden(["password", "remember_token"])]
 class User extends Authenticatable
 {
-    protected $fillable = ['name', 'email', 'password', 'role'];
+    use HasFactory, Notifiable;
 
-    protected $hidden = ['password'];
+    protected $fillable = [
+        "name",
+        "username",
+        "email",
+        "password",
+        "role",
+        "email_verified_at",
+    ];
+
+    protected $hidden = ["password", "remember_token"];
+
+    protected $casts = [
+        "email_verified_at" => "datetime",
+    ];
 
     public function restaurant()
     {
@@ -37,12 +50,11 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->role === "admin";
     }
 
     public function isOwner()
     {
-        return $this->role === 'owner';
+        return $this->role === "owner";
     }
-
 }
