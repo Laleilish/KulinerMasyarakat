@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,48 +6,118 @@
 @source '../**/*.js';
 
 @theme {
+  /* Typography */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-brand: "Plus Jakarta Sans", sans-serif;
 
-    /* Typography */
-    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-brand: 'Plus Jakarta Sans', sans-serif;
+  /* Color Palette — Brand */
 
-    /* Color Palette — Brand */
+  /* Merah utama*/
+  --color-red-logo: #960913;
+  --color-red-light: #e5212e;
+  --color-red-dark: #6d060d;
 
-    /* Merah utama*/
-    --color-red-logo:   #960913;
-    --color-red-light:  #e5212e;
-    --color-red-dark:   #6d060d;
+  /* Hijau sekunder */
+  --color-secondary: #02b176;
+  --color-secondary-dark: #029962;
 
-    /* Hijau sekunder */
-    --color-secondary:      #02B176;
-    --color-secondary-dark: #029962;
+  /* Biru */
+  --color-blue: #1877F2;
 
-    /* Color Palette — Neutral / UI */
+  /* Color Palette — Neutral / UI */
 
-    /* Krem */
-    --color-cream-bg:          #FDF4E7;
-    --color-cream-dark:     #FDEFDB;
+  /* Krem */
+  --color-cream-bg: #fdf4e7;
+  --color-cream-dark: #fdefdb;
 
-    /* Teks gelap utama */
-    --color-dark:           #040818;
+  /* Teks gelap utama */
+  --color-dark: #040818;
 
-    /* Teks abu-abu / muted / inactive nav */
-    --color-muted:          #5D6E86;
-    --color-muted-light:    #8fa0b8;
+  /* Teks abu-abu / muted / inactive nav */
+  --color-muted: #5d6e86;
+  --color-muted-light: #8fa0b8;
 
-    /* Border Radius */
-    --radius-full: 9999px;
-    --radius-3xl: 24px;
-    --radius-2xl: 16px;
-    --radius-xl:  12px;    
-    --radius-md:   6px;
-    --radius-sm:   4px;
+  /* Border Radius */
+  --radius-full: 9999px;
+  --radius-3xl: 24px;
+  --radius-2xl: 16px;
+  --radius-xl: 12px;
+  --radius-md: 6px;
+  --radius-sm: 4px;
 
-    /* Spacing */
-    --spacing-section: 5rem;
+  /* Spacing */
+  --spacing-section: 5rem;
 
-    /* Shadow */
-    --shadow-navbar: 0 2px 8px 0 rgba(4, 8, 24, 0.08);
-    --shadow-card:   0 4px 20px 0 rgba(4, 8, 24, 0.10);
+  /* Shadow */
+  --shadow-navbar: 0 2px 8px 0 rgba(4, 8, 24, 0.08);
+  --shadow-card: 0 4px 20px 0 rgba(4, 8, 24, 0.1);
 }
 
+/* Custom Utility Classes */
+@utility bg-cream-bg {
+  background-color: var(--color-cream-bg);
+}
+
+@utility bg-cream-dark {
+  background-color: var(--color-cream-dark);
+}
+
+@utility bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+@utility bg-secondary-dark {
+  background-color: var(--color-secondary-dark);
+}
+
+@utility text-dark {
+  color: var(--color-dark);
+}
+
+@utility text-muted {
+  color: var(--color-muted);
+}
+
+@utility text-muted-light {
+  color: var(--color-muted-light);
+}
+
+@utility text-red-logo {
+  color: var(--color-red-logo);
+}
+
+@utility text-blue {
+  color: var(--color-blue);
+}
+
+@utility bg-blue {
+  background-color: var(--color-blue);
+}
+
+@utility border-red-logo {
+  border-color: var(--color-red-logo);
+}
+
+@utility border-muted {
+  border-color: var(--color-muted);
+}
+
+@utility border-muted-light {
+  border-color: var(--color-muted-light);
+}
+
+@utility shadow-navbar {
+  box-shadow: var(--shadow-navbar);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+@utility shadow-2xs {
+  box-shadow: 0 1px 3px 0 rgba(4, 8, 24, 0.08);
+}
+
+@utility rounded-brand {
+  border-radius: var(--radius-xl);
+}
