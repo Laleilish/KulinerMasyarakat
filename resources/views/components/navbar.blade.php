@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
 <nav class="flex justify-between items-center px-4 md:px-10 py-3 bg-cream-bg shadow-navbar sticky top-0 z-50">
 
     {{-- Kiri: Hamburger + Logo --}}
@@ -115,6 +106,3 @@
     hamburger.addEventListener('click', () => navLinks.style.left = '0');
     closeBtn.addEventListener('click', () => navLinks.style.left = '-100%');
 </script>
-    
-</body>
-</html>

@@ -8,13 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     {{-- Vite: Tailwind v4 + JS --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     @include('components.navbar')
 
-    <main class="container mx-auto px-4 py-6">
+    <main>
         @yield('content')
     </main>
 

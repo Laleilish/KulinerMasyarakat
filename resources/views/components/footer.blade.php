@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <footer class="bg-[#EF950F] px-4 md:px-10 py-6 md:py-10 rounded-t-[25px] w-full">
+<footer class="bg-[#EF950F] px-4 md:px-10 py-6 md:py-10 rounded-t-[25px] w-full">
 
     <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
 
@@ -40,7 +32,6 @@
 
             <div class="flex items-center gap-3 font-semibold text-dark">
                 <span>Ikuti Kami</span>
-
                 <i class="fa-brands fa-instagram text-xl"></i>
                 <i class="fa-brands fa-facebook text-xl"></i>
                 <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -50,12 +41,10 @@
 
         {{-- Kanan / Copyright --}}
         <p class="text-xs md:text-sm text-dark max-w-xs leading-relaxed">
-            © 2026 KUMAR <br>
+            &copy; 2026 KUMAR <br>
             Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.
         </p>
 
     </div>
 
 </footer>
-</body>
-</html>
