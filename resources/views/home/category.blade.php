@@ -1,4 +1,4 @@
-<section class="text-center px-5 pt-6 pb-4 md:px-10 md:py-[52px]">
+<section class="text-center px-5 pt-6 pb-4 md:px-10 md:py-[30px]">
 
     <h2 class="text-[22px] md:text-[28px] font-bold text-[#040818] mb-6">Mencari Hal Menarik?</h2>
 
