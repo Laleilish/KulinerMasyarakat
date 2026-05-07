@@ -7,7 +7,7 @@
     <title>Verifikasi OTP - {{ config('app.name', 'Laravel') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
@@ -24,7 +24,7 @@
         </div>
     </header>
 
-    <div class="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-[calc(100vh-64px)] flex items-center justify-center bg-cream-bg py-12 px-4 sm:px-6 lg:px-8">
         <div class="w-full max-w-md">
             <!-- Header -->
             <div class="text-center mb-8">
@@ -71,9 +71,6 @@
 
                 <!-- Info Box -->
                 <div class="bg-orange-100/70 backdrop-blur-sm border-l-4 border-secondary p-4 rounded-r-xl">
-                    <p class="text-sm text-dark">
-                        <span class="font-semibold">💡 Tips:</span>
-                    </p>
                     <ul class="text-sm text-gray-600 mt-2 space-y-1 ml-4">
                         <li>• Cek folder spam/junk jika tidak menerima email</li>
                         <li>• Kode OTP berlaku selama <span class="font-semibold">10 menit</span></li>

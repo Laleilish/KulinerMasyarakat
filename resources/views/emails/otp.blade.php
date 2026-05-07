@@ -82,7 +82,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔐 KUMAR - Verifikasi Login</h1>
+            <h1> KUMAR - Verifikasi Login</h1>
         </div>
 
         <div class="content">
@@ -102,7 +102,7 @@
             </p>
 
             <div class="warning">
-                <p><strong>⚠️ Penting:</strong></p>
+                <p><strong> Penting:</strong></p>
                 <p>• Jangan bagikan kode ini kepada siapa pun</p>
                 <p>• KUMAR tidak akan pernah meminta kode OTP Anda</p>
                 <p>• Jika Anda tidak melakukan login, abaikan email ini</p>

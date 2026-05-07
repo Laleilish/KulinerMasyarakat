@@ -7,8 +7,8 @@
 
 @theme {
   /* Typography */
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-brand: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Plus Jakarta Sans";
+  --font-brand: "Plus Jakarta Sans";
 
   /* Color Palette — Brand */
 

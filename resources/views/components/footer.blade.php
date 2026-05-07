@@ -27,7 +27,7 @@
 
         </div>
 
-        {{-- Tengah / Links --}}
+        {{-- Tengah --}}
         <div class="flex flex-wrap md:flex-col gap-4 md:gap-3">
 
             <a href="#" class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
@@ -48,7 +48,7 @@
 
         </div>
 
-        {{-- Kanan / Copyright --}}
+        {{-- Kanan --}}
         <p class="text-xs md:text-sm text-dark max-w-xs leading-relaxed">
             © 2026 KUMAR <br>
             Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.

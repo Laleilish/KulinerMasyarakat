@@ -22,7 +22,7 @@
 
         {{-- Nav Links (slide-in mobile, inline desktop) --}}
         <ul id="navLinks"
-            class="fixed top-0 left-[-100%] w-full h-screen bg-cream-bg flex flex-col items-start justify-start px-6 py-5 transition-all duration-400 z-[999] list-none
+            class="fixed top-0 left-full w-full h-screen bg-cream-bg flex flex-col items-start justify-start px-6 py-5 transition-all duration-400 z-999 list-none
                    md:static md:w-auto md:h-auto md:flex-row md:items-center md:gap-6 md:bg-transparent md:transition-none md:p-0">
 
             {{-- Header mobile menu --}}
@@ -60,7 +60,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a href="#" onclick="this.closest('form').submit()"
-                               class="no-underline font-semibold text-base text-muted">Keluar</a>
+                               class="no-underline font-semibold text-base text-red-500">Keluar</a>
                         </form>
                     </li>
                 @else
@@ -87,7 +87,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
-                        class="bg-secondary hover:bg-secondary-dark text-white border-none px-4 py-3 rounded-brand font-bold cursor-pointer transition-colors">
+                        class="bg-red-300 border-red-500 hover:bg-red-500 text-white border-none px-4 py-2 rounded-brand font-bold cursor-pointer transition-colors">
                     Keluar
                 </button>
             </form>
