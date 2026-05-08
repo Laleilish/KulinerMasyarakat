@@ -11,6 +11,7 @@
   --font-brand: "Plus Jakarta Sans";
 
   /* Color Palette — Brand */
+  /* Color Palette — Brand */
 
   /* Merah utama*/
   --color-red-logo: #960913;
@@ -25,14 +26,23 @@
   --color-blue: #1877F2;
 
   /* Color Palette — Neutral / UI */
+  /* Color Palette — Neutral / UI */
 
+  /* Krem */
+  --color-cream-bg: #fdf4e7;
+  --color-cream-dark: #fdefdb;
   /* Krem */
   --color-cream-bg: #fdf4e7;
   --color-cream-dark: #fdefdb;
 
   /* Teks gelap utama */
   --color-dark: #040818;
+  /* Teks gelap utama */
+  --color-dark: #040818;
 
+  /* Teks abu-abu / muted / inactive nav */
+  --color-muted: #5d6e86;
+  --color-muted-light: #8fa0b8;
   /* Teks abu-abu / muted / inactive nav */
   --color-muted: #5d6e86;
   --color-muted-light: #8fa0b8;
@@ -50,7 +60,8 @@
 
   /* Shadow */
   --shadow-navbar: 0 2px 8px 0 rgba(4, 8, 24, 0.08);
-  --shadow-card: 0 4px 20px 0 rgba(4, 8, 24, 0.1);
+  --shadow-card: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 6px 16px 0 rgba(0, 0, 0, 0.12);
 }
 
 /* Custom Utility Classes */
@@ -120,4 +131,10 @@
 
 @utility rounded-brand {
   border-radius: var(--radius-xl);
+}
+
+@layer base {
+  body {
+    @apply bg-cream-bg font-sans;
+  }
 }
