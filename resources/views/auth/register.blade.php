@@ -1,6 +1,5 @@
 @extends('layouts.auth')
 
-
 @section('title', 'register - ' . config('app.name', 'KUMAR'))
     <body class="font-sans antialiased">
             @section('content')
