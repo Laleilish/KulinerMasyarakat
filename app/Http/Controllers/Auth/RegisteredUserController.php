@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
                 "string",
                 "max:255",
                 "unique:" . User::class,
-                "alpha_dash", // hanya huruf, angka, dash, underscore
+                "alpha_dash", 
             ],
             "email" => [
                 "required",
@@ -61,10 +61,10 @@ class RegisteredUserController extends Controller
             "email_verified_at" => null, // Belum verified
         ]);
 
-        // Generate OTP (6 digit)
-        $otp = str_pad(random_int(0, 999999), 6, "0", STR_PAD_LEFT);
+        // Generate OTP (4 digit)
+        $otp = str_pad(random_int(0, 9999), 4, "0", STR_PAD_LEFT);
 
-        // Hapus OTP lama (jika ada)
+        // Hapus OTP lama
         OtpVerification::where("user_id", $user->id)
             ->where("is_used", false)
             ->delete();
@@ -112,7 +112,7 @@ class RegisteredUserController extends Controller
     public function verifyOtp(Request $request): RedirectResponse
     {
         $request->validate([
-            "otp" => "required|string|size:6",
+            "otp" => "required|string|size:4",
         ]);
 
         $userId = session("register_user_id");
@@ -175,8 +175,8 @@ class RegisteredUserController extends Controller
 
         $user = User::find($userId);
 
-        // Generate OTP baru
-        $otp = str_pad(random_int(0, 999999), 6, "0", STR_PAD_LEFT);
+        // Generate OTP baru (4 digit)
+        $otp = str_pad(random_int(0, 9999), 4, "0", STR_PAD_LEFT);
 
         // Hapus OTP lama
         OtpVerification::where("user_id", $user->id)
