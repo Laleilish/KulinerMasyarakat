@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode OTP Login</title>
+    <title>Kode OTP Verifikasi</title>
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans';
             background-color: #FDF4E7;
             margin: 0;
             padding: 20px;
@@ -20,17 +20,14 @@
             box-shadow: 0 4px 20px rgba(4, 8, 24, 0.10);
         }
         .header {
-            background-color: #960913;
             padding: 30px 20px;
-            text-align: center;
         }
-        .header h1 {
-            color: white;
-            margin: 0;
-            font-size: 24px;
+
+        .header img{
+            height: 60px;
         }
         .content {
-            padding: 40px 30px;
+            padding: 0 30px;
             text-align: center;
         }
         .greeting {
@@ -60,7 +57,6 @@
         }
         .warning {
             background-color: #FFF3CD;
-            border-left: 4px solid #960913;
             padding: 15px;
             margin: 20px 0;
             text-align: left;
@@ -82,7 +78,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1> KUMAR - Verifikasi Login</h1>
+            <img src="https://res.cloudinary.com/dg5cordxc/image/upload/v1778740460/icon-kumar_mld0e7.png" alt="KUMAR">
         </div>
 
         <div class="content">
@@ -98,14 +94,13 @@
             </div>
 
             <p class="message">
-                Kode OTP ini akan <strong>kadaluarsa dalam 5 menit</strong>.
+                Kode OTP ini akan <strong>kadaluarsa dalam 10 menit</strong>.
             </p>
 
             <div class="warning">
-                <p><strong> Penting:</strong></p>
-                <p>• Jangan bagikan kode ini kepada siapa pun</p>
-                <p>• KUMAR tidak akan pernah meminta kode OTP Anda</p>
-                <p>• Jika Anda tidak melakukan login, abaikan email ini</p>
+                <p><strong> Waspada </strong></p>
+                <p>Jangan bagikan kode ini kepada siapa pun, termasuk pihak KUMAR!</p>
+                <p>KUMAR tidak akan pernah meminta kode OTP Anda Jika Anda tidak melakukan login, abaikan email ini</p>
             </div>
         </div>
 
