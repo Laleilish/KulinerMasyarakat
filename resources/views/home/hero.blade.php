@@ -1,4 +1,4 @@
-<section class="bg-[#EF950F] rounded-[25px] px-5 py-10 md:px-10 md:py-[30px] flex flex-col md:flex-row items-center justify-between min-h-[200px] relative overflow-hidden m-4">
+<section class="bg-[#EF950F] rounded-3xl px-5 py-10 md:px-10 md:py-[30px] flex flex-col md:flex-row items-center justify-between min-h-[200px] relative overflow-hidden m-4">
 
     <div class="z-10 w-full">
         <img
@@ -7,24 +7,24 @@
             src="{{ asset('assets/img/Header/icon-kumar-white.png') }}"
             alt="Icon Kumar"
         >
-        <h1 class="text-[24px] md:text-[48px] font-bold text-[#040818] leading-[1.3]">Bingung Mau Makan Apa?</h1>
-        <h1 class="text-[24px] md:text-[48px] font-bold text-[#040818] leading-[1.3]">KU<span class="text-[#960913]">MAR</span>-in Aja</h1>
-        <p class="text-[#040818] text-[13px] md:text-[15px] leading-[1.5] mt-2 mb-4">
+        <h1 class="text-2xl md:text-5xl font-bold text-dark leading-tight">Bingung Mau Makan Apa?</h1>
+        <h1 class="text-2xl md:text-5xl font-bold text-dark leading-tight">KU<span class="text-red-logo">MAR</span>-in Aja</h1>
+        <p class="text-dark text-sm md:text-base leading-relaxed mt-2 mb-4">
             Temukan tempat makan hidden gem, yang pas dengan dompetmu.<br>
             Cepat, hemat, dan banyak pilihan!
         </p>
-        <div class="bg-white rounded-2xl w-full md:max-w-[50%] p-3">
-            <label class="text-xs font-semibold text-[#040818] block mb-2">Lokasi Kamu</label>
+        <div class="bg-white rounded-xl w-full md:max-w-[50%] p-3">
+            <label class="text-xs font-semibold text-dark block mb-2">Lokasi Kamu</label>
             <div class="flex flex-col md:flex-row gap-2 md:gap-4 md:justify-between md:items-center">
-                <div class="flex items-center gap-2 border border-[#ddd] rounded-2xl flex-1 px-[10px] py-[7px]">
-                    <i class="fa-solid fa-location-dot text-[#02B176] shrink-0"></i>
+                <div class="flex items-center gap-2 border border-gray-300 rounded-xl flex-1 px-3 py-2">
+                    <i class="fa-solid fa-location-dot text-secondary shrink-0"></i>
                     <input
                         type="text"
                         placeholder="Masukkan Lokasi..."
-                        class="border-none outline-none flex-1 text-[13px] text-[#040818] bg-transparent placeholder:text-[#aaa]"
+                        class="border-none outline-none flex-1 text-sm text-dark bg-transparent placeholder:text-muted-light"
                     >
                 </div>
-                <button class="bg-[#02B176] hover:bg-[#029962] text-white border-none rounded-full text-base font-semibold cursor-pointer w-full md:w-auto md:whitespace-nowrap px-4 py-2">
+                <button class="bg-secondary hover:bg-secondary-dark text-white border-none rounded-full text-base font-semibold cursor-pointer w-full md:w-auto md:whitespace-nowrap px-4 py-2 transition-colors">
                     Cari Resto
                 </button>
             </div>
