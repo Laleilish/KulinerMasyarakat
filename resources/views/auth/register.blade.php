@@ -4,13 +4,12 @@
     <body class="font-sans antialiased">
             @section('content')
                 <div class="w-full max-w-md">
-                    <!-- Header -->
                     
-                    <div class="text-center mb-8">
-                        <h1 class="text-4xl font-bold text-dark mb-2 flex start">Buat Akun Secara Gratis</h1>
+                    <div class="mb-4">
+                        <h1 class="text-2xl md:text-3xl font-bold text-dark mb-2">Buat Akun Secara Gratis</h1>
                     </div>
 
-                    <form method="POST" action="{{ route('register') }}" class="space-y-5">
+                    <form method="POST" action="{{ route('register') }}" class="space-y-2">
                         @csrf
                         {{-- Name --}}
                         <x-auth.auth-input
@@ -39,7 +38,7 @@
                         <x-auth.auth-input
                             id="email"
                             type="email"
-                            name="username"
+                            name="email"
                             label="Email"
                             placeholder="Masukkan alamat email Anda"
                             required
@@ -67,7 +66,7 @@
                         />
 
                         <!-- Terms and Conditions -->
-                        <div class="flex items-start">
+                        <div class="flex items-start my-4">
                             <input
                                 id="terms"
                                 type="checkbox"
@@ -75,7 +74,7 @@
                                 required
                                 class="w-4 h-4 mt-1 text-orange-500 bg-white/70 backdrop-blur-sm rounde"
                             />
-                            <label for="terms" class="ml-2 text-sm text-gray-700">
+                            <label for="terms" class="ml-2 text-xs text-gray-700">
                                 Saya setuju dengan
                                 <a href="#" class="text-blue hover:text-orange-600 font-semibold">Syarat dan Ketentuan</a>
                                 serta
@@ -91,23 +90,17 @@
                             Daftar Sekarang
                         </button>
 
-
-                    <!-- Footer Links -->
-                    <div class="mt-8 text-center space-y-3">
-                        <div class="text-sm text-gray-700">
-                            Sudah punya akun?
-                            <a href="{{ route('login') }}" class="text-blue hover:text-orange-600 font-semibold">
-                                Masuk di sini
-                            </a>
+                    
+                        <!-- Footer Links -->
+                        <div class="mt-4 text-center space-y-3">
+                            <div class="text-sm text-gray-700">
+                                Sudah punya akun?
+                                <a href="{{ route('login') }}" class="text-blue hover:text-orange-600 font-semibold">
+                                    Masuk di sini
+                                </a>
+                            </div>
                         </div>
-
-                        <div class="text-sm text-gray-600">
-                            Butuh bantuan?
-                            <a href="#" class="text-blue hover:text-orange-600 font-medium">
-                                Pusat Bantuan
-                            </a>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             @endsection
         </div>

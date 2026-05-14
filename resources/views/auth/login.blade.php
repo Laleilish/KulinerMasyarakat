@@ -5,14 +5,14 @@
         @section('content')
             <div class="w-full max-w-md">
                 <!-- Header -->
-                <div class="text-center mb-5">
-                    <h1 class="text-3xl font-sans font-bold text-dark mb-2 flex start">Masuk Dengan Aman</h1>
+                <div class="mb-4">
+                    <h1 class="text-2xl md:text-3xl font-sans font-bold text-dark mb-2">Masuk Dengan Aman</h1>
                 </div>
 
                 <!-- Session Status -->
                 <x-auth.auth-session-status class="mb-4" :status="session('status')" />
 
-                <form method="POST" action="{{ route('login') }}" class="space-y-5">
+                <form method="POST" action="{{ route('login') }}" class="space-y-2">
                     @csrf
 
                     <x-auth.auth-input
@@ -38,14 +38,14 @@
 
 
                     <!-- Remember Me -->
-                    <div class="flex items-center">
+                    <div class="flex items-center gap-1 my-4 ">
                         <input
                             id="remember_me"
                             type="checkbox"
                             name="remember"
                             class="w-4 h-4 text-orange-500 bg-white/70 backdrop-blur-sm rounde"
                         />
-                        <label for="remember_me" class="ml-2 text-sm text-gray-700">
+                        <label for="remember_me" class="text-xs text-gray-700 ">
                             Ingat saya di perangkat ini selama 60 hari
                         </label>
                     </div>
@@ -58,7 +58,7 @@
                     </button>
 
                     <!-- Divider -->
-                    <div class="relative my-6">
+                    <div class="relative my-4">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-muted"></div>
                         </div>
@@ -96,30 +96,15 @@
                     </div>
                 </form>
 
-                <!-- Footer Links -->
-                <div class="mt-8 text-center space-y-3">
+                <!-- Daftar -->
+                <div class="mt-4 text-center space-y-3">
                     <div class="text-sm text-gray-700">
                         Belum punya akun?
                         <a href="{{ route('register') }}" class="text-blue hover:text-orange-600 font-semibold">
                             Daftar di sini
                         </a>
                     </div>
-                    
-                    <div class="flex items-center justify-center gap-4 text-sm">
-                        <a href="#" class="text-gray-600 hover:text-gray-800">
-                            Kebijakan Privasi
-                        </a>
-                        <span class="text-gray-400">•</span>
-                        <a href="#" class="text-gray-600 hover:text-gray-800">
-                            Syarat dan ketentuan
-                        </a>
-                    </div>
-
-                    <div class="text-sm text-gray-600">
-                        Butuh bantuan?
-                        <a href="#" class="text-blue hover:text-orange-600 font-medium">
-                            Pusat Bantuan
-                        </a>
+                
                     </div>
                 </div>
             </div>
