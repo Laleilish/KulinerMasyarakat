@@ -5,7 +5,7 @@
     @section('content')
         <div class="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 px-4">
             <div class="w-full max-w-md">
-                <!-- Header -->
+            
                 <div class="text-center mb-8">
                     <h1 class="text-3xl font-bold text-dark mb-4">Masukkan Kode Verifikasi</h1>
                     <p class="text-sm text-dark mb-2">Kode OTP udah dikirimkan ke email Anda</p>
@@ -29,7 +29,7 @@
                 <form method="POST" action="{{ route('register.otp.submit') }}" class="space-y-6">
                     @csrf
 
-                    <!-- OTP Input Boxes -->
+                    <!-- OTP Input -->
                     <div>
                         <div class="flex justify-center gap-3 mb-4">
                             <input type="text" maxlength="1" class="otp-input w-16 h-16 text-center text-2xl font-bold rounded-xl border-2 border-muted-light bg-white focus:border-secondary focus:ring-0 text-dark transition-all" data-index="0" inputmode="numeric" pattern="[0-9]">
@@ -38,7 +38,6 @@
                             <input type="text" maxlength="1" class="otp-input w-16 h-16 text-center text-2xl font-bold rounded-xl border-2 border-muted-light bg-white focus:border-secondary focus:ring-0 text-dark transition-all" data-index="3" inputmode="numeric" pattern="[0-9]">
                         </div>
 
-                        <!-- Hidden input untuk submit -->
                         <input type="hidden" name="otp" id="otpValue" required>
                     </div>
 
@@ -59,7 +58,7 @@
                         Lanjutkan
                     </button>
 
-                    <!-- Back to Register -->
+                    <!-- Nav Kembali -->
                     <div class="text-center">
                         <a href="{{ route('register') }}" class="text-sm text-dark hover:text-secondary flex items-center justify-center gap-1">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +69,7 @@
                     </div>
                 </form>
 
-                <!-- Form terpisah untuk resend OTP (DI LUAR form OTP) -->
+                <!-- Resend OTP -->
                 <form id="resendForm" method="POST" action="{{ route('register.otp.resend') }}" style="display: none;">
                     @csrf
                 </form>
@@ -87,7 +86,7 @@
             let countdown = 59;
             let timer;
 
-            // Function untuk start countdown
+            //Start countdown
             function startCountdown() {
                 countdown = 59;
 
@@ -95,7 +94,7 @@
                 countdownEl.className = 'text-red-400 font-semibold';
                 countdownEl.textContent = `${countdown} detik`;
 
-                // Clear timer lama jika ada
+               
                 if (timer) clearInterval(timer);
 
                 // Countdown timer
@@ -105,7 +104,6 @@
 
                     if (countdown <= 0) {
                         clearInterval(timer);
-                        // Ganti hanya tulisan merah dengan tombol Kirim Ulang
                         countdownEl.innerHTML = `
                             <button type="button" onclick="document.getElementById('resendForm').submit()"
                                     class="text-blue hover:underline font-semibold bg-transparent border-none cursor-pointer">
@@ -124,13 +122,11 @@
                 input.addEventListener('input', (e) => {
                     const value = e.target.value;
 
-                    // Only allow numbers
                     if (!/^\d*$/.test(value)) {
                         e.target.value = '';
                         return;
                     }
 
-                    // Update hidden input
                     updateOtpValue();
 
                     // Move to next input

@@ -23,7 +23,7 @@
                             autocomplete="name"
                         />
 
-                        {{-- Usernmae --}}
+                        {{-- Username --}}
                         <x-auth.auth-input
                             id="username"
                             type="text"
