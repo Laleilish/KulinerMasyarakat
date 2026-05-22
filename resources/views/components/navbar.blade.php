@@ -96,7 +96,7 @@
                         <p class="text-sm font-semibold text-dark truncate">{{ auth()->user()->name }}</p>
                         <p class="text-xs text-muted truncate">{{ auth()->user()->email }}</p>
                     </div>
-                    <a href="{{ route('profile.show') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-cream-bg transition-colors no-underline">
+                    <a href="{{ route('profile.show') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-black/5 transition-colors no-underline">
                          <div class="flex justify-between items-center w-full">
                              <div class="flex items-center gap-2">
                                  <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +109,7 @@
                             </svg>
                          </div>
                     </a>
-                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-cream-bg transition-colors no-underline">
+                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark  hover:bg-black/5 transition-colors no-underline">
                          <div class="flex justify-between items-center w-full">
                              <div class="flex items-center gap-2">
                                  <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,7 +123,7 @@
                             </svg>
                          </div>
                     </a>
-                    <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-cream-bg transition-colors no-underline">
+                    <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-black/5 transition-colors no-underline">
                         <div class="flex justify-between items-center w-full">
                             <div class="flex items-center gap-2">
                                 <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
