@@ -7,6 +7,8 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\OtpVerification;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -25,6 +27,30 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+        $user = $request->user();
+
+        // 24H verified
+        if (!$user->email_verified_at && $user->created_at->lt(now()->subDay())) {
+            Auth::guard("web")->logout();
+
+            OtpVerification::where("user_id", $user->id)->delete();
+
+            $user->delete();
+
+            throw ValidationException::withMessages([
+                "email" => "Pendaftaran sudah kadaluarsa. Silakan daftar ulang.",
+            ]);
+        }
+        
+        //Validate verified email 
+        if (!$user->email_verified_at) {
+            Auth::guard("web")->logout();
+            session(["register_user_id" => $user->id]);
+
+            return redirect()
+                ->route("register.otp.verify")
+                ->with("status", "Akun belum diverifikasi. Silakan masukkan OTP.");
+        }
 
         $request->session()->regenerate();
 

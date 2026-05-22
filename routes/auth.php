@@ -28,12 +28,16 @@ Route::middleware("guest")->group(function () {
     Route::post("register/verify-otp", [
         RegisteredUserController::class,
         "verifyOtp",
-    ])->name("register.otp.submit");
+    ])
+        ->middleware("throttle:5,1")
+        ->name("register.otp.submit");
 
     Route::post("register/resend-otp", [
         RegisteredUserController::class,
         "resendOtp",
-    ])->name("register.otp.resend");
+    ])
+        ->middleware("throttle:3,10")
+        ->name("register.otp.resend");
 
     Route::get("login", [
         AuthenticatedSessionController::class,

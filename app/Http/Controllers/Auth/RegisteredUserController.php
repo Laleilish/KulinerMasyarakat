@@ -72,8 +72,8 @@ class RegisteredUserController extends Controller
         // Simpan OTP baru (expire 10 menit untuk register)
         OtpVerification::create([
             "user_id" => $user->id,
-            "otp" => $otp,
-            "expires_at" => now()->addMinutes(10),
+            "otp" => Hash::make($otp),
+            "expires_at" => now()->addMinutes(5),
         ]);
 
         // Kirim OTP via email
@@ -94,17 +94,32 @@ class RegisteredUserController extends Controller
     public function showOtpVerification(): View|RedirectResponse
     {
         // Pastikan user sudah register
-        if (!session("register_user_id")) {
+        $user = User::find(session("register_user_id"));
+
+        if (!$user) {
+            session()->forget("register_user_id");
             return redirect()->route("register");
         }
 
-        $user = User::find(session("register_user_id"));
+        if ($user->created_at->lt(now()->subDay()) && !$user->email_verified_at) {
+            OtpVerification::where("user_id", $user->id)->delete();
+            $user->delete();
+
+            session()->forget("register_user_id");
+
+            return redirect()
+                ->route("register")
+                ->withErrors([
+                    "email" => "Pendaftaran sudah kadaluarsa. Silakan daftar ulang.",
+                ]);
+        }
 
         return view("auth.register-verify-otp", [
             "email" => $user->email,
             "name" => $user->name,
         ]);
     }
+    
 
     /**
      * Verify OTP and activate account
@@ -127,12 +142,11 @@ class RegisteredUserController extends Controller
 
         // Cari OTP yang valid
         $otpRecord = OtpVerification::where("user_id", $userId)
-            ->where("otp", $request->otp)
             ->where("is_used", false)
             ->where("expires_at", ">", now())
             ->first();
 
-        if (!$otpRecord) {
+        if (!$otpRecord || !Hash::check($request->otp, $otpRecord->otp)) {
             throw ValidationException::withMessages([
                 "otp" => __(
                     "Kode OTP salah atau sudah kadaluarsa. Silakan kirim ulang.",
@@ -140,7 +154,6 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-        // Tandai OTP sebagai sudah digunakan
         $otpRecord->markAsUsed();
 
         // Verifikasi email user
@@ -186,7 +199,7 @@ class RegisteredUserController extends Controller
         // Simpan OTP baru
         OtpVerification::create([
             "user_id" => $user->id,
-            "otp" => $otp,
+            "otp" => Hash::make($otp),
             "expires_at" => now()->addMinutes(10),
         ]);
 
