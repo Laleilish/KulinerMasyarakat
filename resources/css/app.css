@@ -11,7 +11,6 @@
   --font-brand: "Plus Jakarta Sans";
 
   /* Color Palette — Brand */
-  /* Color Palette — Brand */
 
   /* Merah utama*/
   --color-red-logo: #960913;
@@ -23,26 +22,20 @@
   --color-secondary-dark: #029962;
 
   /* Biru */
-  --color-blue: #1877F2;
+  --color-blue: #1877f2;
+
+  /* Orange */
+  --color-orange: #f5a623;
 
   /* Color Palette — Neutral / UI */
-  /* Color Palette — Neutral / UI */
 
-  /* Krem */
-  --color-cream-bg: #fdf4e7;
-  --color-cream-dark: #fdefdb;
   /* Krem */
   --color-cream-bg: #fdf4e7;
   --color-cream-dark: #fdefdb;
 
   /* Teks gelap utama */
   --color-dark: #040818;
-  /* Teks gelap utama */
-  --color-dark: #040818;
 
-  /* Teks abu-abu / muted / inactive nav */
-  --color-muted: #5d6e86;
-  --color-muted-light: #8fa0b8;
   /* Teks abu-abu / muted / inactive nav */
   --color-muted: #5d6e86;
   --color-muted-light: #8fa0b8;
@@ -103,6 +96,14 @@
 
 @utility bg-blue {
   background-color: var(--color-blue);
+}
+
+@utility text-orange {
+  color: var(--color-orange);
+}
+
+@utility bg-orange {
+  background-color: var(--color-orange);
 }
 
 @utility border-red-logo {
