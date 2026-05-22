@@ -94,7 +94,7 @@
             </div>
 
             <p class="message">
-                Kode OTP ini akan <strong>kadaluarsa dalam 10 menit</strong>.
+                Kode OTP ini akan <strong>kadaluarsa dalam 5 menit</strong>.
             </p>
 
             <div class="warning">

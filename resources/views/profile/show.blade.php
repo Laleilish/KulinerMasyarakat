@@ -27,67 +27,83 @@
                 </div>
             @endif
 
-            {{-- Edit Avatar Button --}}
-            <a href="{{ route('profile.edit') }}"
-               class="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center shadow-md no-underline hover:bg-secondary-dark transition-colors">
+            {{-- Edit Avatar  --}}
+            <form id="avatarForm" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="hidden">
+                @csrf
+                @method('patch')
+                <input type="hidden" name="name" value="{{ $user->name }}">
+                <input type="hidden" name="username" value="{{ $user->username }}">
+                <input type="hidden" name="email" value="{{ $user->email }}">
+                <input type="file" id="avatarInput" name="avatar" accept="image/*" class="hidden">
+            </form>
+
+            <button type="button" onclick="document.getElementById('avatarInput').click()"
+               class="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-full flex items-center justify-center shadow-md hover:bg-secondary-dark transition-colors border-none cursor-pointer">
                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                 </svg>
-            </a>
+            </button>
         </div>
 
         <h2 class="text-2xl font-bold text-dark">{{ $user->name }}</h2>
         <p class="text-muted text-sm">{{ $user->email }}</p>
     </div>
 
-    {{-- Success Message --}}
+    {{-- Status Messages --}}
     @if(session('status') === 'profile-updated')
         <div class="mb-4 p-3 bg-green-100 border border-green-300 text-green-700 text-sm rounded-xl text-center">
             Profil berhasil diperbarui!
         </div>
     @endif
+    @if(session('status') === 'password-updated')
+        <div class="mb-4 p-3 bg-green-100 border border-green-300 text-green-700 text-sm rounded-xl text-center">
+            Password berhasil diperbarui!
+        </div>
+    @endif
 
     <!-- Info Card -->
-    <div class="bg-white rounded-2xl shadow-card mb-6 overflow-hidden">
-        {{-- Nama Lengkap --}}
-        <a href="{{ route('profile.edit') }}#name" class="flex items-center justify-between px-5 py-4 border-b border-gray-100 no-underline hover:bg-gray-50 transition-colors">
-            <div>
-                <p class="text-xs font-bold text-muted uppercase tracking-wider mb-1">Nama Lengkap</p>
-                <p class="text-dark font-medium">{{ $user->name }}</p>
-            </div>
-            <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="flex items-center justify-between py-3 ">
+        <p class="text-xs font-bold text-muted tracking-wider px-1 ">Informasi Profil</p>
+        <button onclick="openModal('profileModal')"
+                class="flex items-center gap-1 text-xs font-semibold text-secondary hover:text-secondary-dark transition-colors bg-transparent border-none cursor-pointer px-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
             </svg>
-        </a>
+            Edit
+        </button>
+    </div>
+    <div class="bg-white rounded-2xl shadow-card mb-6 overflow-hidden">
+
+        {{-- Nama Lengkap --}}
+        <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <div>
+                <p class="text-xs font-bold text-dark  tracking-wider mb-1">Nama Lengkap</p>
+                <p class="text-muted  font-medium">{{ $user->name }}</p>
+            </div>
+        </div>
 
         {{-- Username --}}
-        <a href="{{ route('profile.edit') }}#username" class="flex items-center justify-between px-5 py-4 border-b border-gray-100 no-underline hover:bg-gray-50 transition-colors">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <div>
-                <p class="text-xs font-bold text-muted uppercase tracking-wider mb-1">Username</p>
-                <p class="text-dark font-medium">@{{ $user->username }}</p>
+                <p class="text-xs font-bold text-dark tracking-wider mb-1">Username</p>
+                <p class="text-muted font-medium">{{ $user->username }}</p>
             </div>
-            <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-            </svg>
-        </a>
+        </div>
 
         {{-- Email --}}
-        <a href="{{ route('profile.edit') }}#email" class="flex items-center justify-between px-5 py-4 no-underline hover:bg-gray-50 transition-colors">
+        <div class="flex items-center justify-between px-5 py-4">
             <div>
-                <p class="text-xs font-bold text-muted uppercase tracking-wider mb-1">Email</p>
-                <p class="text-dark font-medium">{{ $user->email }}</p>
+                <p class="text-xs font-bold text-dark  tracking-wider mb-1">Email</p>
+                <p class="text-muted font-medium">{{ $user->email }}</p>
             </div>
-            <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-            </svg>
-        </a>
+        </div>
     </div>
 
     <!-- Keamanan Akun -->
-    <p class="text-xs font-bold text-muted uppercase tracking-wider mb-3 px-1">Keamanan Akun</p>
+    <p class="text-xs font-bold text-muted tracking-wider mb-3 px-1">Keamanan Akun</p>
     <div class="bg-white rounded-2xl shadow-card mb-6 overflow-hidden">
-        {{-- Ubah Email --}}
-        <a href="{{ route('profile.edit') }}#email" class="flex items-center justify-between px-5 py-4 border-b border-gray-100 no-underline hover:bg-gray-50 transition-colors">
+        <button onclick="openModal('emailModal')"
+                class="w-full flex items-center justify-between px-5 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors bg-transparent border-none cursor-pointer text-left">
             <div class="flex items-center gap-3">
                 <svg class="w-5 h-5 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -97,10 +113,10 @@
             <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
-        </a>
+        </button>
 
-        {{-- Ubah Password --}}
-        <a href="{{ route('profile.edit') }}#password" class="flex items-center justify-between px-5 py-4 no-underline hover:bg-gray-50 transition-colors">
+        <button onclick="openModal('passwordModal')"
+                class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors bg-transparent border-none cursor-pointer text-left">
             <div class="flex items-center gap-3">
                 <svg class="w-5 h-5 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
@@ -110,16 +126,14 @@
             <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
-        </a>
+        </button>
     </div>
 
     <!-- Lainnya -->
-    <p class="text-xs font-bold text-muted uppercase tracking-wider mb-3 px-1">Lainnya</p>
+    <p class="text-xs font-bold text-muted tracking-wider mb-3 px-1">Lainnya</p>
     <div class="bg-white rounded-2xl shadow-card overflow-hidden">
-        {{-- Hapus Akun --}}
-        <button
-            onclick="document.getElementById('deleteModal').classList.remove('hidden')"
-            class="w-full flex items-center gap-3 px-5 py-4 text-red-500 hover:bg-red-50 transition-colors bg-transparent border-none cursor-pointer">
+        <button onclick="openModal('deleteModal')"
+                class="w-full flex items-center gap-3 px-5 py-4 text-red-500 hover:bg-red-50 transition-colors bg-transparent border-none cursor-pointer">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
@@ -128,53 +142,53 @@
     </div>
 </div>
 
-{{-- Delete Account Modal --}}
-<div id="deleteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-    <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-card">
-        <h3 class="text-lg font-bold text-dark mb-2">Hapus Akun?</h3>
-        <p class="text-sm text-muted mb-6">
-            Setelah akun dihapus, semua data akan hilang permanen. Masukkan password untuk konfirmasi.
-        </p>
+@include('profile.partials.edit-profile-modal')
 
-        <form method="POST" action="{{ route('profile.destroy') }}">
-            @csrf
-            @method('delete')
+@include('profile.partials.update-email-modal')
 
-            <div class="mb-4">
-                <label for="del_password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                <input
-                    id="del_password"
-                    type="password"
-                    name="password"
-                    placeholder="Masukkan password Anda"
-                    required
-                    class="w-full px-4 py-3 rounded-xl border-2 border-muted-light bg-white focus:border-red-400 focus:ring-0 text-dark placeholder:text-gray-400 transition-all"
-                />
-                @if($errors->userDeletion->get('password'))
-                    <p class="mt-1 text-xs text-red-600">{{ $errors->userDeletion->first('password') }}</p>
-                @endif
-            </div>
+@include('profile.partials.update-password-modal')
 
-            <div class="flex gap-3">
-                <button
-                    type="button"
-                    onclick="document.getElementById('deleteModal').classList.add('hidden')"
-                    class="flex-1 py-3 rounded-xl border-2 border-gray-200 text-dark font-semibold hover:bg-gray-50 transition-colors bg-transparent cursor-pointer">
-                    Batal
-                </button>
-                <button
-                    type="submit"
-                    class="flex-1 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition-colors border-none cursor-pointer">
-                    Hapus
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+@include('profile.partials.delete-user-modal')
 
-@if($errors->userDeletion->isNotEmpty())
 <script>
-    document.getElementById('deleteModal').classList.remove('hidden');
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    // Close
+    document.querySelectorAll('[id$="Modal"]').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal(this.id);
+        });
+    });
+
+    // Auto-submit avatar form saat file dipilih
+    document.getElementById('avatarInput').addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            document.getElementById('avatarForm').submit();
+        }
+    });
+
+    // Auto-open modal jika ada validation error
+    @if($errors->has('name') || $errors->has('username'))
+        openModal('profileModal');
+    @elseif($errors->has('email'))
+        openModal('emailModal');
+    @endif
+
+    @if($errors->updatePassword->any())
+        openModal('passwordModal');
+    @endif
+
+    @if($errors->userDeletion->isNotEmpty())
+        openModal('deleteModal');
+    @endif
 </script>
-@endif
+
 @endsection
