@@ -1,4 +1,4 @@
-// ===================== HAMBURGER MENU =====================
+// HAMBURGER MENU 
 const hamburger = document.getElementById("hamburgerBtn");
 const navLinks = document.getElementById("navLinks");
 const closeBtn = document.getElementById("closeBtn");
@@ -6,7 +6,7 @@ const closeBtn = document.getElementById("closeBtn");
 hamburger.addEventListener("click", () => (navLinks.style.left = "0"));
 closeBtn.addEventListener("click", () => (navLinks.style.left = "-100%"));
 
-// ===================== PROFILE — DESKTOP DROPDOWN / MOBILE PANEL =====================
+// PROFILE — DESKTOP DROPDOWN / MOBILE PANEL
 const profileBtn = document.getElementById("profileBtn");
 const profileDropdown = document.getElementById("profileDropdown");
 const profilePanel = document.getElementById("profilePanel");
