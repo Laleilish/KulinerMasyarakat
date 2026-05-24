@@ -34,7 +34,7 @@ Route::get("/tanggal-tua", fn() => view("tanggal-tua.index"))->name(
 Route::get("/terserah", fn() => view("terserah.index"))->name(
     "terserah.index"
 );
-Route::get("/proposal", fn() => view("submit-place.create"))->name(
+Route::get("/submit-place", fn() => view("submit-place.create"))->name(
     "submit-place.create",
 );
 Route::get("/split-bill", fn() => view("split-bill.index"))->name(

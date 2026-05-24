@@ -23,16 +23,6 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
-    {
-        return view("profile.edit", [
-            "user" => $request->user(),
-        ]);
-    }
-
-    /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -42,7 +32,7 @@ class ProfileController extends Controller
         // Handle avatar upload
         if ($request->hasFile("avatar")) {
             $request->validate([
-                "avatar" => ["image", "max:2048"], // max 2MB
+                "avatar" => ["image", "max:2048"],
             ]);
 
             // Delete old avatar if it exists and is not from OAuth provider
