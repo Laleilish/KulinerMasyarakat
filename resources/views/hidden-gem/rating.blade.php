@@ -1,51 +1,38 @@
-<div class="rating-section">
-    <div class="rating-title">Rating Tertinggi dari Pengguna Lain</div>
+<section class="px-5 pb-8">
 
-    {{-- TOP ROW - 2 horizontal cards --}}
-    <div class="rating-grid-top">
-        @foreach ($topRatings->take(2) as $resto)
-        <div class="rating-card">
-            <div class="rating-card-inner">
-                <div class="rating-card-info">
-                    <div class="rating-card-name">{{ $resto->name }}</div>
-                    <div class="rating-tags">
-                        @foreach (explode(',', $resto->tags) as $tag)
-                            <span class="rtag">{{ trim($tag) }}</span>
-                        @endforeach
+    <h2 class="text-[20px] font-extrabold text-center text-dark mb-5"> Hidden Gem Hari ini</h2>
+
+    <div class="grid grid-cols-2 gap-3 mb-3">
+        @foreach ($topRatings as $item)
+
+            <div class=" bg-white rounded-2xl border border-black/5 shadow-card overflow-hidden hover:shadow-card-hover transition">
+                <div class="flex">
+                    <div class="flex-1 p-3">
+                        <h3 class=" text-[11px] font-extrabold text-dark leading-[1.4] mb-2">{{ $item['nama'] }}</h3>
+                        <div class="flex gap-1 flex-wrap mb-2">
+
+                            @foreach ($item['tags'] as $tag)
+
+                                <span class=" bg-cream-dark text-secondary text-[9px] font-bold px-2 py-[2px] rounded-full">{{ $tag }}</span>
+
+                            @endforeach
+                        </div>
+
+                        <div class="text-yellow-400 text-xs tracking-wider">★★★★★</div>
                     </div>
-                    <div class="rating-stars">
-                        @for ($i = 0; $i < round($resto->rating); $i++) ★ @endfor
-                    </div>
+
+                    <img src="{{ asset($item['image']) }}" class="w-[100px] h-[100px] object-cover">
+
                 </div>
-                <img src="{{ asset('assets/img/Restoran Favorit/' . $resto->image) }}" alt="{{ $resto->name }}">
+
             </div>
-        </div>
+
         @endforeach
+
     </div>
 
-    {{-- BOTTOM ROW - 3 vertical cards --}}
-    <div class="rating-grid-bottom">
-        @foreach ($topRatings->skip(2)->take(3) as $resto)
-        <div class="rating-card-vert">
-            <img src="{{ asset('assets/img/Restoran Favorit/' . $resto->image) }}" alt="{{ $resto->name }}">
-            <div class="rcard-body">
-                <div class="rcard-name">{{ $resto->name }}</div>
-                <div class="rcard-tags">
-                    @foreach (explode(',', $resto->tags) as $tag)
-                        <span class="rtag">{{ trim($tag) }}</span>
-                    @endforeach
-                </div>
-                <div class="rcard-stars">
-                    @for ($i = 0; $i < round($resto->rating); $i++) ★ @endfor
-                </div>
-            </div>
-        </div>
-        @endforeach
+    <div class="text-center pt-3">
+        <button class=" bg-secondary hover:bg-secondary-dark text-white font-extrabold text-[15px] px-12 py-3 rounded-full shadow-lg active:scale-95 transition">Lihat Semua</button>
     </div>
 
-    <div class="lihat-semua-wrap">
-        <a href="#">
-            <button class="btn-lihat-semua">Lihat Semua</button>
-        </a>
-    </div>
-</div>
+</section>

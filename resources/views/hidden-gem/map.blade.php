@@ -1,13 +1,7 @@
-<div class="map">
-    <h2>Peta Kampus</h2>
-    <iframe
-        id="map-frame"
-        src="{{ $kampusList[$selectedKampus]['map_embed'] }}"
-        width="600"
-        height="450"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-</div>
+<section class="px-5 pb-8">
+
+    <h2 class="text-[20px] font-extrabold text-center text-dark mb-5">Peta Kampus</h2>
+
+    <iframe src="{{ $kampusList[$selectedKampus]['map_embed'] ?? '' }}" class=" w-full h-[260px] rounded-3xl border border-black/5 shadow-card " loading="lazy"></iframe>
+
+</section>
