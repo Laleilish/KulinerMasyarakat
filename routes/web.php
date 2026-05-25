@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HiddenGemController; // ← TAMBAH INI
 
 Route::get('/', fn () => view('home.index'))->name('home');
-Route::get('/hidden-gem', fn() => view('hidden-gem.index'))->name('hidden-gem.index');
+Route::get('/hidden-gem', [HiddenGemController::class, 'index'])->name('hidden-gem.index');
 Route::get('/tanggal-tua', fn() => view('tanggal-tua.index'))->name('tanggal-tua.index');
 Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');
 Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
