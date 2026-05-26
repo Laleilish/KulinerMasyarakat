@@ -39,14 +39,19 @@ class User extends Authenticatable
         return $this->hasMany(Restaurant::class);
     }
 
-    public function submit_place()
+    public function submitPlaces()
     {
-        return $this->hasMany(Submit_place::class);
+        return $this->hasMany(SubmitPlace::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function splitBill()
     {
-        return $this->hasMany(Submit_place::class);
+        return $this->hasMany(SplitBill::class);
     }
 
     // Helper cek role

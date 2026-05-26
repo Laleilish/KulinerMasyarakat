@@ -15,8 +15,8 @@ class Campus extends Model
         return $this->hasMany(Restaurant::class);
     }
 
-    public function submit_place()
+    public function submitPlaces()
     {
-        return $this->hasMany(Submit_place::class);
+        return $this->hasMany(SubmitPlace::class);
     }
 }
