@@ -53,7 +53,7 @@
 
         {{-- Hidden Gem --}}
         <div class="group flex flex-col items-center gap-2 cursor-pointer"
-             onclick="window.location.href='{{ route('hidden-gem.index') }}'">
+             onclick="window.location.href='{{ route('hidden-gem') }}'">
             <div class="w-[70px] h-[70px] bg-cream-bg rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:bg-[#EF950F] group-hover:-translate-y-1">
                 <img src="{{ asset('assets/img/Menu/Hidden Gem.png') }}" alt="Hidden Gem"
                      class="w-[70px] h-[70px] object-contain border border-[#EF950F] rounded-2xl">
@@ -103,7 +103,7 @@
         </div>
 
         <div class="group flex flex-col items-center gap-2 cursor-pointer"
-             onclick="window.location.href='{{ route('hidden-gem.index') }}'">
+             onclick="window.location.href='{{ route('hidden-gem') }}'">
             <div class="w-[100px] h-[100px] bg-cream-bg rounded-2xl flex items-center justify-center transition-all duration-200 group-hover:bg-[#EF950F] group-hover:-translate-y-1">
                 <img src="{{ asset('assets/img/Menu/Hidden Gem.png') }}" alt="Hidden Gem"
                      class="w-[100px] h-[100px] object-contain border border-[#EF950F] rounded-2xl">

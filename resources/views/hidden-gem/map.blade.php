@@ -28,4 +28,4 @@
              class="w-full h-[240px] md:h-[320px] lg:h-[380px] z-0">
         </div>
     </div>
-</section>
+</section> 
