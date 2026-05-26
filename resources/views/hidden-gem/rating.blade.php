@@ -9,11 +9,16 @@
 
     {{-- Featured card --}}
     <div id="featured-card" class="hidden mb-4">
-        <div class="bg-gradient-to-br from-[#D08700] to-[#EFB100]
+        <div class="bg-gradient-to-br
+            from-[#D08700]
+            via-[#E0A100]
+            to-[#EFB100]
             rounded-[20px]
-            p-5 md:p-6
-            min-h-[170px] md:min-h-[220px]
-            flex items-center gap-4
+
+            p-4 md:p-6
+            md:min-h-[220px]
+
+            flex items-center gap-3 md:gap-5
             cursor-pointer
             transition-all duration-200 hover:-translate-y-[2px]
             hover:shadow-[0_8px_24px_rgba(245,166,35,0.3)]" transition-all duration-200 hover:-translate-y-[2px]
@@ -26,8 +31,7 @@
                         Rekomendasi Hari Ini
                     </span>
                 </div>
-                <p id="featured-name" class="text-[16px] md:text-[18px] font-extrabold text-white leading-[1.3] mb-2">
-                </p>
+                <p id="featured-name" class="text-[16px] md:text-[26px] font-extrabold text-white leading-[1.3] mb-2"></p>
                 <p id="featured-desc" class="text-[11px] md:text-[14px] text-white/85 leading-[1.7] mb-4 line-clamp-3"></p>
                 <div class="flex items-center gap-2 flex-wrap">
                     <span id="featured-rating" class="flex items-center gap-1 bg-white/20 text-white
@@ -41,8 +45,11 @@
                     </span>
                 </div>
             </div>
-            <img id="featured-img" src="" alt=""
-                class="w-[110px] h-[140px] md:w-[180px] md:h-[200px] rounded-[16px] object-cover flex-shrink-0 border-[2.5px] border-white/30">
+            <img id="featured-img" src="" alt="" class="w-[96px] h-[96px]
+            md:w-[180px] md:h-[200px]
+
+            rounded-[16px] object-cover flex-shrink-0
+            border-[2.5px] border-white/30">
         </div>
     </div>
 
