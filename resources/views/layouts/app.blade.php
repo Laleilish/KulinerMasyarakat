@@ -16,7 +16,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-cream-bg">
-            {{-- Include Navbar (pakai navbar kustom, bukan navigation.blade.php) --}}
+            {{-- Include Navbar  --}}
             @include('components.navbar')
 
     <main>
