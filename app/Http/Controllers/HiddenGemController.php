@@ -3,28 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campus;
-use App\Models\Restaurant;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 
 class HiddenGemController extends Controller
 {
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
-        $campuses       = Campus::all();
-        $selectedCampus = $campuses->first();
-        $restaurants    = $selectedCampus
-            ? $selectedCampus->restaurants()->orderByDesc('rating')->take(5)->get()
-            : collect();
+        $campuses = Campus::all();
 
-        return view('hidden-gem.index', compact('campuses', 'selectedCampus', 'restaurants'));
+        $campusesData = $campuses->map(fn($c) => [
+            'id'        => $c->id,
+            'name'      => $c->name,
+            'logo'      => asset('assets/img/kampus/' . $c->logo),
+            'latitude'  => (float) $c->latitude,
+            'longitude' => (float) $c->longitude,
+            'zoom'      => $c->map_zoom,
+        ])->values();
+
+        $selectedCampus = $campuses->first();
+
+        return view('hidden-gem.index', compact('campusesData', 'selectedCampus', 'campuses'));
     }
 
-    public function getRestaurants(int $campusId): JsonResponse
+    public function getRestaurants(int $campusId): \Illuminate\Http\JsonResponse
     {
         $campus = Campus::findOrFail($campusId);
 
-        $restaurants = Restaurant::where('campus_id', $campusId)
+        $restaurants = $campus->restaurants()
             ->orderByDesc('rating')
             ->get()
             ->map(fn($r) => [
@@ -32,17 +37,16 @@ class HiddenGemController extends Controller
                 'name'        => $r->name,
                 'image'       => asset('assets/img/' . $r->image),
                 'description' => $r->description,
-                'latitude'    => $r->latitude,
-                'longitude'   => $r->longitude,
+                'latitude'    => (float) $r->latitude,
+                'longitude'   => (float) $r->longitude,
                 'rating'      => $r->rating,
                 'distance'    => $r->distance,
                 'price_range' => $r->price_range,
                 'category'    => $r->category,
-                'maps_url'    => "https://www.google.com/maps?q={$r->latitude},{$r->longitude}",
             ]);
 
         return response()->json([
-            'campus'      => [
+            'campus' => [
                 'id'        => $campus->id,
                 'name'      => $campus->name,
                 'latitude'  => (float) $campus->latitude,
