@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubmitPlaceController;
+use App\Http\Controllers\Admin\SubmitPlaceController as AdminSubmitPlaceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/dashboard", function () {
@@ -22,7 +24,45 @@ Route::middleware("auth")->group(function () {
     Route::delete("/profile", [ProfileController::class, "destroy"])->name(
         "profile.destroy",
     );
+
+    // Review (butuh login)
+    Route::post("/restoran/{restaurant}/reviews", [\App\Http\Controllers\ReviewController::class, "store"])->name(
+        "reviews.store",
+    );
+    Route::delete("/reviews/{review}", [\App\Http\Controllers\ReviewController::class, "destroy"])->name(
+        "reviews.destroy",
+    );
+
+    // Submit Places (customer submits a new restaurant)
+    Route::get("/submit-place", [SubmitPlaceController::class, "create"])->name(
+        "submit-places.create",
+    );
+    Route::post("/submit-place", [SubmitPlaceController::class, "store"])->name(
+        "submit-places.store",
+    );
 });
+
+// Detail restoran (public)
+Route::get("/restoran/{restaurant}", [\App\Http\Controllers\RestaurantController::class, "show"])->name("restoran.show");
+
+// Admin Routes
+Route::middleware(["auth", "role:admin"])
+    ->prefix("admin")
+    ->name("admin.")
+    ->group(function () {
+        Route::get("/submit-places", [AdminSubmitPlaceController::class, "index"])->name(
+            "submit-places.index",
+        );
+        Route::get("/submit-places/{submitPlace}", [AdminSubmitPlaceController::class, "show"])->name(
+            "submit-places.show",
+        );
+        Route::patch("/submit-places/{submitPlace}/approve", [AdminSubmitPlaceController::class, "approve"])->name(
+            "submit-places.approve",
+        );
+        Route::patch("/submit-places/{submitPlace}/reject", [AdminSubmitPlaceController::class, "reject"])->name(
+            "submit-places.reject",
+        );
+    });
 
 Route::get("/", fn() => view("home.index"))->name("home");
 Route::get("/hidden-gem", fn() => view("hidden-gem.index"))->name(
@@ -34,11 +74,9 @@ Route::get("/tanggal-tua", fn() => view("tanggal-tua.index"))->name(
 Route::get("/terserah", fn() => view("terserah.index"))->name(
     "terserah.index"
 );
-Route::get("/submit-place", fn() => view("submit-place.create"))->name(
-    "submit-place.create",
-);
 Route::get("/split-bill", fn() => view("split-bill.index"))->name(
     "split-bill.index",
 );
+
 
 require __DIR__ . "/auth.php";
