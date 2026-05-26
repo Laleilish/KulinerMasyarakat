@@ -37,6 +37,7 @@ class ProfileController extends Controller
 
             // Delete old avatar if it exists and is not from OAuth provider
             if ($user->avatar && !$user->provider) {
+                
                 // Check if file exists in storage
                 $oldAvatarPath = str_replace("/storage/", "", $user->avatar);
                 if (Storage::disk("public")->exists($oldAvatarPath)) {
