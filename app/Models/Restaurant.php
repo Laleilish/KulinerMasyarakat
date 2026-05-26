@@ -3,33 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Restaurant extends Model
 {
-    //
     protected $fillable = [
-        'user_id', 'campus_id', 'name', 'address',
-        'latitude', 'longitude', 'image', 'description', 'status'
+        'campus_id', 'name', 'image', 'description',
+        'latitude', 'longitude', 'rating', 'distance',
+        'price_range', 'category'
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $casts = [
+        'latitude'  => 'float',
+        'longitude' => 'float',
+        'rating'    => 'float',
+    ];
 
-    public function campus()
+    public function campus(): BelongsTo
     {
         return $this->belongsTo(Campus::class);
-    }
-
-    public function foods()
-    {
-        return $this->hasMany(Food::class);
-    }
-
-    // Scope: hanya restoran yang sudah diapproved
-    public function scopeApproved($query)
-    {
-        return $query->where('status', 'approved');
     }
 }

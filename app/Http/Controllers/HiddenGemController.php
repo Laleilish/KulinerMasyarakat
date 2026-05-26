@@ -2,25 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campus;
 use App\Models\Restaurant;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class HiddenGemController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\View\View
     {
-        $kampusList = [
-            ['id' => 0, 'name' => 'Universitas Pendidikan Indonesia', 'logo' => 'Upi.png',   'map_embed' => 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7922.488901693142!2d107.5888298!3d-6.8612798!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e73a84ea111d%3A0xcf04fadee4c999a9!2sUpi%20bandung!5e0!3m2!1sen!2sid!4v1775388747856!5m2!1sen!2sid'],
-            ['id' => 1, 'name' => 'Institut Teknologi Bandung',       'logo' => 'ITB.png',   'map_embed' => 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7922.488901693142!2d107.5888298!3d-6.8612798!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e73a84ea111d%3A0xcf04fadee4c999a9!2sUpi%20bandung!5e0!3m2!1sen!2sid!4v1775388747856!5m2!1sen!2sid'],
-            ['id' => 2, 'name' => 'Universitas Padjajaran',           'logo' => 'Unpad.png', 'map_embed' => 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7922.488901693142!2d107.5888298!3d-6.8612798!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e73a84ea111d%3A0xcf04fadee4c999a9!2sUpi%20bandung!5e0!3m2!1sen!2sid!4v1775388747856!5m2!1sen!2sid'],
-            ['id' => 3, 'name' => 'Telkom University',                'logo' => 'Tel-U.png', 'map_embed' => 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7922.488901693142!2d107.5888298!3d-6.8612798!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e73a84ea111d%3A0xcf04fadee4c999a9!2sUpi%20bandung!5e0!3m2!1sen!2sid!4v1775388747856!5m2!1sen!2sid'],
-            ['id' => 4, 'name' => 'Universitas Parahyangan',          'logo' => 'Unpar.png', 'map_embed' => 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7922.488901693142!2d107.5888298!3d-6.8612798!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e73a84ea111d%3A0xcf04fadee4c999a9!2sUpi%20bandung!5e0!3m2!1sen!2sid!4v1775388747856!5m2!1sen!2sid'],
-        ];
+        $campuses       = Campus::all();
+        $selectedCampus = $campuses->first();
+        $restaurants    = $selectedCampus
+            ? $selectedCampus->restaurants()->orderByDesc('rating')->take(5)->get()
+            : collect();
 
-        $selectedKampus = 0;
+        return view('hidden-gem.index', compact('campuses', 'selectedCampus', 'restaurants'));
+    }
 
-        $topRatings = Restaurant::latest()->take(5)->get();
+    public function getRestaurants(int $campusId): JsonResponse
+    {
+        $campus = Campus::findOrFail($campusId);
 
-        // ← Pastikan nama view-nya benar!
-        return view('hidden-gem.index', compact('kampusList', 'selectedKampus', 'topRatings'));
+        $restaurants = Restaurant::where('campus_id', $campusId)
+            ->orderByDesc('rating')
+            ->get()
+            ->map(fn($r) => [
+                'id'          => $r->id,
+                'name'        => $r->name,
+                'image'       => asset('assets/img/' . $r->image),
+                'description' => $r->description,
+                'latitude'    => $r->latitude,
+                'longitude'   => $r->longitude,
+                'rating'      => $r->rating,
+                'distance'    => $r->distance,
+                'price_range' => $r->price_range,
+                'category'    => $r->category,
+                'maps_url'    => "https://www.google.com/maps?q={$r->latitude},{$r->longitude}",
+            ]);
+
+        return response()->json([
+            'campus'      => [
+                'id'        => $campus->id,
+                'name'      => $campus->name,
+                'latitude'  => (float) $campus->latitude,
+                'longitude' => (float) $campus->longitude,
+                'zoom'      => $campus->map_zoom,
+            ],
+            'restaurants' => $restaurants,
+        ]);
     }
 }
