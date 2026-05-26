@@ -91,7 +91,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Jenis Makanan</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Jenis Makanan <span class="text-red-500">*</span></label>
                                 <input type="text" name="food_type" value="{{ old('food_type') }}" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Nasi, Mie, Ayam, Sapi, dll">
                                 @error('food_type')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -151,7 +151,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Jam Buka</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Jam Buka <span class="text-red-500">*</span></label>
                                 <input type="text" name="open_hours" value="{{ old('open_hours') }}" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="9.30-15.00">
                                 @error('open_hours')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -159,7 +159,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Range Harga</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Range Harga <span class="text-red-500">*</span></label>
                                 <input type="text" name="price_range" value="{{ old('price_range') }}" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="15.000 - 30.000">
                                 @error('price_range')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

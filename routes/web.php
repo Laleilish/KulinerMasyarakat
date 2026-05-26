@@ -33,7 +33,7 @@ Route::middleware("auth")->group(function () {
         "reviews.destroy",
     );
 
-    // Submit Places (customer submits a new restaurant)
+    // Submit Places 
     Route::get("/submit-place", [SubmitPlaceController::class, "create"])->name(
         "submit-places.create",
     );
@@ -42,7 +42,7 @@ Route::middleware("auth")->group(function () {
     );
 });
 
-// Detail restoran (public)
+// Detail restoran 
 Route::get("/restoran/{restaurant}", [\App\Http\Controllers\RestaurantController::class, "show"])->name("restoran.show");
 
 // Admin Routes
@@ -64,7 +64,7 @@ Route::middleware(["auth", "role:admin"])
         );
     });
 
-Route::get("/", fn() => view("home.index"))->name("home");
+Route::get("/", [\App\Http\Controllers\HomeController::class, 'index'])->name("home");
 Route::get("/hidden-gem", fn() => view("hidden-gem.index"))->name(
     "hidden-gem.index",
 );

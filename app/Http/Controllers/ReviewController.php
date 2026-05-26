@@ -45,7 +45,7 @@ class ReviewController extends Controller
         ]);
 
         return redirect()->back()
-            ->with('success', 'Ulasan berhasil ditambahkan! Terima kasih. 🎉');
+            ->with('success', 'Ulasan berhasil ditambahkan!');
     }
 
     /**
@@ -55,7 +55,7 @@ class ReviewController extends Controller
     {
         // Only the review owner or an admin can delete
         if (Auth::id() !== $review->user_id && !Auth::user()->isAdmin()) {
-            abort(403, 'Kamu tidak memiliki akses untuk menghapus ulasan ini.');
+            abort(403, 'Anda tidak memiliki akses untuk menghapus ulasan ini.');
         }
 
         // Delete photo from storage if exists
