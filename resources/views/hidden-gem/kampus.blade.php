@@ -21,7 +21,7 @@
                         {{ $campus->id === $selectedCampus->id
                             ? 'ring-4 ring-[#F5A623] ring-offset-2 scale-110'
                             : 'opacity-60' }}">
-                <img src="{{ asset('assets/img/' . $campus->logo) }}"
+                <img src="{{ asset('assets/img/Kampus/' . $campus->logo) }}"
                      alt="{{ $campus->name }}"
                      class="w-[46px] h-[46px] object-contain
                             transition-transform duration-300 group-hover:scale-105">
