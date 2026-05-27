@@ -13,16 +13,16 @@ class HiddenGemController extends Controller
     private function mapRestaurant($r): array
     {
         return [
-            'id'          => $r->id,
-            'name'        => $r->name,
-            'image'       => asset('assets/img/resto/' . $r->image),
+            'id' => $r->id,
+            'name' => $r->name,
+            'image' => asset('assets/img/resto/' . $r->image),
             'description' => $r->description ?? '',
-            'rating'      => $r->rating,
-            'distance'    => $r->distance,
+            'rating' => $r->rating,
+            'distance' => $r->distance,
             'price_range' => $r->price_range,
-            'category'    => $r->category,
-            'latitude'    => (float) $r->latitude,
-            'longitude'   => (float) $r->longitude,
+            'category' => $r->category,
+            'latitude' => (float) $r->latitude,
+            'longitude' => (float) $r->longitude,
             'is_featured' => $r->is_featured,
         ];
     }
@@ -32,25 +32,24 @@ class HiddenGemController extends Controller
         $campuses = Campus::all();
 
         $campusesData = $campuses->map(fn($c) => [
-            'id'        => $c->id,
-            'name'      => $c->name,
-            'logo'      => asset('assets/img/kampus/' . $c->logo),
-            'latitude'  => (float) $c->latitude,
+            'id' => $c->id,
+            'name' => $c->name,
+            'logo' => asset('assets/img/kampus/' . $c->logo),
+            'latitude' => (float) $c->latitude,
             'longitude' => (float) $c->longitude,
-            'zoom'      => $c->map_zoom,
+            'zoom' => $c->map_zoom,
         ])->values();
 
         $selectedCampus = $campuses->first();
 
-        // ✅ Hanya restoran featured, max 5, rating tertinggi
-        $featuredRestaurants = Restaurant::featured()
+        // Hanya restoran featured, max 5, rating tertinggi
+        $featuredRestaurants = Restaurant::where('campus_id', $selectedCampus->id)
+            ->where('is_featured', true)
             ->orderByDesc('rating')
-            ->orderByDesc('created_at')
-            ->take(5)
-            ->get()
-            ->map(fn($r) => $this->mapRestaurant($r));
+            ->take(10)
+            ->get();
 
-        // ✅ Semua restoran, rating tertinggi
+        // Semua restoran, rating tertinggi
         $topRestaurants = Restaurant::orderByDesc('rating')
             ->orderByDesc('created_at')
             ->get()
@@ -66,23 +65,36 @@ class HiddenGemController extends Controller
     }
 
     public function getRestaurants(int $campusId): JsonResponse
-    {
-        $campus = Campus::findOrFail($campusId);
+{
+    $campus = Campus::findOrFail($campusId);
 
-        $restaurants = Restaurant::where('campus_id', $campusId)
-            ->orderByDesc('rating')
-            ->get()
-            ->map(fn($r) => $this->mapRestaurant($r));
+    // semua resto kampus
+    $restaurants = Restaurant::where('campus_id', $campusId)
+        ->orderByDesc('rating')
+        ->get()
+        ->map(fn($r) => $this->mapRestaurant($r));
 
-        return response()->json([
-            'campus' => [
-                'id'        => $campus->id,
-                'name'      => $campus->name,
-                'latitude'  => (float) $campus->latitude,
-                'longitude' => (float) $campus->longitude,
-                'zoom'      => $campus->map_zoom,
-            ],
-            'restaurants' => $restaurants,
-        ]);
-    }
+    // featured khusus kampus itu
+    $featuredRestaurants = Restaurant::where('campus_id', $campusId)
+        ->where('is_featured', true)
+        ->orderByDesc('rating')
+        ->take(10)
+        ->get()
+        ->map(fn($r) => $this->mapRestaurant($r));
+
+    return response()->json([
+        'campus' => [
+            'id' => $campus->id,
+            'name' => $campus->name,
+            'latitude' => (float) $campus->latitude,
+            'longitude' => (float) $campus->longitude,
+            'zoom' => $campus->map_zoom,
+        ],
+
+        'restaurants' => $restaurants,
+
+        // TAMBAHKAN INI
+        'featuredRestaurants' => $featuredRestaurants,
+    ]);
+}
 }
