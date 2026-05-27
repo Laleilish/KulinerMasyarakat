@@ -397,7 +397,7 @@
 
                                         <div style="display:flex;align-items:center;justify-content:space-between;">
                                             <span style="font-size:11px;color:#02b176;font-weight:700;">
-                                                📍 ${r.distance}
+                                                <i class="fas fa-location-dot text-[9px]"></i> ${r.distance}
                                             </span>
                                             <span style="font-size:10px;color:#5d6e86;">
                                                 ${r.price_range}
