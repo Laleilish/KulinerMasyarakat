@@ -65,36 +65,31 @@ class HiddenGemController extends Controller
     }
 
     public function getRestaurants(int $campusId): JsonResponse
-{
-    $campus = Campus::findOrFail($campusId);
+    {
+        $campus = Campus::findOrFail($campusId);
 
-    // semua resto kampus
-    $restaurants = Restaurant::where('campus_id', $campusId)
-        ->orderByDesc('rating')
-        ->get()
-        ->map(fn($r) => $this->mapRestaurant($r));
+        $restaurants = Restaurant::where('campus_id', $campusId)
+            ->orderByDesc('rating')
+            ->get()
+            ->map(fn($r) => $this->mapRestaurant($r));
 
-    // featured khusus kampus itu
-    $featuredRestaurants = Restaurant::where('campus_id', $campusId)
-        ->where('is_featured', true)
-        ->orderByDesc('rating')
-        ->take(10)
-        ->get()
-        ->map(fn($r) => $this->mapRestaurant($r));
+        $featuredRestaurants = Restaurant::where('campus_id', $campusId)
+            ->where('is_featured', true)
+            ->orderByDesc('rating')
+            ->take(10)
+            ->get()
+            ->map(fn($r) => $this->mapRestaurant($r));
 
-    return response()->json([
-        'campus' => [
-            'id' => $campus->id,
-            'name' => $campus->name,
-            'latitude' => (float) $campus->latitude,
-            'longitude' => (float) $campus->longitude,
-            'zoom' => $campus->map_zoom,
-        ],
-
-        'restaurants' => $restaurants,
-
-        // TAMBAHKAN INI
-        'featuredRestaurants' => $featuredRestaurants,
-    ]);
-}
+        return response()->json([
+            'campus' => [
+                'id' => $campus->id,
+                'name' => $campus->name,
+                'latitude' => (float) $campus->latitude,
+                'longitude' => (float) $campus->longitude,
+                'zoom' => $campus->map_zoom,
+            ],
+            'restaurants' => $restaurants,
+            'featuredRestaurants' => $featuredRestaurants,
+        ]);
+    }
 }
