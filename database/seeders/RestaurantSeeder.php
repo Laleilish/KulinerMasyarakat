@@ -11,7 +11,7 @@ class RestaurantSeeder extends Seeder
     {
         $restaurants = [
             // UPI (campus_id: 1)
-            ['campus_id' => 1, 'name' => 'Warung Sunda Cipadung',    'image' => 'image 2.png',  'description' => 'Warung sunda dengan harga mahasiswa, porsi jumbo.',   'latitude' => -6.8603, 'longitude' => 107.5901, 'rating' => 4.8, 'distance' => '0.3km', 'price_range' => 'Rp 10.000 – 20.000', 'category' => 'Sunda'],
+            ['campus_id' => 1, 'name' => 'Warung Sunda Cipadung',    'image' => 'image 2.png',  'description' => 'Warung sunda dengan harga mahasiswa, porsi jumbo.',   'latitude' => -6.8603, 'longitude' => 107.5901, 'rating' => 4.8, 'distance' => '0.3km', 'price_range' => 'Rp 10.000 – 20.000', 'category' => 'Sunda', 'is_featured' => true],
             ['campus_id' => 1, 'name' => 'Mie Ayam Pak Kumis',       'image' => 'image 3.png',  'description' => 'Mie ayam legendaris sejak 1995, kuah gurih.',          'latitude' => -6.8621, 'longitude' => 107.5912, 'rating' => 4.6, 'distance' => '0.5km', 'price_range' => 'Rp 12.000 – 18.000', 'category' => 'Mie'],
             ['campus_id' => 1, 'name' => 'Nasi Goreng Bang Jali',    'image' => 'image 6.png',  'description' => 'Nasi goreng spesial dengan telur mata sapi.',          'latitude' => -6.8598, 'longitude' => 107.5878, 'rating' => 4.5, 'distance' => '0.7km', 'price_range' => 'Rp 13.000 – 22.000', 'category' => 'Nasi'],
             ['campus_id' => 1, 'name' => 'Pecel Lele Bu Sari',       'image' => 'image 4.png',  'description' => 'Pecel lele crispy dengan sambal pedas segar.',         'latitude' => -6.8634, 'longitude' => 107.5895, 'rating' => 4.7, 'distance' => '0.4km', 'price_range' => 'Rp 15.000 – 25.000', 'category' => 'Lauk'],

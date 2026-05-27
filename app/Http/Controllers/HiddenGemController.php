@@ -3,10 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campus;
+use App\Models\Restaurant;
 use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
 
 class HiddenGemController extends Controller
 {
+    // Helper mapping restoran ke array
+    private function mapRestaurant($r): array
+    {
+        return [
+            'id'          => $r->id,
+            'name'        => $r->name,
+            'image'       => asset('assets/img/resto/' . $r->image),
+            'description' => $r->description ?? '',
+            'rating'      => $r->rating,
+            'distance'    => $r->distance,
+            'price_range' => $r->price_range,
+            'category'    => $r->category,
+            'latitude'    => (float) $r->latitude,
+            'longitude'   => (float) $r->longitude,
+            'is_featured' => $r->is_featured,
+        ];
+    }
+
     public function index(): View
     {
         $campuses = Campus::all();
@@ -22,28 +42,37 @@ class HiddenGemController extends Controller
 
         $selectedCampus = $campuses->first();
 
-        return view('hidden-gem.index', compact('campusesData', 'selectedCampus', 'campuses'));
+        // ✅ Hanya restoran featured, max 5, rating tertinggi
+        $featuredRestaurants = Restaurant::featured()
+            ->orderByDesc('rating')
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get()
+            ->map(fn($r) => $this->mapRestaurant($r));
+
+        // ✅ Semua restoran, rating tertinggi
+        $topRestaurants = Restaurant::orderByDesc('rating')
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(fn($r) => $this->mapRestaurant($r));
+
+        return view('hidden-gem.index', compact(
+            'campuses',
+            'campusesData',
+            'selectedCampus',
+            'featuredRestaurants',
+            'topRestaurants',
+        ));
     }
 
-    public function getRestaurants(int $campusId): \Illuminate\Http\JsonResponse
+    public function getRestaurants(int $campusId): JsonResponse
     {
         $campus = Campus::findOrFail($campusId);
 
-        $restaurants = $campus->restaurants()
+        $restaurants = Restaurant::where('campus_id', $campusId)
             ->orderByDesc('rating')
             ->get()
-            ->map(fn($r) => [
-                'id'          => $r->id,
-                'name'        => $r->name,
-                'image'       => asset('assets/img/' . $r->image),
-                'description' => $r->description,
-                'latitude'    => (float) $r->latitude,
-                'longitude'   => (float) $r->longitude,
-                'rating'      => $r->rating,
-                'distance'    => $r->distance,
-                'price_range' => $r->price_range,
-                'category'    => $r->category,
-            ]);
+            ->map(fn($r) => $this->mapRestaurant($r));
 
         return response()->json([
             'campus' => [

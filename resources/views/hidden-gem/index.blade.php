@@ -80,6 +80,78 @@
         }
 
         // ═══════════════════════════════════════════════════════════
+        // CAROUSEL
+        // ═══════════════════════════════════════════════════════════
+        // ════════════════════════════════════════════
+        // CAROUSEL FEATURED
+        // ════════════════════════════════════════════
+        (function initCarousel() {
+            const track = document.getElementById('featured-carousel');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const btnPrev = document.getElementById('carousel-prev');
+            const btnNext = document.getElementById('carousel-next');
+
+            if (!track) return;
+
+            function getActiveIndex() {
+                const slides = track.querySelectorAll('.featured-slide');
+                let minDist = Infinity;
+                let idx = 0;
+                slides.forEach((s, i) => {
+                    const d = Math.abs(s.offsetLeft - track.scrollLeft);
+                    if (d < minDist) { minDist = d; idx = i; }
+                });
+                return idx;
+            }
+
+            function updateDots() {
+                const active = getActiveIndex();
+                dots.forEach((dot, i) => {
+                    const isActive = i === active;
+                    dot.classList.toggle('w-5', isActive);
+                    dot.classList.toggle('bg-[#F5A623]', isActive);
+                    dot.classList.toggle('w-[5px]', !isActive);
+                    dot.classList.toggle('bg-black/15', !isActive);
+                });
+                if (btnPrev) btnPrev.disabled = track.scrollLeft <= 0;
+                if (btnNext) btnNext.disabled =
+                    track.scrollLeft >= track.scrollWidth - track.clientWidth - 10;
+            }
+
+            function scrollToSlide(index) {
+                const slides = track.querySelectorAll('.featured-slide');
+                if (slides[index]) {
+                    track.scrollTo({ left: slides[index].offsetLeft, behavior: 'smooth' });
+                }
+            }
+
+            dots.forEach((dot, i) => dot.addEventListener('click', () => scrollToSlide(i)));
+
+            btnPrev?.addEventListener('click', () => track.scrollBy({ left: -380, behavior: 'smooth' }));
+            btnNext?.addEventListener('click', () => track.scrollBy({ left: 380, behavior: 'smooth' }));
+
+            track.addEventListener('scroll', updateDots, { passive: true });
+
+            // Klik featured slide → buka modal
+            track.querySelectorAll('.featured-slide').forEach(slide => {
+                slide.addEventListener('click', () => {
+                    try { openModal(JSON.parse(slide.dataset.resto)); } catch { }
+                });
+            });
+
+            updateDots();
+        })();
+
+        // ════════════════════════════════════════════
+        // TOP RESTO CARD CLICK (static dari server)
+        // ════════════════════════════════════════════
+        document.querySelectorAll('.top-resto-card').forEach(card => {
+            card.addEventListener('click', () => {
+                try { openModal(JSON.parse(card.dataset.resto)); } catch { }
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════
         // UPDATE LOCATION BAR
         // ═══════════════════════════════════════════════════════════
         function updateLocationBar({ label, value, loading = false, error = false }) {
@@ -156,17 +228,17 @@
             const userIcon = L.divIcon({
                 className: '',
                 html: `
-                <div style="position:relative;width:16px;height:16px;">
-                    <div style="position:absolute;inset:0;background:#3B82F6;border-radius:50%;
-                                border:2.5px solid #fff;box-shadow:0 2px 6px rgba(59,130,246,0.5);
-                                animation:userPulse 2s ease-in-out infinite;"></div>
-                </div>
-                <style>
-                    @keyframes userPulse {
-                        0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,0.4);}
-                        50%{box-shadow:0 0 0 8px rgba(59,130,246,0);}
-                    }
-                </style>`,
+                        <div style="position:relative;width:16px;height:16px;">
+                            <div style="position:absolute;inset:0;background:#3B82F6;border-radius:50%;
+                                        border:2.5px solid #fff;box-shadow:0 2px 6px rgba(59,130,246,0.5);
+                                        animation:userPulse 2s ease-in-out infinite;"></div>
+                        </div>
+                        <style>
+                            @keyframes userPulse {
+                                0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,0.4);}
+                                50%{box-shadow:0 0 0 8px rgba(59,130,246,0);}
+                            }
+                        </style>`,
                 iconSize: [16, 16],
                 iconAnchor: [8, 8],
             });
@@ -186,8 +258,8 @@
             const campusIcon = L.divIcon({
                 className: '',
                 html: `<div style="width:36px;height:36px;background:#F5A623;border-radius:12px;
-                               border:2.5px solid #fff;box-shadow:0 3px 10px rgba(245,166,35,0.4);
-                               display:flex;align-items:center;justify-content:center;font-size:18px;">🏫</div>`,
+                                       border:2.5px solid #fff;box-shadow:0 3px 10px rgba(245,166,35,0.4);
+                                       display:flex;align-items:center;justify-content:center;font-size:18px;">🏫</div>`,
                 iconSize: [36, 36],
                 iconAnchor: [18, 18],
             });
@@ -202,37 +274,37 @@
                 const restoIcon = L.divIcon({
                     className: '',
                     html: `<div style="width:32px;height:32px;background:#02b176;border-radius:50%;
-                                   border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.18);
-                                   display:flex;align-items:center;justify-content:center;font-size:15px;">🍜</div>`,
+                                           border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.18);
+                                           display:flex;align-items:center;justify-content:center;font-size:15px;">🍜</div>`,
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, -34],
                 });
 
                 const popupHTML = `
-                <div style="width:210px;font-family:'Plus Jakarta Sans',sans-serif;">
-                    <img src="${r.image}" alt="${r.name}"
-                         style="width:100%;height:90px;object-fit:cover;border-radius:10px;margin-bottom:8px;
-                                display:block;">
-                    <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:3px;">
-                        ${r.name}
-                    </div>
-                    <div style="font-size:11px;color:#5d6e86;margin-bottom:6px;">
-                        ${r.category} · ${r.distance}
-                    </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;
-                                margin-bottom:8px;">
-                        <span style="color:#F5A623;font-size:12px;font-weight:700;">★ ${r.rating}</span>
-                        <span style="font-size:11px;color:#5d6e86;">${r.price_range}</span>
-                    </div>
-                    <a href="https://www.google.com/maps?q=${r.latitude},${r.longitude}"
-                       target="_blank"
-                       style="display:flex;align-items:center;justify-content:center;gap:6px;
-                              background:#02b176;color:#fff;padding:8px;border-radius:99px;
-                              font-size:12px;font-weight:700;text-decoration:none;">
-                        🗺️ Navigasi
-                    </a>
-                </div>`;
+                        <div style="width:210px;font-family:'Plus Jakarta Sans',sans-serif;">
+                            <img src="${r.image}" alt="${r.name}"
+                                 style="width:100%;height:90px;object-fit:cover;border-radius:10px;margin-bottom:8px;
+                                        display:block;">
+                            <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:3px;">
+                                ${r.name}
+                            </div>
+                            <div style="font-size:11px;color:#5d6e86;margin-bottom:6px;">
+                                ${r.category} · ${r.distance}
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;
+                                        margin-bottom:8px;">
+                                <span style="color:#F5A623;font-size:12px;font-weight:700;">★ ${r.rating}</span>
+                                <span style="font-size:11px;color:#5d6e86;">${r.price_range}</span>
+                            </div>
+                            <a href="https://www.google.com/maps?q=${r.latitude},${r.longitude}"
+                               target="_blank"
+                               style="display:flex;align-items:center;justify-content:center;gap:6px;
+                                      background:#02b176;color:#fff;padding:8px;border-radius:99px;
+                                      font-size:12px;font-weight:700;text-decoration:none;">
+                                🗺️ Navigasi
+                            </a>
+                        </div>`;
 
                 L.marker([r.latitude, r.longitude], { icon: restoIcon })
                     .addTo(State.markerLayer)
@@ -255,109 +327,101 @@
         // UPDATE RESTAURANT CARDS
         // ═══════════════════════════════════════════════════════════
         function updateRestaurants(restaurants) {
-            const grid = document.getElementById('resto-cards');
-            const featured = document.getElementById('featured-card');
+    const grid     = document.getElementById('resto-cards');
+    const skeleton = document.getElementById('cards-loading');
 
-            if (!restaurants.length) {
-                featured.classList.add('hidden');
-                grid.innerHTML = `
-                <p class="text-center text-muted text-[13px] py-8">
-                    Belum ada restoran di kampus ini.
-                </p>`;
-                return;
-            }
+    if (!restaurants.length) {
+        grid.innerHTML = `
+            <div class="col-span-2 md:col-span-3 lg:col-span-4
+                        text-center py-8 text-muted text-[13px]">
+                Belum ada restoran di kampus ini.
+            </div>`;
+        return;
+    }
 
-            // Featured card (restoran rating tertinggi)
-            const top = restaurants[0];
-            featured.classList.remove('hidden');
-            document.getElementById('featured-name').textContent = top.name;
-            document.getElementById('featured-desc').textContent = top.description;
-            document.getElementById('featured-rating').innerHTML = `<i class="fas fa-star text-[9px]"></i> ${top.rating}`;
-            document.getElementById('featured-dist').innerHTML = `<i class="fas fa-location-dot text-[9px]"></i> ${top.distance}`;
-            document.getElementById('featured-price').innerHTML = `<i class="fas fa-tag text-[9px]"></i> ${top.price_range}`;
-            document.getElementById('featured-img').src = top.image;
-            document.getElementById('featured-card-inner').dataset.resto = JSON.stringify(top);
+    const cardHTML = (r) => `
+        <div class="top-resto-card bg-white rounded-[16px] overflow-hidden
+                    border border-black/[0.05]
+                    shadow-[0_2px_8px_rgba(0,0,0,0.08)]
+                    cursor-pointer
+                    transition-all duration-200
+                    hover:-translate-y-[3px]
+                    hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)]
+                    active:scale-[0.98]"
+             data-resto='${JSON.stringify(r).replace(/'/g, "&#39;")}'>
 
-            const cardV = (r) => `
-            <div class="resto-card bg-white rounded-[16px] overflow-hidden
-                        border border-black/[0.05] shadow-[0_2px_8px_rgba(0,0,0,0.08)]
-                        cursor-pointer transition-all duration-200
-                        hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]
-                        active:scale-[0.98]"
-                 data-resto='${JSON.stringify(r).replace(/'/g, "&#39;")}'>
-                <img src="${r.image}" alt="${r.name}"
-                     class="w-full h-[100px] object-cover">
-                <div class="p-2 flex flex-col">
-                    <p class="text-[11px] font-extrabold text-[#6B4423] mb-1 leading-[1.35] line-clamp-2">
-                        ${r.name}
-                    </p>
-                    <span class="bg-[#F5EDE0] text-[#C07A2A] text-[9px] font-bold
-                                 px-2 py-[2px] rounded-full w-fit mb-2">
-                        ${r.category}
+            {{-- Image --}}
+            <div class="relative w-full h-[130px] overflow-hidden">
+                <img src="${r.image}"
+                     alt="${r.name}"
+                     class="w-full h-full object-cover
+                            transition-transform duration-300"
+                     onerror="this.src='/assets/img/resto/default.png'">
+
+                {{-- Rating badge --}}
+                <div class="absolute top-2 right-2">
+                    <span style="
+                        display:inline-flex;align-items:center;gap:3px;
+                        background:rgba(0,0,0,0.3);color:#fff;
+                        font-size:10px;font-weight:700;
+                        padding:3px 7px;border-radius:99px;
+                        backdrop-filter:blur(4px);
+                    ">
+                        ★ ${parseFloat(r.rating).toFixed(1)}
                     </span>
-                    <div class="flex items-center justify-between mt-auto">
-                        <span class="text-[#02B176] text-[10px] font-bold">
-                            <i class="fas fa-location-dot text-[9px]"></i> ${r.distance}
-                        </span>
-                        <span class="text-[#F5A623] text-[10px] font-bold">★ ${r.rating}</span>
-                    </div>
                 </div>
-            </div>`;
 
-            const cardH = (r) => `
-            <div class="resto-card bg-white rounded-[16px] overflow-hidden
-                        border border-black/[0.05] shadow-[0_2px_8px_rgba(0,0,0,0.08)]
-                        cursor-pointer transition-all duration-200
-                        hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(0,0,0,0.10)]
-                        active:scale-[0.98] flex"
-                 data-resto='${JSON.stringify(r).replace(/'/g, "&#39;")}'>
-                <img src="${r.image}" alt="${r.name}"
-                     class="w-[80px] h-[80px] object-cover flex-shrink-0">
-                <div class="flex-1 p-2 flex flex-col justify-between min-w-0">
-                    <div>
-                        <p class="text-[11px] font-extrabold text-[#6B4423] leading-[1.35]
-                                   mb-1 line-clamp-2">${r.name}</p>
-                        <span class="bg-[#F5EDE0] text-[#C07A2A] text-[9px] font-bold
-                                     px-2 py-[2px] rounded-full">${r.category}</span>
-                    </div>
-                    <div class="flex items-center justify-between mt-1">
-                        <span class="text-[#02B176] text-[10px] font-bold">
-                            <i class="fas fa-location-dot text-[9px]"></i> ${r.distance}
-                        </span>
-                        <span class="text-[#F5A623] text-[10px] font-bold">★ ${r.rating}</span>
-                    </div>
+                ${r.is_featured ? `
+                <div class="absolute top-2 left-2">
+                    <span style="
+                        background:#F5A623;color:#fff;
+                        font-size:9px;font-weight:700;
+                        padding:2px 6px;border-radius:99px;
+                    ">Unggulan</span>
+                </div>` : ''}
+            </div>
+
+            {{-- Body --}}
+            <div style="padding:10px 12px 12px;">
+                <p style="
+                    font-size:12px;font-weight:800;
+                    color:#040818;line-height:1.4;
+                    margin-bottom:3px;
+                    display:-webkit-box;-webkit-line-clamp:2;
+                    -webkit-box-orient:vertical;overflow:hidden;
+                ">${r.name}</p>
+
+                <p style="font-size:11px;color:#5d6e86;margin-bottom:7px;">
+                    ${r.category}
+                </p>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:11px;color:#02b176;font-weight:700;">
+                        📍 ${r.distance}
+                    </span>
+                    <span style="font-size:10px;color:#5d6e86;">
+                        ${r.price_range}
+                    </span>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
 
-            const rest = restaurants.slice(1);
-            const top4 = rest.slice(0, 4);
-            const bot = rest.slice(4, 8);
+    grid.innerHTML = `
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            ${restaurants.map(r => cardHTML(r)).join('')}
+        </div>`;
 
-            grid.innerHTML = `
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2">
-            ${top4.map(r => cardV(r)).join('')}
-        </div>
-
-        ${bot.length ? `
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-            ${bot.map(r => cardH(r)).join('')}
-        </div>` : ''}
-    `;
-
-            // Attach listeners ke cards
-            grid.querySelectorAll('.resto-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    openModal(JSON.parse(card.dataset.resto));
-                });
-            });
-
-            document.getElementById('featured-card-inner')
-                .addEventListener('click', () => {
-                    openModal(JSON.parse(
-                        document.getElementById('featured-card-inner').dataset.resto
-                    ));
-                });
-        }
+    // Attach click listeners
+    grid.querySelectorAll('.top-resto-card').forEach(card => {
+        card.addEventListener('click', () => {
+            try {
+                openModal(JSON.parse(card.dataset.resto));
+            } catch(e) {
+                console.error('Parse error:', e);
+            }
+        });
+    });
+}
 
         // ═══════════════════════════════════════════════════════════
         // SELECT CAMPUS
@@ -397,9 +461,9 @@
 
             } catch (err) {
                 document.getElementById('resto-cards').innerHTML = `
-                <p class="text-center text-red-400 text-[13px] py-8">
-                    Gagal memuat data. Coba lagi.
-                </p>`;
+                        <p class="text-center text-red-400 text-[13px] py-8">
+                            Gagal memuat data. Coba lagi.
+                        </p>`;
             } finally {
                 setLoading(false);
             }
@@ -483,21 +547,21 @@
 
             document.getElementById('dropdown-campus-section').classList.remove('hidden');
             list.innerHTML = filtered.map(c => `
-            <div class="dropdown-item flex items-center gap-3 px-4 py-3
-                        hover:bg-black/[0.03] cursor-pointer transition-colors duration-100"
-                 data-type="campus" data-id="${c.id}"
-                 data-lat="${c.latitude}" data-lng="${c.longitude}" data-name="${c.name}">
-                <div class="w-8 h-8 rounded-[10px] bg-[#F5A623] flex items-center
-                            justify-center flex-shrink-0 overflow-hidden">
-                    <img src="${c.logo}" alt="${c.name}"
-                         class="w-6 h-6 object-contain"
-                         onerror="this.style.display='none'">
-                </div>
-                <div>
-                    <p class="text-[12px] font-bold text-dark">${c.name}</p>
-                    <p class="text-[10px] text-muted">Kampus</p>
-                </div>
-            </div>`).join('');
+                    <div class="dropdown-item flex items-center gap-3 px-4 py-3
+                                hover:bg-black/[0.03] cursor-pointer transition-colors duration-100"
+                         data-type="campus" data-id="${c.id}"
+                         data-lat="${c.latitude}" data-lng="${c.longitude}" data-name="${c.name}">
+                        <div class="w-8 h-8 rounded-[10px] bg-[#F5A623] flex items-center
+                                    justify-center flex-shrink-0 overflow-hidden">
+                            <img src="${c.logo}" alt="${c.name}"
+                                 class="w-6 h-6 object-contain"
+                                 onerror="this.style.display='none'">
+                        </div>
+                        <div>
+                            <p class="text-[12px] font-bold text-dark">${c.name}</p>
+                            <p class="text-[10px] text-muted">Kampus</p>
+                        </div>
+                    </div>`).join('');
         }
 
         function renderDropdownSearch(results) {
@@ -511,23 +575,23 @@
 
             section.classList.remove('hidden');
             list.innerHTML = results.map(r => `
-            <div class="dropdown-item flex items-center gap-3 px-4 py-3
-                        hover:bg-black/[0.03] cursor-pointer transition-colors duration-100"
-                 data-type="location" data-lat="${r.lat}" data-lng="${r.lon}"
-                 data-name="${r.display_name.split(',').slice(0, 2).join(',')}">
-                <div class="w-8 h-8 rounded-full bg-[#F5EDE0] flex items-center
-                            justify-center flex-shrink-0">
-                    <i class="fas fa-map-pin text-[#C07A2A] text-[13px]"></i>
-                </div>
-                <div class="min-w-0">
-                    <p class="text-[12px] font-bold text-dark truncate">
-                        ${r.display_name.split(',')[0]}
-                    </p>
-                    <p class="text-[10px] text-muted truncate">
-                        ${r.display_name.split(',').slice(1, 3).join(',')}
-                    </p>
-                </div>
-            </div>`).join('');
+                    <div class="dropdown-item flex items-center gap-3 px-4 py-3
+                                hover:bg-black/[0.03] cursor-pointer transition-colors duration-100"
+                         data-type="location" data-lat="${r.lat}" data-lng="${r.lon}"
+                         data-name="${r.display_name.split(',').slice(0, 2).join(',')}">
+                        <div class="w-8 h-8 rounded-full bg-[#F5EDE0] flex items-center
+                                    justify-center flex-shrink-0">
+                            <i class="fas fa-map-pin text-[#C07A2A] text-[13px]"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-[12px] font-bold text-dark truncate">
+                                ${r.display_name.split(',')[0]}
+                            </p>
+                            <p class="text-[10px] text-muted truncate">
+                                ${r.display_name.split(',').slice(1, 3).join(',')}
+                            </p>
+                        </div>
+                    </div>`).join('');
         }
 
         function openDropdown() {
