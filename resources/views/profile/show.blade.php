@@ -49,17 +49,7 @@
         <p class="text-muted text-sm">{{ $user->email }}</p>
     </div>
 
-    {{-- Status Messages --}}
-    @if(session('status') === 'profile-updated')
-        <div class="mb-4 p-3 bg-green-100 border border-green-300 text-green-700 text-sm rounded-xl text-center">
-            Profil berhasil diperbarui!
-        </div>
-    @endif
-    @if(session('status') === 'password-updated')
-        <div class="mb-4 p-3 bg-green-100 border border-green-300 text-green-700 text-sm rounded-xl text-center">
-            Password berhasil diperbarui!
-        </div>
-    @endif
+
 
     <!-- Info Card -->
     <div class="flex items-center justify-between py-3 ">
@@ -152,7 +142,6 @@
 
 @include('profile.partials.crop-image-modal')
 
-<!-- Cropper.js CSS & JS CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
@@ -181,7 +170,7 @@
     const cropperImage = document.getElementById('cropperImage');
     const cropSaveBtn = document.getElementById('cropSaveBtn');
 
-    // Intercept file selection to open cropper
+    //file selection 
     avatarInput.addEventListener('change', function() {
         if (this.files && this.files[0]) {
             const file = this.files[0];
@@ -206,7 +195,7 @@
         }
     });
 
-    // Handle cropping on save
+    // Handle cropping 
     cropSaveBtn.addEventListener('click', function() {
         if (!cropper) return;
 
@@ -231,7 +220,7 @@
         }, 'image/jpeg', 0.9);
     });
 
-    // Auto-open modal jika ada validation error
+    // Open modal jika ada validation error
     @if($errors->has('name') || $errors->has('username'))
         openModal('profileModal');
     @elseif($errors->has('email'))
