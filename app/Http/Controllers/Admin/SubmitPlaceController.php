@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campus;
 use App\Models\Restaurant;
 use App\Models\Review;
 use App\Models\SubmitPlace;
@@ -24,10 +25,40 @@ class SubmitPlaceController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Filter by campus
+        if ($request->filled('campus')) {
+            $query->where('campus_id', $request->campus);
+        }
+
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
         $submitPlaces = $query->paginate(10)
             ->appends($request->query());
 
-        return view('admin.submit-places.index', compact('submitPlaces'));
+        // Stats cards — real data
+        $totalRestoTerdaftar = Restaurant::count();
+        $usulanTertunda = SubmitPlace::pending()->count();
+
+        // Kampus favorit
+        $topCampus = Campus::withCount('restaurants')
+            ->orderByDesc('restaurants_count')
+            ->first();
+
+        // Daftar kampus 
+        $campuses = Campus::orderBy('name')->get();
+        $categories = SubmitPlace::select('category')->distinct()->pluck('category');
+
+        return view('admin.submit-places.index', compact(
+            'submitPlaces',
+            'totalRestoTerdaftar',
+            'usulanTertunda',
+            'topCampus',
+            'campuses',
+            'categories',
+        ));
     }
 
     /**

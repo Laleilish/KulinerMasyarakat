@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmitPlaceController;
 use App\Http\Controllers\Admin\SubmitPlaceController as AdminSubmitPlaceController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/dashboard", function () {
@@ -50,6 +52,11 @@ Route::middleware(["auth", "role:admin"])
     ->prefix("admin")
     ->name("admin.")
     ->group(function () {
+        // Dashboard
+        Route::get("/", [AdminDashboardController::class, "index"])->name("dashboard");
+        Route::get("/dashboard", [AdminDashboardController::class, "index"]);
+
+        // Submit Places
         Route::get("/submit-places", [AdminSubmitPlaceController::class, "index"])->name(
             "submit-places.index",
         );
@@ -62,6 +69,11 @@ Route::middleware(["auth", "role:admin"])
         Route::patch("/submit-places/{submitPlace}/reject", [AdminSubmitPlaceController::class, "reject"])->name(
             "submit-places.reject",
         );
+
+        // Users
+        Route::get("/users", [AdminUserController::class, "index"])->name("users.index");
+        Route::patch("/users/{user}/toggle-role", [AdminUserController::class, "toggleRole"])->name("users.toggle-role");
+        Route::delete("/users/{user}", [AdminUserController::class, "destroy"])->name("users.destroy");
     });
 
 Route::get("/", [\App\Http\Controllers\HomeController::class, 'index'])->name("home");
