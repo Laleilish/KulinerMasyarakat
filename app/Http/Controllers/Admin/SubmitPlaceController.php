@@ -73,7 +73,7 @@ class SubmitPlaceController extends Controller
                 'restaurant_id' => $restaurant->id,
                 'rating'        => $submitPlace->initial_rating,
                 'comment'       => $submitPlace->initial_review,
-                'photo'         => $submitPlace->initial_review_photo,
+                'photos'        => $submitPlace->initial_review_photos,
             ]);
 
             // Mark submit place as approved

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
             $table->tinyInteger('rating')->unsigned();
             $table->text('comment')->nullable();
-            $table->string('photo')->nullable();
+            $table->json('photos')->nullable();
             $table->timestamps();
         });
     }

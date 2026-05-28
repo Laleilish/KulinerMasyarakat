@@ -2,8 +2,8 @@
     <div class="flex justify-between items-start mb-3">
         {{-- Avatar & Info User --}}
         <div class="flex items-center gap-3">
-            @if($review->user->profile_photo)
-                <img src="{{ Storage::url($review->user->profile_photo) }}"
+            @if($review->user->avatar)
+                <img src="{{ $review->user->avatar }}"
                      alt="{{ $review->user->name }}"
                      class="w-12 h-12 rounded-full object-cover">
             @else
@@ -42,9 +42,13 @@
     <p class="text-[14px] text-gray-600 leading-relaxed">{{ $review->comment }}</p>
 
     {{-- Foto Ulasan --}}
-    @if($review->photo)
-        <img src="{{ Storage::url($review->photo) }}"
-             alt="Foto ulasan"
-             class="mt-3 w-24 h-24 object-cover rounded-xl shadow-sm border border-gray-100">
+    @if($review->photos && count($review->photos) > 0)
+        <div class="flex gap-2 mt-3 flex-wrap">
+            @foreach($review->photos as $photo)
+                <img src="{{ Storage::url($photo) }}"
+                     alt="Foto ulasan"
+                     class="w-24 h-24 object-cover rounded-xl shadow-sm border border-gray-100">
+            @endforeach
+        </div>
     @endif
 </div>

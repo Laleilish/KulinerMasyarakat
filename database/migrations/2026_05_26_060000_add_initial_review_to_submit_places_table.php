@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('submit_places', function (Blueprint $table) {
             $table->unsignedTinyInteger('initial_rating')->default(1)->after('landmark_photo');
             $table->text('initial_review')->nullable()->after('initial_rating');
-            $table->string('initial_review_photo')->nullable()->after('initial_review');
+            $table->json('initial_review_photos')->nullable()->after('initial_review');
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('submit_places', function (Blueprint $table) {
-            $table->dropColumn(['initial_rating', 'initial_review', 'initial_review_photo']);
+            $table->dropColumn(['initial_rating', 'initial_review', 'initial_review_photos']);
         });
     }
 };

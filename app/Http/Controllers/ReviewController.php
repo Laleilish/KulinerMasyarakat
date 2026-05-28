@@ -16,9 +16,10 @@ class ReviewController extends Controller
     public function store(Request $request, Restaurant $restaurant)
     {
         $validated = $request->validate([
-            'rating'  => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string|max:1000',
-            'photo'   => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'rating'   => 'required|integer|min:1|max:5',
+            'comment'  => 'nullable|string|max:1000',
+            'photos'   => 'nullable|array|max:5',
+            'photos.*' => 'image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         // Check if user already reviewed this restaurant
@@ -31,9 +32,11 @@ class ReviewController extends Controller
                 ->with('error', 'Kamu sudah pernah memberikan ulasan untuk restoran ini.');
         }
 
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('reviews', 'public');
+        $photoPaths = [];
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $file) {
+                $photoPaths[] = $file->store('reviews', 'public');
+            }
         }
 
         Review::create([
@@ -41,7 +44,7 @@ class ReviewController extends Controller
             'restaurant_id' => $restaurant->id,
             'rating'        => $validated['rating'],
             'comment'       => $validated['comment'] ?? null,
-            'photo'         => $photoPath,
+            'photos'        => !empty($photoPaths) ? $photoPaths : null,
         ]);
 
         return redirect()->back()
@@ -58,9 +61,11 @@ class ReviewController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk menghapus ulasan ini.');
         }
 
-        // Delete photo from storage if exists
-        if ($review->photo) {
-            Storage::disk('public')->delete($review->photo);
+        // Delete photos from storage if exists
+        if ($review->photos) {
+            foreach ($review->photos as $photo) {
+                Storage::disk('public')->delete($photo);
+            }
         }
 
         $review->delete();

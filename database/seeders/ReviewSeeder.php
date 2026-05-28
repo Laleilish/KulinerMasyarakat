@@ -50,7 +50,7 @@ class ReviewSeeder extends Seeder
                     'restaurant_id' => $restaurant->id,
                     'rating' => $reviewData['rating'],
                     'comment' => $reviewData['comment'],
-                    'photo' => null,
+                    'photos' => null,
                 ]);
             }
         }

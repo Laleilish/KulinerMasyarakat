@@ -11,7 +11,11 @@ class Review extends Model
         'restaurant_id',
         'rating',
         'comment',
-        'photo',
+        'photos',
+    ];
+
+    protected $casts = [
+        'photos' => 'array',
     ];
 
     // ── Relationships ──

@@ -25,20 +25,21 @@ class SubmitPlaceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'                 => 'required|string|max:255',
-            'category'             => 'required|in:makanan_berat,jajanan,minuman',
-            'food_type'            => 'required|string',
-            'photo'                => 'required|image|mimes:jpg,jpeg,png|max:5120',
-            'description'          => 'nullable|string',
-            'address'              => 'required|string',
-            'open_hours'           => 'required|string',
-            'price_range'          => 'required|string',
-            'gmaps_link'           => 'required|url',
-            'landmark'             => 'nullable|string',
-            'landmark_photo'       => 'required|image|mimes:jpg,jpeg,png|max:5120',
-            'initial_rating'       => 'required|integer|min:1|max:5',
-            'initial_review'       => 'nullable|string',
-            'initial_review_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'name'                   => 'required|string|max:255',
+            'category'               => 'required|in:makanan_berat,jajanan,minuman',
+            'food_type'              => 'required|string',
+            'photo'                  => 'required|image|mimes:jpg,jpeg,png|max:5120',
+            'description'            => 'nullable|string',
+            'address'                => 'required|string',
+            'open_hours'             => 'required|string',
+            'price_range'            => 'required|string',
+            'gmaps_link'             => 'required|url',
+            'landmark'               => 'nullable|string',
+            'landmark_photo'         => 'required|image|mimes:jpg,jpeg,png|max:5120',
+            'initial_rating'         => 'required|integer|min:1|max:5',
+            'initial_review'         => 'nullable|string',
+            'initial_review_photos'   => 'nullable|array|max:5',
+            'initial_review_photos.*' => 'image|mimes:jpg,jpeg,png|max:5120',
         ]);
 
         // Upload photos
@@ -48,10 +49,11 @@ class SubmitPlaceController extends Controller
         $landmarkPhotoPath = $request->file('landmark_photo')
             ->store('submit-places', 'public');
 
-        $initialReviewPhotoPath = null;
-        if ($request->hasFile('initial_review_photo')) {
-            $initialReviewPhotoPath = $request->file('initial_review_photo')
-                ->store('submit-places', 'public');
+        $reviewPhotoPaths = [];
+        if ($request->hasFile('initial_review_photos')) {
+            foreach ($request->file('initial_review_photos') as $file) {
+                $reviewPhotoPaths[] = $file->store('submit-places', 'public');
+            }
         }
 
         // Extract coordinates from Google Maps link
@@ -83,7 +85,7 @@ class SubmitPlaceController extends Controller
             'landmark_photo'       => $landmarkPhotoPath,
             'initial_rating'       => $validated['initial_rating'],
             'initial_review'       => $validated['initial_review'] ?? null,
-            'initial_review_photo' => $initialReviewPhotoPath,
+            'initial_review_photos' => !empty($reviewPhotoPaths) ? $reviewPhotoPaths : null,
             'status'               => 'pending',
         ]);
 

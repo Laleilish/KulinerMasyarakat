@@ -26,8 +26,12 @@ class SubmitPlace extends Model
         'landmark_photo',
         'initial_rating',
         'initial_review',
-        'initial_review_photo',
+        'initial_review_photos',
         'status',
+    ];
+
+    protected $casts = [
+        'initial_review_photos' => 'array',
     ];
 
     // ── Relationships ──
