@@ -10,20 +10,22 @@
     <!-- Right Actions -->
     <div class="flex items-center gap-4">
         <!-- Notification Bell -->
-        <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#d97706] hover:bg-orange-50 transition shadow-sm border border-orange-100 relative cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        <button type="button" class="relative p-2 text-muted hover:text-dark transition-colors bg-transparent border-none cursor-pointer">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
             </svg>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full"></span>
         </button>
         
         <!-- Profile Dropdown -->
         <div class="relative" x-data="{ profileOpen: false }">
             <button @click="profileOpen = !profileOpen" @click.away="profileOpen = false" class="flex items-center gap-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer focus:outline-none">
-                <div class="w-10 h-10 rounded-full bg-gray-200 border-2 border-white shadow-sm overflow-hidden shrink-0">
+                <div class="w-10 h-10 rounded-full bg-gray-200 shadow-sm overflow-hidden shrink-0">
                     @if(auth()->user()->avatar)
-                        <img src="{{ auth()->user()->avatar }}" alt="Avatar" class="w-full h-full object-cover">
+                        <img src="{{ auth()->user()->avatar }}" alt="Avatar" class="w-full h-full object-cover" referrerpolicy="no-referrer">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=0D8ABC&color=fff" alt="Avatar" class="w-full h-full object-cover">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=0D8ABC&color=fff" alt="Avatar" class="w-full h-full object-cover" referrerpolicy="no-referrer">
                     @endif
                 </div>
             </button>
@@ -56,7 +58,7 @@
                     </div>
                 </a>
 
-                {{-- Profil Saya --}}
+                {{-- Profil --}}
                 <a href="{{ route('profile.show') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors no-underline group">
                      <div class="flex justify-between items-center w-full">
                          <div class="flex items-center gap-2">

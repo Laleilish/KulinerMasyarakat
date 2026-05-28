@@ -76,13 +76,12 @@
                 <span class="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full"></span>
             </button>
 
-            {{-- Profile Button + Desktop Dropdown --}}
             <div class="relative">
                 <button id="profileBtn" type="button"
                         class="flex items-center gap-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer">
                     <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white font-bold overflow-hidden">
                         @if(auth()->user()->avatar)
-                            <img src="{{ auth()->user()->avatar }}" alt="Profile" class="w-full h-full object-cover">
+                            <img src="{{ auth()->user()->avatar }}" alt="Profile" class="w-full h-full object-cover" referrerpolicy="no-referrer">
                         @else
                             <span class="text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
                         @endif
@@ -97,6 +96,7 @@
                         <p class="text-xs text-muted truncate">{{ auth()->user()->email }}</p>
                     </div>
                     
+                    {{-- Dashboard Admin --}}
                     @if(auth()->user()->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-black/5 transition-colors no-underline">
                          <div class="flex justify-between items-center w-full">
@@ -113,6 +113,7 @@
                     </a>
                     @endif
 
+                    {{-- Profil --}}
                     <a href="{{ route('profile.show') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-black/5 transition-colors no-underline">
                          <div class="flex justify-between items-center w-full">
                              <div class="flex items-center gap-2">
@@ -126,6 +127,8 @@
                             </svg>
                          </div>
                     </a>
+
+                    {{-- Setting --}}
                     <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark  hover:bg-black/5 transition-colors no-underline">
                          <div class="flex justify-between items-center w-full">
                              <div class="flex items-center gap-2">
@@ -140,6 +143,8 @@
                             </svg>
                          </div>
                     </a>
+
+                    {{-- Notifikasi --}}
                     <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-black/5 transition-colors no-underline">
                         <div class="flex justify-between items-center w-full">
                             <div class="flex items-center gap-2">
@@ -214,7 +219,7 @@
         <div class="flex items-center gap-4">
             <div class="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-white font-bold overflow-hidden shrink-0 border-2 border-white shadow-md">
                 @if(auth()->user()->avatar)
-                    <img src="{{ auth()->user()->avatar }}" alt="Profile" class="w-full h-full object-cover">
+                    <img src="{{ auth()->user()->avatar }}" alt="Profile" class="w-full h-full object-cover" referrerpolicy="no-referrer">
                 @else
                     <span class="text-xl">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
                 @endif
@@ -232,15 +237,15 @@
     {{-- Menu Items --}}
     <nav class="flex flex-col px-4 py-4 gap-1">
 
+        {{-- Dashboard --}}
         @if(auth()->user()->role === 'admin')
-        {{-- Dashboard Admin --}}
         <a href="{{ route('admin.dashboard') }}"
            class="flex items-center justify-between px-3 py-4 rounded-xl hover:bg-black/5 transition-colors no-underline group">
             <div class="flex items-center gap-4">
-                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/>
                 </svg>
-                <span class="font-semibold text-emerald-600 text-sm">Dashboard Admin</span>
+                <span class="font-bold">Dashboard</span>
             </div>
             <svg class="w-4 h-4 text-muted group-hover:text-dark transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
