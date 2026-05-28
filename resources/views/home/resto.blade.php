@@ -2,7 +2,7 @@
 
     <h2 class="text-2xl md:text-3xl font-bold text-dark mb-6">Restoran Terfavorit</h2>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
 
         @forelse($restaurants as $restaurant)
         <div class="flex flex-col bg-white rounded-xl overflow-hidden cursor-pointer shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
