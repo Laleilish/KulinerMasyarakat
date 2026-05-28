@@ -150,6 +150,12 @@
 
 @include('profile.partials.delete-user-modal')
 
+@include('profile.partials.crop-image-modal')
+
+<!-- Cropper.js CSS & JS CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
 <script>
     function openModal(id) {
         document.getElementById(id).classList.remove('hidden');
@@ -168,11 +174,61 @@
         });
     });
 
-    // Auto-submit avatar form saat file dipilih
-    document.getElementById('avatarInput').addEventListener('change', function() {
+    // Cropper instance & elements
+    let cropper = null;
+    const avatarInput = document.getElementById('avatarInput');
+    const avatarForm = document.getElementById('avatarForm');
+    const cropperImage = document.getElementById('cropperImage');
+    const cropSaveBtn = document.getElementById('cropSaveBtn');
+
+    // Intercept file selection to open cropper
+    avatarInput.addEventListener('change', function() {
         if (this.files && this.files[0]) {
-            document.getElementById('avatarForm').submit();
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                cropperImage.src = e.target.result;
+                openModal('cropModal');
+
+                if (cropper) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(cropperImage, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    autoCropArea: 1,
+                    responsive: true,
+                    background: false,
+                });
+            };
+            reader.readAsDataURL(file);
         }
+    });
+
+    // Handle cropping on save
+    cropSaveBtn.addEventListener('click', function() {
+        if (!cropper) return;
+
+        const canvas = cropper.getCroppedCanvas({
+            width: 300,
+            height: 300,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+
+        canvas.toBlob(function(blob) {
+            if (blob) {
+                const dataTransfer = new DataTransfer();
+                const croppedFile = new File([blob], 'avatar.jpg', { type: 'image/jpeg' });
+                dataTransfer.items.add(croppedFile);
+                
+                avatarInput.files = dataTransfer.files;
+
+                closeModal('cropModal');
+                avatarForm.submit();
+            }
+        }, 'image/jpeg', 0.9);
     });
 
     // Auto-open modal jika ada validation error
@@ -190,5 +246,6 @@
         openModal('deleteModal');
     @endif
 </script>
+
 
 @endsection
