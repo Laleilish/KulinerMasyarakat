@@ -34,27 +34,27 @@
     <div class="hidden md:flex flex-1 justify-end items-center">
         <img
             class="absolute rounded-full object-cover w-[20%] aspect-square top-[-20%] left-[-2%]"
-            src="{{ asset('assets/img/Header/foto1.png') }}"
+            src="{{ asset('assets/img/Header/image1.png') }}"
             alt="food"
         >
         <img
             class="absolute rounded-full object-cover w-[20%] aspect-square top-[-10%] right-[16%]"
-            src="{{ asset('assets/img/Header/foto2.png') }}"
+            src="{{ asset('assets/img/Header/image2.png') }}"
             alt="food"
         >
         <img
             class="absolute rounded-full object-cover w-[22%] aspect-square top-[10%] right-[-5%]"
-            src="{{ asset('assets/img/Header/foto3.png') }}"
+            src="{{ asset('assets/img/Header/image3.png') }}"
             alt="food"
         >
         <img
             class="absolute rounded-full object-cover w-[25%] aspect-square bottom-[8%] right-[20%]"
-            src="{{ asset('assets/img/Header/foto4.png') }}"
+            src="{{ asset('assets/img/Header/image4.png') }}"
             alt="food"
         >
         <img
             class="absolute rounded-full object-cover w-[20%] aspect-square bottom-[-13%] right-[-2%]"
-            src="{{ asset('assets/img/Header/foto5.png') }}"
+            src="{{ asset('assets/img/Header/image6.png') }}"
             alt="food"
         >
     </div>
