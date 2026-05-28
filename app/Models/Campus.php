@@ -8,7 +8,7 @@ class Campus extends Model
 {
     //
 
-    protected $fillable = ['name', 'latitude', 'longitude'];
+    protected $fillable = ['name', 'logo', 'latitude', 'longitude', 'map_zoom'];
 
     public function restaurants()
     {
