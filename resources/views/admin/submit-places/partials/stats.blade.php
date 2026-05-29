@@ -32,7 +32,7 @@
                 <div class="flex items-center gap-3 mb-3">
                     @if($topCampus->logo)
                         <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-gray-100">
-                            <img src="{{ Storage::url($topCampus->logo) }}" alt="{{ $topCampus->name }}" class="w-full h-full object-contain">
+                            <img src="{{ asset('assets/Kampus/' . $topCampus->logo) }}" alt="{{ $topCampus->name }}" class="w-full h-full object-contain">
                         </div>
                     @else
                         <div class="w-10 h-10 rounded-lg bg-[#F2E0BE] flex items-center justify-center shrink-0">
