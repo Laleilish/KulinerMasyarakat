@@ -76,9 +76,9 @@
                             />
                             <label for="terms" class="ml-2 text-xs text-gray-700">
                                 Saya setuju dengan
-                                <a href="#" class="text-blue hover:text-orange-600 font-semibold">Syarat dan Ketentuan</a>
+                                <a href="{{ route('terms') }}" target="_blank" rel="noopener noreferrer" class="text-blue hover:text-orange-600 font-semibold">Syarat dan Ketentuan</a>
                                 serta
-                                <a href="#" class="text-blue hover:text-orange-600 font-semibold">Kebijakan Privasi</a>
+                                <a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer" class="text-blue hover:text-orange-600 font-semibold">Kebijakan Privasi</a>
                             </label>
                         </div>
 

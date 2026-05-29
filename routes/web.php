@@ -90,5 +90,7 @@ Route::get("/split-bill", fn() => view("split-bill.index"))->name(
     "split-bill.index",
 );
 
+Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");
+Route::get("/kebijakan-privasi", fn() => view("pages.privacy"))->name("privacy");
 
 require __DIR__ . "/auth.php";
