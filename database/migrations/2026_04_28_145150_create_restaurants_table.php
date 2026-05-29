@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('category');
             $table->string('food_type');
-            $table->string('photo');
+            $table->string('image');
             $table->text('description')->nullable();
             $table->text('address');
             $table->string('open_hours');
@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('gmaps_link');
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
+            $table->decimal('rating', 2, 1)->nullable();
+            $table->decimal('distance', 10, 7)->nullable();
             $table->string('landmark')->nullable();
             $table->string('landmark_photo')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');

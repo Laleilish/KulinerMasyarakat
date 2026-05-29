@@ -7,7 +7,7 @@
         @forelse($restaurants as $restaurant)
         <div class="flex flex-col bg-white rounded-xl overflow-hidden cursor-pointer shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
              onclick="window.location.href='{{ route('restoran.show', $restaurant->id) }}'">
-            <img src="{{ $restaurant->photo ? asset('storage/' . $restaurant->photo) : asset('assets/img/Restoran Favorit/Nasi Goreng Kambing.png') }}" alt="{{ $restaurant->name }}"
+            <img src="{{ $restaurant->image ? asset('storage/' . $restaurant->image) : asset('assets/img/Restoran Favorit/Nasi Goreng Kambing.png') }}" alt="{{ $restaurant->name }}"
                  class="w-full h-[130px] md:h-[230px] object-cover">
             <div class="flex flex-col flex-1 p-3 min-h-[90px]">
                 <h3 class="text-base font-bold text-dark leading-snug mb-1">{{ $restaurant->name }}{{ $restaurant->landmark ? ', ' . $restaurant->landmark : '' }}</h3>

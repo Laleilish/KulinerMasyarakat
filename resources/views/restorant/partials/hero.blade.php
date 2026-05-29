@@ -1,7 +1,7 @@
 {{-- DESKTOP --}}
 <div class="hidden md:block max-w-7xl mx-auto px-6 pt-6">
     <div class="relative w-full h-[500px] rounded-3xl overflow-hidden shadow-lg">
-        <img src="{{ Storage::url($restaurant->photo) }}" alt="Foto {{ $restaurant->name }}" class="w-full h-full object-cover">
+        <img src="{{ Storage::url($restaurant->image) }}" alt="Foto {{ $restaurant->name }}" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
 
         <div class="absolute bottom-8 left-8 right-8 flex justify-between items-end">
@@ -39,7 +39,7 @@
 
 {{-- MOBILE --}}
 <div class="md:hidden relative w-full h-[350px]">
-    <img src="{{ Storage::url($restaurant->photo) }}" alt="Foto {{ $restaurant->name }}" class="w-full h-full object-cover">
+    <img src="{{ Storage::url($restaurant->image) }}" alt="Foto {{ $restaurant->name }}" class="w-full h-full object-cover">
     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
     <div class="absolute bottom-6 left-4 right-4">

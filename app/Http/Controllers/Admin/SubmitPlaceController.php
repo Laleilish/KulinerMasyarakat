@@ -85,7 +85,7 @@ class SubmitPlaceController extends Controller
                 'name'           => $submitPlace->name,
                 'category'       => $submitPlace->category,
                 'food_type'      => $submitPlace->food_type,
-                'photo'          => $submitPlace->photo,
+                'image'          => $submitPlace->photo,
                 'description'    => $submitPlace->description,
                 'address'        => $submitPlace->address,
                 'open_hours'     => $submitPlace->open_hours,
