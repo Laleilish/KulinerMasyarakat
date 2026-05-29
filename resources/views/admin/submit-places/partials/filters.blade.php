@@ -57,7 +57,7 @@
                 <a href="{{ route('admin.submit-places.index', array_merge(request()->except('page'), ['status' => 'pending'])) }}" 
                    @click="tabSelected = 2"
                    class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-xs font-semibold transition-all rounded-md cursor-pointer whitespace-nowrap no-underline"
-                   :class="tabSelected == 2 ? 'text-amber-600' : 'text-gray-500 hover:text-gray-900'">
+                   :class="tabSelected == 2 ? 'text-amber-700' : 'text-gray-500 hover:text-gray-900'">
                    Pending
                 </a>
                 <a href="{{ route('admin.submit-places.index', array_merge(request()->except('page'), ['status' => 'approved'])) }}" 
@@ -69,7 +69,7 @@
                 <a href="{{ route('admin.submit-places.index', array_merge(request()->except('page'), ['status' => 'rejected'])) }}" 
                    @click="tabSelected = 4"
                    class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-xs font-semibold transition-all rounded-md cursor-pointer whitespace-nowrap no-underline"
-                   :class="tabSelected == 4 ? 'text-rose-600' : 'text-gray-500 hover:text-gray-900'">
+                   :class="tabSelected == 4 ? 'text-red-500' : 'text-gray-500 hover:text-gray-900'">
                    Ditolak
                 </a>
                 
