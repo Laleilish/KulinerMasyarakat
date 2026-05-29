@@ -20,13 +20,13 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // Customer
+        // User
         User::create([
             'name' => 'Budi Santoso',
             'username' => 'budi_santoso',
             'email' => 'budi@example.com',
             'password' => Hash::make('password'),
-            'role' => 'customer',
+            'role' => 'user',
             'email_verified_at' => now(),
         ]);
 
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'username' => 'siti_aminah',
             'email' => 'siti@example.com',
             'password' => Hash::make('password'),
-            'role' => 'customer',
+            'role' => 'user',
             'email_verified_at' => now(),
         ]);
     }

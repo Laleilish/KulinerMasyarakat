@@ -102,7 +102,7 @@
                                     @else
                                         <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-50 text-gray-600 border border-gray-200">
                                             <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
-                                            Member
+                                            User
                                         </span>
                                     @endif
                                 </td>
@@ -118,8 +118,8 @@
                                                 @method('PATCH')
                                                 <button type="submit" 
                                                         class="px-3 py-1.5 text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-500 hover:text-white border border-emerald-100 hover:border-emerald-500 rounded-xl transition-all cursor-pointer"
-                                                        title="Ubah peran admin/member">
-                                                    {{ $user->role === 'admin' ? 'Jadikan Member' : 'Jadikan Admin' }}
+                                                        title="Ubah peran admin/user">
+                                                    {{ $user->role === 'admin' ? 'Jadikan User' : 'Jadikan Admin' }}
                                                 </button>
                                             </form>
 

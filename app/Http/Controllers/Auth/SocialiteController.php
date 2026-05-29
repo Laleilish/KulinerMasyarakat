@@ -78,7 +78,7 @@ class SocialiteController extends Controller
                     'email_verified_at' => now(),
                     'username' => $username,
                     'password' => null,
-                    'role' => 'customer',
+                    'role' => 'user',
                 ]);
             }
 

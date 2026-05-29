@@ -34,7 +34,7 @@ class UserController extends Controller
     }
 
     /**
-     * Toggle the user's role between admin and member.
+     * Toggle the user's role between admin and user.
      */
     public function toggleRole(User $user)
     {
@@ -44,7 +44,7 @@ class UserController extends Controller
         }
 
         // Toggle admin status
-        $user->role = $user->role === 'admin' ? 'member' : 'admin';
+        $user->role = $user->role === 'admin' ? 'user' : 'admin';
         $user->save();
 
         return redirect()->back()->with('success', "Peran untuk {$user->name} berhasil diubah menjadi " . strtoupper($user->role) . ".");

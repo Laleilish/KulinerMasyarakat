@@ -11,7 +11,7 @@ class RestaurantSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::where('role', 'customer')->first();
+        $user = User::where('role', 'user')->first();
         $campuses = Campus::all();
 
         if (!$user || $campuses->isEmpty()) {

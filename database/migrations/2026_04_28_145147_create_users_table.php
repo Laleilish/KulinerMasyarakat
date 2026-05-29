@@ -26,7 +26,7 @@ return new class extends Migration
                 "users_provider_provider_id_unique",
             );
             $table->rememberToken();
-            $table->enum('role', ['customer', 'admin'])->default('customer');
+            $table->enum('role', ['user', 'admin'])->default('user');
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@ class ReviewSeeder extends Seeder
 {
     public function run(): void
     {
-        $users = User::where('role', 'customer')->get();
+        $users = User::where('role', 'user')->get();
         $restaurants = Restaurant::all();
 
         if ($users->isEmpty() || $restaurants->isEmpty()) {
