@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('campus_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('category');
+            $table->boolean('is_featured')->default(false);
             $table->string('food_type');
             $table->string('image');
             $table->text('description')->nullable();

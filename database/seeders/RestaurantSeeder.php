@@ -24,6 +24,7 @@ class RestaurantSeeder extends Seeder
                 'campus_id' => $campuses->where('name', 'Universitas Pendidikan Indonesia')->first()?->id ?? $campuses->first()->id,
                 'name' => 'Ayam Geprek UPI Mantap',
                 'category' => 'makanan_berat',
+                'is_featured' => true,
                 'food_type' => 'Ayam Geprek',
                 'image' => 'restaurants/placeholder.jpg',
                 'description' => 'Ayam geprek super pedas dengan berbagai pilihan level cabai, sangat populer di kalangan mahasiswa UPI.',
