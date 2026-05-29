@@ -88,9 +88,11 @@ class SocialiteController extends Controller
             // Regenerate session for security
             request()->session()->regenerate();
 
-            // Redirect to home route
+            // Redirect to appropriate route based on role
+            $redirectRoute = $user->isAdmin() ? 'admin.dashboard' : 'home';
+            
             return redirect()
-                ->route('home')
+                ->route($redirectRoute)
                 ->with(
                     'status',
                     'Successfully logged in with '.ucfirst($provider).'!',

@@ -7,6 +7,7 @@ use App\Models\Campus;
 use App\Models\Restaurant;
 use App\Models\Review;
 use App\Models\SubmitPlace;
+use App\Notifications\PlaceApprovedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -109,6 +110,9 @@ class SubmitPlaceController extends Controller
 
             // Mark submit place as approved
             $submitPlace->update(['status' => 'approved']);
+
+            // Notify the user
+            $submitPlace->user->notify(new PlaceApprovedNotification($submitPlace));
         });
 
         return redirect()->back()

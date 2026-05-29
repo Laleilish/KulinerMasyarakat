@@ -42,6 +42,11 @@ Route::middleware("auth")->group(function () {
     Route::post("/submit-place", [SubmitPlaceController::class, "store"])->name(
         "submit-places.store",
     );
+
+    // Notifications
+    Route::get("/notifications/{id}/read", [\App\Http\Controllers\NotificationController::class, "read"])->name(
+        "notifications.read",
+    );
 });
 
 // Detail restoran 

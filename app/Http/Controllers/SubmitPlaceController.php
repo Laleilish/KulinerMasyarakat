@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Campus;
 use App\Models\SubmitPlace;
+use App\Models\User;
+use App\Notifications\NewPlaceSuggestedNotification;
 use App\Services\GoogleMapsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class SubmitPlaceController extends Controller
@@ -67,7 +70,7 @@ class SubmitPlaceController extends Controller
         $campusId = $this->findNearestCampus($latitude, $longitude);
 
         // Save submit place
-        SubmitPlace::create([
+        $submitPlace = SubmitPlace::create([
             'user_id'              => Auth::id(),
             'campus_id'            => $campusId,
             'name'                 => $validated['name'],
@@ -88,6 +91,10 @@ class SubmitPlaceController extends Controller
             'initial_review_photos' => !empty($reviewPhotoPaths) ? $reviewPhotoPaths : null,
             'status'               => 'pending',
         ]);
+
+        // Notify admins
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, new NewPlaceSuggestedNotification($submitPlace));
 
         return redirect()->route('home')
             ->with('success', 'Tempat berhasil diusulkan! Menunggu persetujuan admin.');

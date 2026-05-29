@@ -43,6 +43,9 @@ if (profileBtn) {
   // ---- Toggle berdasarkan breakpoint ----
   profileBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+    if (notificationDropdown && !notificationDropdown.classList.contains("hidden")) {
+      notificationDropdown.classList.add("hidden");
+    }
     if (DESKTOP()) {
       profileDropdown.classList.contains("hidden")
         ? openDropdown()
@@ -76,5 +79,32 @@ if (profileBtn) {
   window.addEventListener("resize", () => {
     if (DESKTOP()) closePanel();
     else closeDropdown();
+  });
+}
+
+// NOTIFICATION DROPDOWN
+const notificationBtn = document.getElementById("notificationBtn");
+const notificationDropdown = document.getElementById("notificationDropdown");
+
+if (notificationBtn && notificationDropdown) {
+  notificationBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    // Close profile dropdown if open
+    if (profileDropdown && !profileDropdown.classList.contains("hidden")) {
+      profileDropdown.classList.add("hidden");
+    }
+    notificationDropdown.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!notificationBtn.contains(e.target) && !notificationDropdown.contains(e.target)) {
+      notificationDropdown.classList.add("hidden");
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      notificationDropdown.classList.add("hidden");
+    }
   });
 }
