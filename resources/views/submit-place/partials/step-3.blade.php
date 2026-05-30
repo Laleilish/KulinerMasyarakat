@@ -73,7 +73,7 @@
                                 <button type="button" @click="step = 2" class="text-gray-600 font-bold text-sm px-4 py-2 hover:text-gray-800 bg-transparent border-none cursor-pointer">
                                     Kembali
                                 </button>
-                                <button type="button" @click="submitForm()" class="bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-full hover:bg-emerald-600 transition-colors shadow-sm">
+                                <button type="button" @click="submitForm()" class="bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-full hover:bg-emerald-600 transition-colors shadow-sm border-none cursor-pointer">
                                     Kirim
                                 </button>
                             </div>

@@ -1,20 +1,32 @@
 {{-- Action Buttons --}}
     <div class="flex flex-wrap items-center gap-3 pt-6 border-t border-gray-100">
         @if ($submitPlace->status === 'pending')
-            <form action="{{ route('admin.submit-places.approve', $submitPlace) }}" method="POST" class="inline">
+            <form action="{{ route('admin.submit-places.approve', $submitPlace) }}" method="POST" class="inline" id="approve-place-{{ $submitPlace->id }}">
                 @csrf
                 @method('PATCH')
-                <button type="submit"
-                        onclick="return confirm('Apakah Anda yakin ingin menyetujui usulan tempat ini?')"
+                <button type="button"
+                        @click="$dispatch('confirm-modal', {
+                            title: 'Setujui Usulan?',
+                            message: 'Apakah Anda yakin ingin menyetujui usulan tempat ini?',
+                            variant: 'confirm',
+                            confirmText: 'Ya, Setujui',
+                            formId: 'approve-place-{{ $submitPlace->id }}'
+                        })"
                         class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
                     Setujui
                 </button>
             </form>
-            <form action="{{ route('admin.submit-places.reject', $submitPlace) }}" method="POST" class="inline">
+            <form action="{{ route('admin.submit-places.reject', $submitPlace) }}" method="POST" class="inline" id="reject-place-{{ $submitPlace->id }}">
                 @csrf
                 @method('PATCH')
-                <button type="submit"
-                        onclick="return confirm('Apakah Anda yakin ingin menolak usulan tempat ini?')"
+                <button type="button"
+                        @click="$dispatch('confirm-modal', {
+                            title: 'Tolak Usulan?',
+                            message: 'Apakah Anda yakin ingin menolak usulan tempat ini?',
+                            variant: 'danger',
+                            confirmText: 'Ya, Tolak',
+                            formId: 'reject-place-{{ $submitPlace->id }}'
+                        })"
                         class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
                     Tolak
                 </button>
@@ -27,11 +39,17 @@
             Edit Data
         </a>
 
-        <form action="{{ route('admin.submit-places.destroy', $submitPlace) }}" method="POST" class="inline">
+        <form action="{{ route('admin.submit-places.destroy', $submitPlace) }}" method="POST" class="inline" id="destroy-place-{{ $submitPlace->id }}">
             @csrf
             @method('DELETE')
-            <button type="submit"
-                    onclick="return confirm('Apakah Anda yakin ingin menghapus usulan tempat ini secara permanen?')"
+            <button type="button"
+                    @click="$dispatch('confirm-modal', {
+                        title: 'Hapus Permanen?',
+                        message: 'Apakah Anda yakin ingin menghapus usulan tempat ini secara permanen?',
+                        variant: 'danger',
+                        confirmText: 'Ya, Hapus',
+                        formId: 'destroy-place-{{ $submitPlace->id }}'
+                    })"
                     class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
                 Hapus Permanen
             </button>

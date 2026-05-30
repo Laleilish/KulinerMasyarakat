@@ -123,7 +123,18 @@ function submitPlaceForm() {
 
         submitForm() {
             if (this.validateStep(3)) {
-                this.$refs.submitForm.submit();
+                window.dispatchEvent(new CustomEvent('confirm-modal', {
+                    detail: {
+                        title: 'Kirim Ulasan?',
+                        message: 'Ulasan kamu akan membantu pengguna lain mengetahui pengalaman dan kualitas tempat ini. Pastikan ulasan sudah sesuai sebelum dikirim.',
+                        variant: 'confirm',
+                        confirmText: 'Ya, Kirimkan',
+                        cancelText: 'Kembali',
+                        onConfirm: () => {
+                            this.$refs.submitForm.submit();
+                        }
+                    }
+                }));
             }
         },
 

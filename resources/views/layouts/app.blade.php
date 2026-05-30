@@ -33,5 +33,8 @@
 
         {{-- Toast --}}
         <x-toast />
+
+        {{-- Global Confirmation Modal --}}
+        <x-confirm-modal />
     </body>
 </html>
