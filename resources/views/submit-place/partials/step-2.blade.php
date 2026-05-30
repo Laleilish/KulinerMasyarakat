@@ -50,6 +50,8 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="open_hours" :value="form.open_time && form.close_time ? form.open_time + ' - ' + form.close_time : ''">
+                                <input type="hidden" name="open_time" :value="form.open_time">
+                                <input type="hidden" name="close_time" :value="form.close_time">
                                 <p x-show="errors.open_hours" x-text="errors.open_hours" class="text-red-500 text-xs mt-1"></p>
                                 @error('open_hours')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
@@ -69,6 +71,8 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="price_range" :value="form.price_min && form.price_max ? 'Rp ' + Number(form.price_min).toLocaleString('id-ID') + ' - Rp ' + Number(form.price_max).toLocaleString('id-ID') : ''">
+                                <input type="hidden" name="price_min" :value="form.price_min">
+                                <input type="hidden" name="price_max" :value="form.price_max">
                                 <p x-show="errors.price_range" x-text="errors.price_range" class="text-red-500 text-xs mt-1"></p>
                                 @error('price_range')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
@@ -109,7 +113,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
                                         <p class="text-sm text-emerald-600 font-bold">Seret foto ke sini atau klik</p>
-                                        <p class="text-xs text-gray-500 font-medium">Maks 5MB (JPG/PNG)</p>
+                                        <p class="text-xs text-gray-500 font-medium">Maks 2MB (JPG/PNG)</p>
                                         <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold text-emerald-600 border border-emerald-500">
                                             Pilih File
                                         </span>

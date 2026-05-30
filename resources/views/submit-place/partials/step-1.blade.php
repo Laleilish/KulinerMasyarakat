@@ -87,7 +87,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
                                         <p class="text-sm text-emerald-600 font-bold">Seret foto ke sini atau klik</p>
-                                        <p class="text-xs text-gray-500 font-medium">Maks 5MB (JPG/PNG)</p>
+                                        <p class="text-xs text-gray-500 font-medium">Maks 2MB (JPG/PNG)</p>
                                         <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold text-emerald-600 border border-emerald-500">
                                             Pilih File
                                         </span>

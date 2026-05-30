@@ -41,6 +41,13 @@ function submitPlaceForm() {
         handlePhoto(e) {
             const file = e.target.files[0];
             if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'File Terlalu Besar', message: 'Ukuran foto maksimal 2MB!' } }));
+                e.target.value = '';
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = (ev) => this.photoPreview = ev.target.result;
             reader.readAsDataURL(file);
@@ -53,6 +60,13 @@ function submitPlaceForm() {
         handleLandmark(e) {
             const file = e.target.files[0];
             if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'File Terlalu Besar', message: 'Ukuran foto maksimal 2MB!' } }));
+                e.target.value = '';
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = (ev) => this.landmarkPreview = ev.target.result;
             reader.readAsDataURL(file);
@@ -67,12 +81,22 @@ function submitPlaceForm() {
             const remaining = 5 - this.reviewPreviews.length;
             const toAdd = files.slice(0, remaining);
 
+            let hasOversized = false;
+
             toAdd.forEach(file => {
+                if (file.size > 2 * 1024 * 1024) {
+                    hasOversized = true;
+                    return; // Skip this file
+                }
                 this.reviewFiles.push(file);
                 const reader = new FileReader();
                 reader.onload = (ev) => this.reviewPreviews.push(ev.target.result);
                 reader.readAsDataURL(file);
             });
+
+            if (hasOversized) {
+                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'Beberapa File Ditolak', message: 'Foto yang lebih dari 2MB tidak dimasukkan.' } }));
+            }
 
             // Rebuild file input
             this.syncReviewFileInput();

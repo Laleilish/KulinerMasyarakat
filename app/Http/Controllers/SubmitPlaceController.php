@@ -31,18 +31,18 @@ class SubmitPlaceController extends Controller
             'name'                   => 'required|string|max:255',
             'category'               => 'required|in:makanan_berat,jajanan,minuman',
             'food_type'              => 'required|string',
-            'photo'                  => 'required|image|mimes:jpg,jpeg,png|max:5120',
+            'photo'                  => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'description'            => 'nullable|string',
             'address'                => 'required|string',
             'open_hours'             => 'required|string',
             'price_range'            => 'required|string',
             'gmaps_link'             => 'required|url',
             'landmark'               => 'nullable|string',
-            'landmark_photo'         => 'required|image|mimes:jpg,jpeg,png|max:5120',
+            'landmark_photo'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'initial_rating'         => 'required|integer|min:1|max:5',
             'initial_review'         => 'nullable|string',
             'initial_review_photos'   => 'nullable|array|max:5',
-            'initial_review_photos.*' => 'image|mimes:jpg,jpeg,png|max:5120',
+            'initial_review_photos.*' => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Upload photos
