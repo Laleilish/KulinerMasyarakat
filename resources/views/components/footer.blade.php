@@ -22,11 +22,15 @@
         {{-- Tengah --}}
         <div class="flex flex-wrap md:flex-col gap-4 md:gap-3">
 
-            <a href="{{ route('privacy') }}" class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
+            <a href="{{ route('privacy') }}" 
+                target="_blank"
+                class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
                 Privasi & Keamanan
             </a>
 
-            <a href="{{ route('terms') }}" class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
+            <a href="{{ route('terms') }}" 
+                target="_blank"
+                class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
                 Syarat & Ketentuan
             </a>
 

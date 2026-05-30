@@ -56,17 +56,59 @@ class DashboardController extends Controller
                 }
             });
 
-        // Data chart popularitas
+        // Data chart aktivitas platform
+        $range = request('range', '7d');
+        $chartData = $this->getChartData($range);
+
+        return view('admin.dashboard', compact('stats', 'recentPendingPlaces', 'recentActivities', 'chartData', 'range'));
+    }
+
+    /**
+     * Generate chart data based on the selected range.
+     */
+    private function getChartData(string $range)
+    {
         $chartData = collect();
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::today()->subDays($i);
-            $chartData->push([
-                'label' => $date->translatedFormat('D'),
-                'submissions' => SubmitPlace::whereDate('created_at', $date)->count(),
-                'reviews' => Review::whereDate('created_at', $date)->count(),
-            ]);
+
+        switch ($range) {
+            case '1m':
+                // 30 hari terakhir, per hari
+                for ($i = 29; $i >= 0; $i--) {
+                    $date = Carbon::today()->subDays($i);
+                    $chartData->push([
+                        'label' => $date->format('d/m'),
+                        'restaurants' => Restaurant::whereDate('created_at', $date)->count(),
+                        'reviews' => Review::whereDate('created_at', $date)->count(),
+                    ]);
+                }
+                break;
+
+            case '1y':
+                // 12 bulan terakhir, per bulan
+                for ($i = 11; $i >= 0; $i--) {
+                    $date = Carbon::today()->subMonths($i);
+                    $startOfMonth = $date->copy()->startOfMonth();
+                    $endOfMonth = $date->copy()->endOfMonth();
+                    $chartData->push([
+                        'label' => $date->translatedFormat('M'),
+                        'restaurants' => Restaurant::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count(),
+                        'reviews' => Review::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count(),
+                    ]);
+                }
+                break;
+
+            default: // 7d
+                for ($i = 6; $i >= 0; $i--) {
+                    $date = Carbon::today()->subDays($i);
+                    $chartData->push([
+                        'label' => $date->translatedFormat('D'),
+                        'restaurants' => Restaurant::whereDate('created_at', $date)->count(),
+                        'reviews' => Review::whereDate('created_at', $date)->count(),
+                    ]);
+                }
+                break;
         }
 
-        return view('admin.dashboard', compact('stats', 'recentPendingPlaces', 'recentActivities', 'chartData'));
+        return $chartData;
     }
 }

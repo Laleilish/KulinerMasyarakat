@@ -15,7 +15,6 @@
     x-cloak
 >
 
-    {{-- Auto-trigger session --}}
     @if(session('success'))
         <div x-init="$nextTick(() => $dispatch('toast', {
             type: 'success',
