@@ -9,8 +9,7 @@
                     <h1 class="text-2xl md:text-3xl font-sans font-bold text-dark mb-2">Masuk Dengan Aman</h1>
                 </div>
 
-                <!-- Session Status -->
-                <x-auth.auth-session-status class="mb-4" :status="session('status')" />
+
 
                 <form method="POST" action="{{ route('login') }}" class="space-y-2">
                     @csrf

@@ -31,19 +31,11 @@
         }))"></div>
     @endif
 
-    @if(session('status') === 'profile-updated')
+    @if(session('status'))
         <div x-init="$nextTick(() => $dispatch('toast', {
             type: 'success',
-            title: 'Profil Diperbarui',
-            message: 'Data profil kamu berhasil disimpan.'
-        }))"></div>
-    @endif
-
-    @if(session('status') === 'password-updated')
-        <div x-init="$nextTick(() => $dispatch('toast', {
-            type: 'success',
-            title: 'Password Diperbarui',
-            message: 'Password kamu berhasil diganti.'
+            title: 'Berhasil',
+            message: '{{ session('status') === 'profile-updated' ? 'Data profil kamu berhasil disimpan.' : (session('status') === 'password-updated' ? 'Password kamu berhasil diganti.' : addslashes(session('status'))) }}'
         }))"></div>
     @endif
 

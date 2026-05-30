@@ -12,11 +12,7 @@
                     <p class="text-base font-semibold text-dark">{{ $email ?? '' }}</p>
                 </div>
 
-                @if (session('status'))
-                    <div class="mb-4 p-4 bg-green-100/70 backdrop-blur-sm border-2 border-green-300 rounded-xl text-green-700 text-sm text-center">
-                        {{ session('status') }}
-                    </div>
-                @endif
+
 
                 @if ($errors->any())
                     <div class="mb-4 p-4 bg-red-100/70 backdrop-blur-sm border-2 border-red-300 rounded-xl text-red-700 text-sm text-center">

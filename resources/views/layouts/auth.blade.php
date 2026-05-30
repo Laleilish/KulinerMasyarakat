@@ -17,6 +17,9 @@
             @yield('content')
         </main>
         @include('components.auth.auth-footer')
+
+        {{-- Toast --}}
+        <x-toast />
     </body>
 
 </html>
