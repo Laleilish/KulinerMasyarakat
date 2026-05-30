@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Restaurant extends Model
 {
@@ -23,6 +24,16 @@ class Restaurant extends Model
         'landmark',
         'landmark_photo',
         'status',
+        'rating',
+        'distance',
+        'is_featured',
+    ];
+
+    protected $casts = [
+        'latitude'    => 'float',
+        'longitude'   => 'float',
+        'rating'      => 'float',
+        'is_featured' => 'boolean',
     ];
 
     // ── Relationships ──
@@ -32,9 +43,14 @@ class Restaurant extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function campus()
+    public function campus(): BelongsTo
     {
         return $this->belongsTo(Campus::class);
+    }
+    // Scope featured
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
     }
 
     public function reviews()

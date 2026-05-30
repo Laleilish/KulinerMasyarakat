@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use App\Services\RestaurantService;
+use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
@@ -12,6 +13,12 @@ class RestaurantController extends Controller
     public function __construct(RestaurantService $restaurantService)
     {
         $this->restaurantService = $restaurantService;
+    }
+
+    public function index()
+    {
+        $restaurants = Restaurant::latest()->paginate(12);
+        return view('restaurants.index', compact('restaurants'));
     }
 
     /**

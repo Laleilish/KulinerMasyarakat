@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li class="w-full py-3 border-b border-black/5 md:w-auto md:py-0 md:border-none">
-                <a href="{{ route('hidden-gem.index') }}"
+                <a href="{{ route('hidden-gem') }}"
                    class="no-underline font-semibold text-base {{ request()->routeIs('hidden-gem.*') ? 'text-dark border-b-2 border-red-logo pb-1' : 'text-muted' }}">
                     Hidden Gem
                 </a>

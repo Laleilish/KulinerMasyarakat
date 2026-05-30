@@ -6,12 +6,18 @@ use App\Http\Controllers\Admin\SubmitPlaceController as AdminSubmitPlaceControll
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HiddenGemController;
+use App\Http\Controllers\RestaurantController;
 
 Route::get("/dashboard", function () {
     return view("dashboard");
 })
     ->middleware(["auth", "verified"])
     ->name("dashboard");
+
+Route::get('/hidden-gem/restaurants/{campus_id}', [HiddenGemController::class, 'getRestaurants'])
+    ->name('hidden-gem.restaurants');
+Route::get('/semua-resto', [RestaurantController::class, 'index'])->name('semua-resto');
 
 Route::middleware("auth")->group(function () {
     Route::get("/profile", [ProfileController::class, "show"])->name(
@@ -26,6 +32,7 @@ Route::middleware("auth")->group(function () {
     Route::delete("/profile", [ProfileController::class, "destroy"])->name(
         "profile.destroy",
     );
+
 
     // Review (butuh login)
     Route::post("/restoran/{restaurant}/reviews", [\App\Http\Controllers\ReviewController::class, "store"])->name(
@@ -91,7 +98,7 @@ Route::middleware(["auth", "role:admin"])
     });
 
 Route::get("/", [\App\Http\Controllers\HomeController::class, 'index'])->name("home");
-Route::get("/hidden-gem", fn() => view("hidden-gem.index"))->name(
+Route::get("/hidden-gem", [HiddenGemController::class, 'index'])->name(
     "hidden-gem.index",
 );
 Route::get("/tanggal-tua", fn() => view("tanggal-tua.index"))->name(
@@ -108,3 +115,5 @@ Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");
 Route::get("/kebijakan-privasi", fn() => view("pages.privacy"))->name("privacy");
 
 require __DIR__ . "/auth.php";
+Route::get('/auth/{provider}/redirect', fn($provider) => back())
+    ->name('social.redirect');
