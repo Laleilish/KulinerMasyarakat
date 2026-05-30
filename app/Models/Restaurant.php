@@ -8,17 +8,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Restaurant extends Model
 {
     protected $fillable = [
-        'campus_id', 'name', 'image', 'description',
-        'latitude', 'longitude', 'rating', 'distance',
-        'price_range', 'category', 'is_featured',
+        'user_id',
+        'campus_id',
+        'name',
+        'category',
+        'food_type',
+        'image',
+        'description',
+        'address',
+        'open_hours',
+        'price_range',
+        'gmaps_link',
+        'latitude',
+        'longitude',
+        'landmark',
+        'landmark_photo',
+        'status',
     ];
 
-    protected $casts = [
-        'latitude'    => 'float',
-        'longitude'   => 'float',
-        'rating'      => 'float',
-        'is_featured' => 'boolean',
-    ];
+    // ── Relationships ──
 
     // Scope featured
     public function scopeFeatured($query)
@@ -29,5 +37,34 @@ class Restaurant extends Model
     public function campus(): BelongsTo
     {
         return $this->belongsTo(Campus::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function foods()
+    {
+        return $this->hasMany(Food::class);
+    }
+
+    // ── Scopes ──
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    // ── Accessors ──
+
+    public function getAverageRatingAttribute(): float
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
+    }
+
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->reviews()->count();
     }
 }

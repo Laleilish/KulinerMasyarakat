@@ -10,14 +10,22 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('campus_id')->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->string('category');
+            $table->boolean('is_featured')->default(false);
+            $table->string('food_type');
             $table->string('image');
             $table->text('description')->nullable();
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
-            $table->decimal('rating', 2, 1)->default(4.5);
-            $table->string('distance')->default('0.5km');
-            $table->string('price_range')->default('Rp 10.000 – 30.000');
-            $table->string('category');
+            $table->text('address');
+            $table->string('open_hours');
+            $table->string('price_range');
+            $table->string('gmaps_link');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
+            $table->decimal('rating', 2, 1)->nullable();
+            $table->decimal('distance', 10, 7)->nullable();
+            $table->string('landmark')->nullable();
+            $table->string('landmark_photo')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }

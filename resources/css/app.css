@@ -7,12 +7,12 @@
 
 @theme {
   /* Typography */
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-brand: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Plus Jakarta Sans";
+  --font-brand: "Plus Jakarta Sans";
 
   /* Color Palette — Brand */
 
-  /* Merah utama */
+  /* Merah utama*/
   --color-red-logo: #960913;
   --color-red-light: #e5212e;
   --color-red-dark: #6d060d;
@@ -21,9 +21,16 @@
   --color-secondary: #02b176;
   --color-secondary-dark: #029962;
 
+  /* Biru */
+  --color-blue: #1877f2;
+
+  /* Orange */
+  --color-orange: #f5a623;
+
   /* Color Palette — Neutral / UI */
 
   /* Krem */
+  --color-cream-light: #F8F4EC;
   --color-cream-bg: #fdf4e7;
   --color-cream-dark: #fdefdb;
 
@@ -42,15 +49,93 @@
   --radius-md: 6px;
   --radius-sm: 4px;
 
+  /* Spacing */
+  --spacing-section: 5rem;
+
   /* Shadow */
   --shadow-navbar: 0 2px 8px 0 rgba(4, 8, 24, 0.08);
+  --shadow-navbar-admin: 0 2px 8px 0 rgba(4, 8, 24, 0.08);
   --shadow-card: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
   --shadow-card-hover: 0 6px 16px 0 rgba(0, 0, 0, 0.12);
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
+/* Custom Utility Classes */
+@utility bg-cream-bg {
+  background-color: var(--color-cream-bg);
+}
+
+@utility bg-cream-dark {
+  background-color: var(--color-cream-dark);
+}
+
+@utility bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+@utility bg-secondary-dark {
+  background-color: var(--color-secondary-dark);
+}
+
+@utility text-dark {
+  color: var(--color-dark);
+}
+
+@utility text-muted {
+  color: var(--color-muted);
+}
+
+@utility text-muted-light {
+  color: var(--color-muted-light);
+}
+
+@utility text-red-logo {
+  color: var(--color-red-logo);
+}
+
+@utility text-blue {
+  color: var(--color-blue);
+}
+
+@utility bg-blue {
+  background-color: var(--color-blue);
+}
+
+@utility text-orange {
+  color: var(--color-orange);
+}
+
+@utility bg-orange {
+  background-color: var(--color-orange);
+}
+
+@utility border-red-logo {
+  border-color: var(--color-red-logo);
+}
+
+@utility border-muted {
+  border-color: var(--color-muted);
+}
+
+@utility border-muted-light {
+  border-color: var(--color-muted-light);
+}
+
+@utility shadow-navbar {
+  box-shadow: var(--shadow-navbar);
+}
+
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+@utility shadow-2xs {
+  box-shadow: 0 1px 3px 0 rgba(4, 8, 24, 0.08);
+}
+
+@utility rounded-brand {
+  border-radius: var(--radius-xl);
+}
+
 @layer base {
   body {
     @apply bg-cream-bg font-sans;
