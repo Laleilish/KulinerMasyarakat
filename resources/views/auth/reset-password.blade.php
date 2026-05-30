@@ -1,38 +1,47 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+@extends('layouts.auth')
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+@section('title', 'Buat Kata Sandi Baru - ' . config('app.name', 'KUMAR'))
+    <body class="font-sans antialiased">
+        @section('content')
+            <div class="w-full max-w-md">
+                
+                <div class="mb-4">
+                    <h1 class="text-2xl md:text-3xl font-bold text-dark mb-2">Buat Kata Sandi Baru</h1>
+                    <p class="text-sm text-gray-600 mt-2">
+                        Silakan buat kata sandi baru untuk akun Anda. Pastikan kata sandi baru Anda kuat dan mudah diingat.
+                    </p>
+                </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
+                    @csrf
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                    <x-auth.auth-input
+                        id="password"
+                        type="password"
+                        name="password"
+                        label="Kata Sandi Baru"
+                        placeholder="Minimal 8 karakter"
+                        required
+                        autofocus
+                    />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+                    <x-auth.auth-input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        label="Konfirmasi Kata Sandi Baru"
+                        placeholder="Ketik ulang kata sandi baru"
+                        required
+                    />
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        class="w-full bg-secondary hover:bg-secondary-dark shadow-2xs text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02]">
+                        Simpan Kata Sandi
+                    </button>
+                </form>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            </div>
+        @endsection
+    </body>

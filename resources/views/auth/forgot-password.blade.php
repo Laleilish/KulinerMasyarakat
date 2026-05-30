@@ -1,25 +1,47 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+@extends('layouts.auth')
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@section('title', 'Lupa Kata Sandi - ' . config('app.name', 'KUMAR'))
+    <body class="font-sans antialiased">
+        @section('content')
+            <div class="w-full max-w-md">
+                
+                <div class="mb-4">
+                    <h1 class="text-2xl md:text-3xl font-bold text-dark mb-2">Lupa Kata Sandi?</h1>
+                    <p class="text-sm text-gray-600 mt-2">
+                        Jangan khawatir! Masukkan username atau email Anda, dan kami akan mengirimkan kode OTP untuk mengatur ulang kata sandi Anda.
+                    </p>
+                </div>
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
+                <!-- Session Status -->
+                <x-auth.auth-session-status class="mb-4" :status="session('status')" />
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+                <form method="POST" action="{{ route('password.email') }}" class="space-y-4">
+                    @csrf
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                    <x-auth.auth-input
+                        id="login"
+                        type="text"
+                        name="login"
+                        label="Username atau Email"
+                        placeholder="Masukkan username atau email Anda"
+                        required
+                        autofocus
+                    />
+
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        class="w-full bg-secondary hover:bg-secondary-dark shadow-2xs text-white font-bold py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02]">
+                        Kirim OTP
+                    </button>
+                </form>
+
+                <!-- Back to Login -->
+                <div class="mt-6 text-center">
+                    <a href="{{ route('login') }}" class="text-sm text-blue hover:text-orange-600 font-semibold">
+                        &larr; Kembali ke halaman Masuk
+                    </a>
+                </div>
+            </div>
+        @endsection
+    </body>

@@ -37,17 +37,25 @@
                     />
 
 
-                    <!-- Remember Me -->
-                    <div class="flex items-center gap-1 my-4 ">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            name="remember"
-                            class="w-4 h-4 text-orange-500 bg-white/70 backdrop-blur-sm rounde"
-                        />
-                        <label for="remember_me" class="text-xs text-gray-700 ">
-                            Ingat saya di perangkat ini selama 60 hari
-                        </label>
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between my-4">
+                        <div class="flex items-center gap-1">
+                            <input
+                                id="remember_me"
+                                type="checkbox"
+                                name="remember"
+                                class="w-4 h-4 text-orange-500 bg-white/70 backdrop-blur-sm rounded"
+                            />
+                            <label for="remember_me" class="text-xs text-gray-700">
+                                Ingat saya di perangkat ini selama 60 hari
+                            </label>
+                        </div>
+
+                        @if ($errors->any() && Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="text-xs font-semibold text-blue hover:text-orange-600 shrink-0">
+                                Lupa Kata Sandi?
+                            </a>
+                        @endif
                     </div>
 
                     <!-- Submit Button -->
