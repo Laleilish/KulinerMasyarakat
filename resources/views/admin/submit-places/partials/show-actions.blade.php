@@ -1,23 +1,39 @@
 {{-- Action Buttons --}}
-@if ($submitPlace->status === 'pending')
-    <div class="flex items-center gap-3 pt-6 border-t border-gray-100">
-        <form action="{{ route('admin.submit-places.approve', $submitPlace) }}" method="POST" class="inline">
+    <div class="flex flex-wrap items-center gap-3 pt-6 border-t border-gray-100">
+        @if ($submitPlace->status === 'pending')
+            <form action="{{ route('admin.submit-places.approve', $submitPlace) }}" method="POST" class="inline">
+                @csrf
+                @method('PATCH')
+                <button type="submit"
+                        onclick="return confirm('Apakah Anda yakin ingin menyetujui usulan tempat ini?')"
+                        class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
+                    Setujui
+                </button>
+            </form>
+            <form action="{{ route('admin.submit-places.reject', $submitPlace) }}" method="POST" class="inline">
+                @csrf
+                @method('PATCH')
+                <button type="submit"
+                        onclick="return confirm('Apakah Anda yakin ingin menolak usulan tempat ini?')"
+                        class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
+                    Tolak
+                </button>
+            </form>
+        @endif
+
+        <a href="{{ route('admin.submit-places.edit', $submitPlace) }}"
+           class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none text-center no-underline inline-flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            Edit Data
+        </a>
+
+        <form action="{{ route('admin.submit-places.destroy', $submitPlace) }}" method="POST" class="inline">
             @csrf
-            @method('PATCH')
+            @method('DELETE')
             <button type="submit"
-                    onclick="return confirm('Apakah Anda yakin ingin menyetujui usulan tempat ini?')"
-                    class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
-                Setujui
-            </button>
-        </form>
-        <form action="{{ route('admin.submit-places.reject', $submitPlace) }}" method="POST" class="inline">
-            @csrf
-            @method('PATCH')
-            <button type="submit"
-                    onclick="return confirm('Apakah Anda yakin ingin menolak usulan tempat ini?')"
-                    class="px-6 py-2.5 bg-red-400 hover:bg-red-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
-                Tolak
+                    onclick="return confirm('Apakah Anda yakin ingin menghapus usulan tempat ini secara permanen?')"
+                    class="px-6 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
+                Hapus Permanen
             </button>
         </form>
     </div>
-@endif

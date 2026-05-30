@@ -68,6 +68,15 @@ Route::middleware(["auth", "role:admin"])
         Route::get("/submit-places/{submitPlace}", [AdminSubmitPlaceController::class, "show"])->name(
             "submit-places.show",
         );
+        Route::get("/submit-places/{submitPlace}/edit", [AdminSubmitPlaceController::class, "edit"])->name(
+            "submit-places.edit",
+        );
+        Route::put("/submit-places/{submitPlace}", [AdminSubmitPlaceController::class, "update"])->name(
+            "submit-places.update",
+        );
+        Route::delete("/submit-places/{submitPlace}", [AdminSubmitPlaceController::class, "destroy"])->name(
+            "submit-places.destroy",
+        );
         Route::patch("/submit-places/{submitPlace}/approve", [AdminSubmitPlaceController::class, "approve"])->name(
             "submit-places.approve",
         );

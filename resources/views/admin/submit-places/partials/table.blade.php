@@ -67,23 +67,21 @@
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
                             <a href="{{ route('admin.submit-places.show', $place) }}" 
-                                class="p-2 text-orange hover:text-white bg-orange-50 hover:bg-orange rounded-xl transition-all border border-rose-100 hover:border-orange cursor-pointer" 
-                                title="Lihat Detail">
+                                class="p-2 text-blue-500 hover:text-white bg-blue-50 hover:bg-blue-500 rounded-xl transition-all border border-blue-100 hover:border-blue-500 cursor-pointer" 
+                                title="Edit">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                             </a>
-                            
-                            @if($place->status === 'pending')
-                                <form action="{{ route('admin.submit-places.reject', $place) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" 
-                                            onclick="return confirm('Tolak usulan ini?')" 
-                                            class="p-2 text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-500 rounded-xl transition-all border border-rose-100 hover:border-rose-500 cursor-pointer" 
-                                            title="Tolak">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                    </button>
-                                </form>
-                            @endif
+
+                            <form action="{{ route('admin.submit-places.destroy', $place) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        onclick="return confirm('Hapus usulan ini secara permanen?')" 
+                                        class="p-2 text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-500 rounded-xl transition-all border border-rose-100 hover:border-rose-500 cursor-pointer" 
+                                        title="Hapus Permanen">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>

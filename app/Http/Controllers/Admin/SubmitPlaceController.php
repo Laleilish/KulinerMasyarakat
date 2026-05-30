@@ -10,6 +10,7 @@ use App\Models\SubmitPlace;
 use App\Notifications\PlaceApprovedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class SubmitPlaceController extends Controller
 {
@@ -70,6 +71,97 @@ class SubmitPlaceController extends Controller
         $submitPlace->load(['user', 'campus']);
 
         return view('admin.submit-places.show', compact('submitPlace'));
+    }
+
+    /**
+     * Show the form for editing the specified submitted place.
+     */
+    public function edit(SubmitPlace $submitPlace)
+    {
+        $campuses = Campus::orderBy('name')->get();
+        return view('admin.submit-places.edit', compact('submitPlace', 'campuses'));
+    }
+
+    /**
+     * Update the specified submitted place in storage.
+     */
+    public function update(Request $request, SubmitPlace $submitPlace)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'campus_id' => 'required|exists:campuses,id',
+            'category' => 'required|string|max:255',
+            'food_type' => 'nullable|string|max:255',
+            'description' => 'required|string',
+            'address' => 'required|string',
+            'open_hours' => 'nullable|string|max:255',
+            'price_range' => 'nullable|string|max:255',
+            'gmaps_link' => 'nullable|url|max:255',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'landmark' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            // Delete old photo
+            if ($submitPlace->photo) {
+                Storage::disk('public')->delete($submitPlace->photo);
+            }
+            $validated['photo'] = $request->file('photo')->store('submit-places', 'public');
+        } else {
+            unset($validated['photo']);
+        }
+
+        $isApproved = $submitPlace->status === 'approved';
+
+        $submitPlace->update($validated);
+
+        // Sync to Restaurant if already approved
+        if ($isApproved) {
+            $restaurant = Restaurant::where('user_id', $submitPlace->user_id)
+                ->where('campus_id', $submitPlace->campus_id)
+                ->first();
+
+            if ($restaurant) {
+                $syncData = [
+                    'name' => $submitPlace->name,
+                    'campus_id' => $submitPlace->campus_id,
+                    'category' => $submitPlace->category,
+                    'food_type' => $submitPlace->food_type,
+                    'description' => $submitPlace->description,
+                    'address' => $submitPlace->address,
+                    'open_hours' => $submitPlace->open_hours,
+                    'price_range' => $submitPlace->price_range,
+                    'gmaps_link' => $submitPlace->gmaps_link,
+                    'latitude' => $submitPlace->latitude,
+                    'longitude' => $submitPlace->longitude,
+                    'landmark' => $submitPlace->landmark,
+                ];
+
+                // Also sync photo if it was changed
+                if (isset($validated['photo'])) {
+                    $syncData['image'] = $submitPlace->photo;
+                }
+
+                $restaurant->update($syncData);
+            }
+        }
+
+        return redirect()->route('admin.submit-places.edit', $submitPlace)
+            ->with('success', 'Data berhasil diperbarui.' . ($isApproved ? ' Perubahan juga telah disinkronkan ke restoran yang terbit.' : ''));
+    }
+
+    /**
+     * Remove the specified submitted place from storage.
+     */
+    public function destroy(SubmitPlace $submitPlace)
+    {
+        $submitPlace->delete();
+
+        return redirect()->route('admin.submit-places.index')
+            ->with('success', 'Usulan tempat berhasil dihapus sepenuhnya.');
     }
 
     /**
