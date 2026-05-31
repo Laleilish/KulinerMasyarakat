@@ -5,6 +5,7 @@ use App\Http\Controllers\SubmitPlaceController;
 use App\Http\Controllers\Admin\SubmitPlaceController as AdminSubmitPlaceController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\HiddenGemController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/dashboard", function () {
@@ -91,9 +92,15 @@ Route::middleware(["auth", "role:admin"])
     });
 
 Route::get("/", [\App\Http\Controllers\HomeController::class, 'index'])->name("home");
-Route::get("/hidden-gem", fn() => view("hidden-gem.index"))->name(
-    "hidden-gem.index",
-);
+Route::get('/hidden-gem', [HiddenGemController::class, 'index'])
+    ->name('hidden-gem.index');
+Route::get('/hidden-gem/restaurants/{campusId}', [HiddenGemController::class, 'getRestaurants'])->name('hidden-gem.restaurants');
+Route::get('/semua-resto', [RestaurantController::class, 'index'])->name('semua-resto');
+Route::get('/tanggal-tua', fn() => view('tanggal-tua.index'))->name('tanggal-tua.index');
+Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');
+Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
+Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.index');
+
 Route::get("/tanggal-tua", fn() => view("tanggal-tua.index"))->name(
     "tanggal-tua.index",
 );

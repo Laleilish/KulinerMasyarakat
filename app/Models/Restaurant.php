@@ -24,6 +24,7 @@ class Restaurant extends Model
         'landmark',
         'landmark_photo',
         'status',
+        'rating',
     ];
 
     // ── Relationships ──

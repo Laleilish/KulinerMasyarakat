@@ -189,6 +189,7 @@ class SubmitPlaceController extends Controller
                 'landmark'       => $submitPlace->landmark,
                 'landmark_photo' => $submitPlace->landmark_photo,
                 'status'         => 'approved',
+                'rating'         => $submitPlace->initial_rating,
             ]);
 
             // Create initial review from the submitter
