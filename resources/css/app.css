@@ -141,3 +141,9 @@
     @apply bg-cream-bg font-sans;
   }
 }
+
+
+.leaflet-routing-container {
+  display: none !important;
+}
+

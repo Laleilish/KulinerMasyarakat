@@ -37,6 +37,7 @@ class RestaurantSeeder extends Seeder
                 'landmark' => 'Gerbang Utama UPI',
                 'landmark_photo' => null,
                 'status' => 'approved',
+                'rating' => 4.5,
             ],
             [
                 'user_id' => $user->id,
@@ -55,6 +56,7 @@ class RestaurantSeeder extends Seeder
                 'landmark' => 'Kantin Masjid Salman ITB',
                 'landmark_photo' => null,
                 'status' => 'approved',
+                'rating' => 4.8,
             ],
             [
                 'user_id' => $user->id,
@@ -73,6 +75,7 @@ class RestaurantSeeder extends Seeder
                 'landmark' => 'Dekat Gerbang Unpad Jatinangor',
                 'landmark_photo' => null,
                 'status' => 'approved',
+                'rating' => 4.2,
             ],
             [
                 'user_id' => $user->id,
@@ -91,6 +94,7 @@ class RestaurantSeeder extends Seeder
                 'landmark' => 'Gedung Tokong Nanas',
                 'landmark_photo' => null,
                 'status' => 'approved',
+                'rating' => 4.0,
             ],
             [
                 'user_id' => $user->id,
@@ -109,6 +113,7 @@ class RestaurantSeeder extends Seeder
                 'landmark' => 'Seberang Kampus Unpar',
                 'landmark_photo' => null,
                 'status' => 'approved',
+                'rating' => 4.7,
             ],
         ];
 
