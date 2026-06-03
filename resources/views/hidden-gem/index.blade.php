@@ -252,27 +252,20 @@
         }
         
 
-        // ═══════════════════════════════════════════════════════════
+        /// ═══════════════════════════════════════════════════════════
         // RENDER RESTAURANT MARKERS
         // ═══════════════════════════════════════════════════════════
         function renderRestaurantMarkers(campus, restaurants) {
             State.markerLayer.clearLayers();
 
-            // /Penanda User    
-            const gpsReady = State.userLat && State.userLng;
-
-            `<a href="javascript:void(0)" 
-                onclick="${gpsReady ? `startNavigation(${r.latitude}, ${r.longitude})` : `alert('Aktifkan GPS dulu')`}"
-                style="background:${gpsReady ? '#02b176' : '#aaa'};...">
-                🗺️ Navigasi
-            </a>`
-
             // Marker kampus
             const campusIcon = L.divIcon({
                 className: '',
                 html: `<div style="width:36px;height:36px;background:#F5A623;border-radius:12px;
-                                                               border:2.5px solid #fff;box-shadow:0 3px 10px rgba(245,166,35,0.4);
-                                                               display:flex;align-items:center;justify-content:center;font-size:18px;">🏫</div>`,
+                                border:2.5px solid #fff;box-shadow:0 3px 10px rgba(245,166,35,0.4);
+                                display:flex;align-items:center;justify-content:center;font-size:18px;">
+                        🏫
+                    </div>`,
                 iconSize: [36, 36],
                 iconAnchor: [18, 18],
             });
@@ -287,36 +280,50 @@
                 const restoIcon = L.divIcon({
                     className: '',
                     html: `<div style="width:32px;height:32px;background:#02b176;border-radius:50%;
-                                                                   border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.18);
-                                                                   display:flex;align-items:center;justify-content:center;font-size:15px;">🍜</div>`,
+                                    border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.18);
+                                    display:flex;align-items:center;justify-content:center;font-size:15px;">
+                            🍜
+                        </div>`,
                     iconSize: [32, 32],
                     iconAnchor: [16, 32],
                     popupAnchor: [0, -34],
                 });
 
+                const gpsReady = State.userLat && State.userLng;
+                const navBtnStyle = gpsReady
+                    ? 'background:#02b176;cursor:pointer;'
+                    : 'background:#aaa;cursor:not-allowed;';
+                const navBtnLabel = gpsReady
+                    ? '🗺️ Navigasi ke Sini'
+                    : '📍 Aktifkan GPS dulu';
+
                 const popupHTML = `
-                                                <div style="width:210px;font-family:'Plus Jakarta Sans',sans-serif;">
-                                                    <img src="${r.image}" alt="${r.name}"
-                                                         style="width:100%;height:90px;object-fit:cover;border-radius:10px;margin-bottom:8px;
-                                                                display:block;">
-                                                    <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:3px;">
-                                                        ${r.name}
-                                                    </div>
-                                                    <div style="font-size:11px;color:#5d6e86;margin-bottom:6px;">
-                                                        ${r.category} · ${r.distance}
-                                                    </div>
-                                                    <div style="display:flex;align-items:center;justify-content:space-between;
-                                                                margin-bottom:8px;">
-                                                        <span style="color:#F5A623;font-size:12px;font-weight:700;">★ ${r.rating}</span>
-                                                        <span style="font-size:11px;color:#5d6e86;">${r.price_range}</span>
-                                                    </div>
-                                                    <a href="javascript:void(0)" onclick="startNavigation(${r.latitude}, ${r.longitude})"
-                                                       style="display:flex;align-items:center;justify-content:center;gap:6px;
-                                                              background:#02b176;color:#fff;padding:8px;border-radius:99px;
-                                                              font-size:12px;font-weight:700;text-decoration:none;">
-                                                        🗺️ Navigasi
-                                                    </a>
-                                                </div>`;
+                    <div style="width:210px;font-family:'Plus Jakarta Sans',sans-serif;">
+                        <img src="${r.image}" alt="${r.name}"
+                            style="width:100%;height:90px;object-fit:cover;
+                                    border-radius:10px;margin-bottom:8px;display:block;">
+                        <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:3px;">
+                            ${r.name}
+                        </div>
+                        <div style="font-size:11px;color:#5d6e86;margin-bottom:6px;">
+                            ${r.category} · ${r.distance}
+                        </div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;
+                                    margin-bottom:8px;">
+                            <span style="color:#F5A623;font-size:12px;font-weight:700;">
+                                ★ ${r.rating}
+                            </span>
+                            <span style="font-size:11px;color:#5d6e86;">${r.price_range}</span>
+                        </div>
+                        <a href="javascript:void(0)"
+                        onclick="startNavigation(${r.latitude}, ${r.longitude})"
+                        style="display:flex;align-items:center;justify-content:center;gap:6px;
+                                ${navBtnStyle}
+                                color:#fff;padding:8px;border-radius:99px;
+                                font-size:12px;font-weight:700;text-decoration:none;">
+                            ${navBtnLabel}
+                        </a>
+                    </div>`;
 
                 L.marker([r.latitude, r.longitude], { icon: restoIcon })
                     .addTo(State.markerLayer)
@@ -328,36 +335,62 @@
         // NAVIGATION (ROUTING)
         // ═══════════════════════════════════════════════════════════
         function startNavigation(destLat, destLng) {
-            if (!State.userLat || !State.userLng) {
-                alert('Lokasi kamu belum terdeteksi. Silakan aktifkan GPS terlebih dahulu.');
-                return;
+            let fromLat = null;
+            let fromLng = null;
+            let fromLabel = '';
+
+            if (State.userLat && State.userLng) {
+                // GPS aktif atau lokasi manual yang sudah dipilih
+                fromLat = State.userLat;
+                fromLng = State.userLng;
+                fromLabel = '<b>Posisi Kamu</b>';
+
+            } else {
+                // Fallback ke koordinat kampus aktif
+                const campus = CAMPUSES.find(c => c.id === State.activeCampusId);
+                if (!campus) {
+                    alert('Pilih kampus atau masukkan lokasi kamu terlebih dahulu.');
+                    return;
+                }
+                fromLat = campus.latitude;
+                fromLng = campus.longitude;
+                fromLabel = `<b>Titik Awal: ${campus.name}</b>`;
             }
 
+            // Hapus rute lama
             if (State.routingControl) {
                 State.map.removeControl(State.routingControl);
+                State.routingControl = null;
             }
 
             State.routingControl = L.Routing.control({
                 waypoints: [
-                    L.latLng(State.userLat, State.userLng),
+                    L.latLng(fromLat, fromLng),
                     L.latLng(destLat, destLng)
                 ],
                 routeWhileDragging: false,
                 addWaypoints: false,
                 fitSelectedRoutes: true,
                 showAlternatives: false,
+                show: false,
+                collapsible: false,
                 lineOptions: {
-                    styles: [{color: '#02b176', opacity: 0.8, weight: 6}]
+                    styles: [{ color: '#02b176', opacity: 0.85, weight: 6 }]
                 },
-                createMarker: function() { return null; }, // Sembunyikan marker bawaan routing (karena kita sudah punya)
+                createMarker: function() { return null; },
                 router: L.Routing.osrmv1({
                     language: 'id',
-                    profile: 'car'
+                    profile: 'car',
+                    serviceUrl: 'https://router.project-osrm.org/route/v1'
                 })
             }).addTo(State.map);
 
-            // Scroll ke map section jika ada modal atau halaman berada di bawah
-            document.getElementById('map-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Render titik awal di peta
+            renderUserLocation(fromLat, fromLng, 30, fromLabel);
+
+            // Scroll ke peta
+            document.getElementById('map-section')
+                .scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // ═══════════════════════════════════════════════════════════
@@ -686,8 +719,14 @@
                 value: '',
                 error: true,
             });
-            document.getElementById('loc-input').placeholder = 'Cari lokasi atau kampus...';
-            // Default ke kampus pertama
+
+            // input supaya user langsung bisa ketik
+            const input = document.getElementById('loc-input');
+            input.placeholder = 'Ketik nama jalan, kelurahan, atau kampus...';
+            input.focus();
+            openDropdown();
+
+            // Default ke kampus pertama sebagai fallback peta
             selectCampus(CAMPUSES[0].id, false);
         }
 
@@ -896,10 +935,15 @@
                 if (type === 'campus') {
                     updateLocationBar({ label: 'Kampus dipilih', value: name });
                     await selectCampus(parseInt(id), true);
+
                 } else {
-                    // Lokasi dari Nominatim
                     const fLat = parseFloat(lat);
                     const fLng = parseFloat(lng);
+
+                    // ✅ SIMPAN ke State supaya navigasi bisa pakai koordinat ini
+                    State.userLat = fLat;
+                    State.userLng = fLng;
+
                     const nearest = detectNearestCampus(fLat, fLng);
                     const distText = nearest.dist < 1
                         ? `${Math.round(nearest.dist * 1000)}m ke ${nearest.name.split(' ')[0]}`
@@ -907,8 +951,7 @@
 
                     updateLocationBar({ label: distText, value: name });
 
-                    // Add the blue marker for the searched location
-                    renderUserLocation(fLat, fLng, 100, '<b>Lokasi yang Dicari</b>');
+                    renderUserLocation(fLat, fLng, 100, '<b>Lokasi Kamu</b>');
 
                     State.map.flyTo([fLat, fLng], 15, { duration: 1 });
                     await selectCampus(nearest.id, false);
