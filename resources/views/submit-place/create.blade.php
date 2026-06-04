@@ -7,7 +7,7 @@
             
             <!-- Left Side Information -->
             <div class="w-full md:w-1/2 flex justify-center md:justify-end">
-                <div class="max-w-md w-full">
+                <div class="max-w-md w-full text-center md:text-left">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-800 mb-2 tracking-tight">
                         Punya Info
                     </h1>
