@@ -43,6 +43,5 @@
         </div>
     </div>
 
-@include('submit-place.partials.scripts')
-
+    @include('submit-place.partials.scripts')
 @endsection

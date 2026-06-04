@@ -1,7 +1,7 @@
 <nav class="flex justify-between items-center px-4 md:px-8 py-3 bg-cream-bg shadow-navbar sticky top-0 z-50">
 
     {{-- Kiri --}}
-    <div class="flex items-center gap-">
+    <div class="flex items-center gap-4">
 
         {{-- Hamburger --}}
         <button id="hamburgerBtn" class="text-2xl md:hidden bg-transparent border-none cursor-pointer">☰</button>
