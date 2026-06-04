@@ -54,6 +54,19 @@
         }
 
         // ═══════════════════════════════════════════════════════════
+        // HITUNG JARAK RESTO DARI LOKASI USER (DINAMIS)
+        // ═══════════════════════════════════════════════════════════
+        function calcRestoDistance(rLat, rLng, fallback) {
+            if (State.userLat != null && State.userLng != null) {
+                const km = haversine(State.userLat, State.userLng, rLat, rLng);
+                if (km < 1)  return `${Math.round(km * 1000)} m`;
+                if (km < 10) return `${km.toFixed(1)} km`;
+                return `${Math.round(km)} km`;
+            }
+            return fallback || '—';
+        }
+
+        // ═══════════════════════════════════════════════════════════
         // DETECT NEAREST CAMPUS
         // ═══════════════════════════════════════════════════════════
         function detectNearestCampus(lat, lng) {
@@ -68,8 +81,8 @@
         // ═══════════════════════════════════════════════════════════
         function initMap() {
             State.map = L.map('leaflet-map', {
-                center: [-6.8612798, 107.5888298],
-                zoom: 15,
+                center: [-6.9, 107.61],
+                zoom: 12,
                 zoomControl: true,
                 scrollWheelZoom: false,
             });
@@ -163,8 +176,13 @@
             const labelEl = document.getElementById('loc-label');
             const input = document.getElementById('loc-input');
 
-            spinner.classList.toggle('hidden', !loading);
-            icon.classList.toggle('hidden', loading);
+            if (loading) {
+                spinner.classList.remove('hidden');
+                icon.classList.add('hidden');
+            } else {
+                spinner.classList.add('hidden');
+                icon.classList.remove('hidden');
+            }
 
             if (label) labelEl.textContent = label;
             if (value !== undefined && value !== null) input.value = value;
@@ -275,8 +293,14 @@
                 .bindPopup(`<b style="font-size:13px;">${campus.name}</b>`)
                 .openPopup();
 
+            // Cache data restoran secara global agar bisa diakses dari popup onclick
+            if (!window.__restoCache) window.__restoCache = {};
+
             // Marker restoran
             restaurants.forEach(r => {
+                // Simpan data ke cache global dengan key id restoran
+                window.__restoCache[r.id] = r;
+
                 const restoIcon = L.divIcon({
                     className: '',
                     html: `<div style="width:32px;height:32px;background:#02b176;border-radius:50%;
@@ -289,45 +313,58 @@
                     popupAnchor: [0, -34],
                 });
 
-                const gpsReady = State.userLat && State.userLng;
-                const navBtnStyle = gpsReady
-                    ? 'background:#02b176;cursor:pointer;'
-                    : 'background:#aaa;cursor:not-allowed;';
-                const navBtnLabel = gpsReady
-                    ? '🗺️ Navigasi ke Sini'
-                    : '📍 Aktifkan GPS dulu';
+                const ratingVal = r.rating != null ? parseFloat(r.rating).toFixed(1) : '—';
+                const distanceVal = calcRestoDistance(r.latitude, r.longitude, r.distance);
 
+                // Navigasi selalu aktif — startNavigation() sudah punya
+                // fallback ke kampus aktif jika GPS/lokasi belum dipilih
                 const popupHTML = `
-                    <div style="width:210px;font-family:'Plus Jakarta Sans',sans-serif;">
+                    <div style="width:220px;font-family:'Plus Jakarta Sans',sans-serif;">
                         <img src="${r.image}" alt="${r.name}"
                             style="width:100%;height:90px;object-fit:cover;
-                                    border-radius:10px;margin-bottom:8px;display:block;">
-                        <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:3px;">
+                                    border-radius:10px;margin-bottom:8px;display:block;"
+                            onerror="this.src='/assets/img/resto/default.png'">
+
+                        <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:2px;
+                                    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             ${r.name}
                         </div>
-                        <div style="font-size:11px;color:#5d6e86;margin-bottom:6px;">
-                            ${r.category} · ${r.distance}
+                        <div style="font-size:11px;color:#5d6e86;margin-bottom:5px;">
+                            ${r.category || '—'} &middot; ${distanceVal}
                         </div>
                         <div style="display:flex;align-items:center;justify-content:space-between;
-                                    margin-bottom:8px;">
+                                    margin-bottom:10px;">
                             <span style="color:#F5A623;font-size:12px;font-weight:700;">
-                                ★ ${r.rating}
+                                &#9733; ${ratingVal}
                             </span>
-                            <span style="font-size:11px;color:#5d6e86;">${r.price_range}</span>
+                            <span style="font-size:11px;color:#5d6e86;">${r.price_range || '—'}</span>
                         </div>
-                        <a href="javascript:void(0)"
-                        onclick="startNavigation(${r.latitude}, ${r.longitude})"
-                        style="display:flex;align-items:center;justify-content:center;gap:6px;
-                                ${navBtnStyle}
-                                color:#fff;padding:8px;border-radius:99px;
-                                font-size:12px;font-weight:700;text-decoration:none;">
-                            ${navBtnLabel}
-                        </a>
+
+                        <div style="display:flex;gap:6px;">
+                            <a href="javascript:void(0)"
+                               onclick="openModal(window.__restoCache[${r.id}])"
+                               style="flex:1;display:flex;align-items:center;justify-content:center;
+                                      gap:4px;background:#F5EDE0;color:#C07A2A;
+                                      padding:7px 4px;border-radius:99px;
+                                      font-size:11px;font-weight:700;text-decoration:none;
+                                      cursor:pointer;">
+                                &#128196; Detail
+                            </a>
+                            <a href="javascript:void(0)"
+                               onclick="startNavigation(${r.latitude}, ${r.longitude})"
+                               style="flex:2;display:flex;align-items:center;justify-content:center;
+                                      gap:4px;background:#02b176;color:#fff;
+                                      padding:7px 4px;border-radius:99px;
+                                      font-size:11px;font-weight:700;text-decoration:none;
+                                      cursor:pointer;">
+                                &#128507; Navigasi
+                            </a>
+                        </div>
                     </div>`;
 
                 L.marker([r.latitude, r.longitude], { icon: restoIcon })
                     .addTo(State.markerLayer)
-                    .bindPopup(popupHTML, { maxWidth: 230 });
+                    .bindPopup(popupHTML, { maxWidth: 240 });
             });
         }
 
@@ -420,7 +457,11 @@
                 return;
             }
 
-            const cardHTML = (r) => `
+            const cardHTML = (r) => {
+                const ratingStr = r.rating != null ? parseFloat(r.rating).toFixed(1) : '—';
+                const distStr = calcRestoDistance(r.latitude, r.longitude, r.distance);
+                const priceStr = r.price_range || '—';
+                return `
                                 <div class="top-resto-card bg-white rounded-[16px] overflow-hidden
                                             border border-black/[0.05]
                                             shadow-[0_2px_8px_rgba(0,0,0,0.08)]
@@ -431,7 +472,6 @@
                                             active:scale-[0.98]"
                                      data-resto='${JSON.stringify(r).replace(/'/g, "&#39;")}'>
 
-                                    {{-- Image --}}
                                     <div class="relative w-full h-[130px] overflow-hidden">
                                         <img src="${r.image}"
                                              alt="${r.name}"
@@ -439,7 +479,6 @@
                                                     transition-transform duration-300"
                                              onerror="this.src='/assets/img/resto/default.png'">
 
-                                        {{-- Rating badge --}}
                                         <div class="absolute top-2 right-2">
                                             <span style="
                                                 display:inline-flex;align-items:center;gap:3px;
@@ -448,7 +487,7 @@
                                                 padding:3px 7px;border-radius:99px;
                                                 backdrop-filter:blur(4px);
                                             ">
-                                                ★ ${parseFloat(r.rating).toFixed(1)}
+                                                ★ ${ratingStr}
                                             </span>
                                         </div>
 
@@ -462,7 +501,6 @@
                                         </div>` : ''}
                                     </div>
 
-                                    {{-- Body --}}
                                     <div style="padding:10px 12px 12px;">
                                         <p style="
                                             font-size:12px;font-weight:800;
@@ -473,19 +511,20 @@
                                         ">${r.name}</p>
 
                                         <p style="font-size:11px;color:#5d6e86;margin-bottom:7px;">
-                                            ${r.category}
+                                            ${r.category || '—'}
                                         </p>
 
                                         <div style="display:flex;align-items:center;justify-content:space-between;">
                                             <span style="font-size:11px;color:#02b176;font-weight:700;">
-                                                <i class="fas fa-location-dot text-[9px]"></i> ${r.distance}
+                                                <i class="fas fa-location-dot text-[9px]"></i> ${distStr}
                                             </span>
                                             <span style="font-size:10px;color:#5d6e86;">
-                                                ${r.price_range}
+                                                ${priceStr}
                                             </span>
                                         </div>
                                     </div>
                                 </div>`;
+            };
 
             grid.innerHTML = `
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -529,7 +568,11 @@
                 return;
             }
 
-            track.innerHTML = restaurants.map((r, index) => `
+            track.innerHTML = restaurants.map((r, index) => {
+                const ratingStr = r.rating != null ? parseFloat(r.rating).toFixed(1) : '—';
+                const distStr = calcRestoDistance(r.latitude, r.longitude, r.distance);
+                const descStr = r.description || '';
+                return `
                     <div class="featured-slide flex-shrink-0 snap-start
                     w-[calc(100vw-48px)] md:w-[760px] max-w-none">
 
@@ -539,7 +582,8 @@
 
                     <div class="relative w-full h-[160px] md:h-[220px] overflow-hidden">
                         <img src="${r.image}"
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         onerror="this.src='/assets/img/resto/default.png'">
 
                                 <div class="absolute inset-0
                                             bg-gradient-to-t
@@ -559,7 +603,7 @@
                                     <span class="bg-black/30 text-white
                                                  text-[11px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        ★ ${parseFloat(r.rating).toFixed(1)}
+                                        ★ ${ratingStr}
                                     </span>
                                 </div>
                             </div>
@@ -572,26 +616,27 @@
 
                                 <p class="text-white/80 text-[12px]
                                           line-clamp-2 mb-3">
-                                    ${r.description}
+                                    ${descStr}
                                 </p>
 
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <span class="bg-white/20 text-white
                                                  text-[10px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        📍 ${r.distance}
+                                        📍 ${distStr}
                                     </span>
 
                                     <span class="bg-white/20 text-white
                                                  text-[10px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        ${r.category}
+                                        ${r.category || '—'}
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `;
+            }).join('');
 
             dots.innerHTML = restaurants.map((_, i) => `
                     <button class="carousel-dot
@@ -715,19 +760,16 @@
 
         function handleGPSFallback(reason) {
             updateLocationBar({
-                label: reason + ' — ketik lokasi manual',
+                label: reason + ' — ketik lokasi atau pilih kampus',
                 value: '',
                 error: true,
             });
 
-            // input supaya user langsung bisa ketik
+            // Buka dropdown supaya user bisa ketik atau pilih kampus
             const input = document.getElementById('loc-input');
             input.placeholder = 'Ketik nama jalan, kelurahan, atau kampus...';
             input.focus();
             openDropdown();
-
-            // Default ke kampus pertama sebagai fallback peta
-            selectCampus(CAMPUSES[0].id, false);
         }
 
         // ═══════════════════════════════════════════════════════════
@@ -851,10 +893,12 @@
             document.getElementById('modal-image').src = r.image;
             document.getElementById('modal-name').textContent = r.name;
             document.getElementById('modal-category').textContent = r.category;
-            document.getElementById('modal-rating').textContent = `★ ${r.rating}`;
-            document.getElementById('modal-distance').textContent = r.distance;
-            document.getElementById('modal-desc').textContent = r.description;
-            document.getElementById('modal-price').textContent = r.price_range;
+            const modalRating = r.rating != null ? `★ ${parseFloat(r.rating).toFixed(1)}` : '★ —';
+            const modalDist   = calcRestoDistance(r.latitude, r.longitude, r.distance);
+            document.getElementById('modal-rating').textContent   = modalRating;
+            document.getElementById('modal-distance').textContent = modalDist;
+            document.getElementById('modal-desc').textContent     = r.description || '';
+            document.getElementById('modal-price').textContent    = r.price_range || '—';
             
             const navBtn = document.getElementById('modal-nav-btn');
             navBtn.href = "javascript:void(0)";
@@ -972,8 +1016,8 @@
                 window.location.href = '{{ route("semua-resto") }}';
             });
 
-            // ── Start GPS ──
-            detectUserLocation();
+            // GPS tidak dijalankan otomatis;
+            // user klik tombol GPS atau pilih kampus secara manual
         });
     </script>
 @endpush
