@@ -210,12 +210,24 @@
         // HITUNG JARAK RESTO DARI LOKASI USER (DINAMIS)
         // ═══════════════════════════════════════════════════════════
         function calcRestoDistance(rLat, rLng, fallback) {
+            let baseLat = null;
+            let baseLng = null;
+
             if (State.userLat != null && State.userLng != null) {
-                const km = haversine(State.userLat, State.userLng, rLat, rLng);
+                baseLat = State.userLat;
+                baseLng = State.userLng;
+            } else if (State.currentCampus != null) {
+                baseLat = State.currentCampus.latitude;
+                baseLng = State.currentCampus.longitude;
+            }
+
+            if (baseLat != null && baseLng != null) {
+                const km = haversine(baseLat, baseLng, rLat, rLng);
                 if (km < 1)  return `${Math.round(km * 1000)} m`;
                 if (km < 10) return `${km.toFixed(1)} km`;
                 return `${Math.round(km)} km`;
             }
+
             return fallback || '—';
         }
 
@@ -805,7 +817,11 @@
         // SELECT CAMPUS
         // ═══════════════════════════════════════════════════════════
         async function selectCampus(campusId, scroll = true) {
-            if (State.activeCampusId === campusId) return;
+            if (State.activeCampusId === campusId) {
+                // Jika kampus yang sama diklik lagi, batalkan pemilihan (reset ke default)
+                window.location.reload();
+                return;
+            }
             State.activeCampusId = campusId;
 
             // ← Tambah ini: update location bar saat kampus diklik
