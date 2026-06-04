@@ -13,16 +13,20 @@ class HiddenGemController extends Controller
     private function mapRestaurant($r): array
     {
         return [
-            'id' => $r->id,
-            'name' => $r->name,
-            'image' => asset('assets/img/resto/' . $r->image),
+            'id'          => $r->id,
+            'name'        => $r->name,
+            'image'       => asset('assets/img/resto/' . $r->image),
             'description' => $r->description ?? '',
-            'rating' => $r->rating,
-            'distance' => $r->distance,
+            'rating'      => $r->rating,
+            'distance'    => $r->distance,
             'price_range' => $r->price_range,
-            'category' => $r->category,
-            'latitude' => (float) $r->latitude,
-            'longitude' => (float) $r->longitude,
+            'category'    => $r->category,
+            'food_type'   => $r->food_type,
+            'address'     => $r->address,
+            'open_hours'  => $r->open_hours,
+            'gmaps_link'  => $r->gmaps_link,
+            'latitude'    => (float) $r->latitude,
+            'longitude'   => (float) $r->longitude,
             'is_featured' => $r->is_featured,
         ];
     }

@@ -11,6 +11,157 @@
     @include('hidden-gem.kampus')
     @include('hidden-gem.map')
     @include('hidden-gem.rating')
+
+    {{-- ═══════════════════════════════════════════════════════════
+         FULLSCREEN MAP MODAL
+    ═══════════════════════════════════════════════════════════ --}}
+    <div id="fs-map-modal"
+         class="hidden fixed inset-0 z-[3000] bg-white flex flex-col"
+         style="padding-top:env(safe-area-inset-top)">
+
+        {{-- Header --}}
+        <div class="flex items-center gap-3 px-4 py-3 bg-white border-b border-black/[0.06] z-10 flex-shrink-0">
+            <button onclick="closeFullscreenMap()"
+                    class="w-9 h-9 rounded-full bg-black/[0.06] flex items-center
+                           justify-center hover:bg-black/10 transition-colors duration-150">
+                <i class="fas fa-arrow-left text-[14px] text-dark"></i>
+            </button>
+            <div class="flex-1 min-w-0">
+                <p class="text-[10px] text-muted font-semibold uppercase tracking-wider leading-none mb-[2px]">Peta</p>
+                <h3 id="fs-campus-name" class="text-[14px] font-extrabold text-dark truncate">
+                    Pilih kampus terlebih dahulu
+                </h3>
+            </div>
+        </div>
+
+        {{-- Category filter chips --}}
+        <div id="fs-filter-bar"
+             class="flex gap-2 px-4 py-[10px] overflow-x-auto [scrollbar-width:none]
+                    [&::-webkit-scrollbar]:hidden flex-shrink-0 bg-white
+                    border-b border-black/[0.04]">
+            <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
+                           font-bold bg-[#F5A623] text-white transition-all duration-150"
+                    data-filter="all">Semua</button>
+        </div>
+
+        {{-- Map area --}}
+        <div class="flex-1 relative overflow-hidden">
+            <div id="fs-leaflet-map" class="w-full h-full z-0"></div>
+
+            {{-- GPS floating button --}}
+            <button onclick="fsDetectGPS()"
+                    class="absolute bottom-5 right-4 z-[400]
+                           w-14 h-14 rounded-full
+                           bg-[#F5A623] shadow-[0_4px_20px_rgba(245,166,35,0.5)]
+                           flex items-center justify-center
+                           hover:scale-110 active:scale-95 transition-transform duration-150">
+                <i class="fas fa-crosshairs text-white text-[20px]"></i>
+            </button>
+        </div>
+
+        {{-- Bottom Sheet --}}
+        <div id="fs-bottom-sheet"
+             class="hidden absolute bottom-0 left-0 right-0 z-[500]
+                    bg-white rounded-t-[28px]
+                    shadow-[0_-8px_40px_rgba(0,0,0,0.18)]"
+             style="max-height:72vh;overflow-y:auto;">
+
+            {{-- Drag handle --}}
+            <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
+                <div class="w-10 h-[4px] rounded-full bg-black/15"></div>
+            </div>
+
+            {{-- Tombol tutup --}}
+            <button onclick="fsCloseBottomSheet()"
+                    class="absolute top-4 right-4 w-8 h-8 bg-black/10
+                           rounded-full flex items-center justify-center
+                           hover:bg-black/20 transition-colors z-10">
+                <i class="fas fa-xmark text-[13px] text-dark"></i>
+            </button>
+
+            {{-- Hero image --}}
+            <div class="relative w-full h-[160px] overflow-hidden flex-shrink-0">
+                <img id="fs-bs-image" src="" alt=""
+                     class="w-full h-full object-cover"
+                     onerror="this.src='/assets/img/resto/default.png'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4">
+                    <h2 id="fs-bs-name" class="text-white text-[17px] font-extrabold leading-tight mb-[6px]"></h2>
+                    <div class="flex items-center gap-3">
+                        <span id="fs-bs-rating" class="text-[#FFD700] text-[13px] font-bold"></span>
+                        <span id="fs-bs-distance" class="text-white/80 text-[12px]"></span>
+                        <button id="fs-bs-nav-btn"
+                                class="ml-auto flex items-center gap-2 bg-[#02b176] text-white
+                                       px-4 py-[7px] rounded-full text-[12px] font-extrabold
+                                       hover:brightness-110 active:scale-95 transition-all duration-150">
+                            <i class="fas fa-diamond-turn-right text-[11px]"></i>
+                            Navigasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Content body --}}
+            <div class="px-5 py-4 space-y-4">
+
+                {{-- About --}}
+                <div>
+                    <h3 class="text-[14px] font-extrabold text-dark mb-[6px]">About</h3>
+                    <p id="fs-bs-desc" class="text-[12px] text-muted leading-[1.75]"></p>
+                </div>
+
+                <hr class="border-black/[0.06]">
+
+                {{-- Info Detail --}}
+                <div>
+                    <h3 class="text-[14px] font-extrabold text-dark mb-3">Info Detail</h3>
+                    <div class="space-y-3">
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-location-dot text-[#C07A2A] text-[13px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Alamat</p>
+                                <p id="fs-bs-address" class="text-[12px] text-dark font-medium leading-[1.55]"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clock text-[#C07A2A] text-[13px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Jam Buka</p>
+                                <p id="fs-bs-hours" class="text-[12px] text-dark font-medium"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-tag text-[#C07A2A] text-[13px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Kisaran Harga</p>
+                                <p id="fs-bs-price" class="text-[12px] text-dark font-medium"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {{-- Google Maps link --}}
+                <a id="fs-bs-gmaps" href="#" target="_blank" rel="noopener"
+                   class="flex items-center justify-center gap-2 w-full py-3 rounded-full
+                          border-2 border-[#02b176] text-[#02b176] text-[13px] font-bold
+                          hover:bg-[#02b176] hover:text-white transition-all duration-200">
+                    <i class="fas fa-map text-[13px]"></i>
+                    Lihat di Google Maps
+                </a>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -38,6 +189,8 @@
             searchTimer: null,
             isDropdownOpen: false,
             routingControl: null,
+            currentCampus: null,
+            currentRestaurants: [],
         };
 
         // ═══════════════════════════════════════════════════════════
@@ -693,6 +846,15 @@
                     updateFeaturedCarousel(data.featuredRestaurants);
                 }
 
+                // Simpan data aktif untuk dipakai fullscreen map
+                State.currentCampus      = data.campus;
+                State.currentRestaurants = data.restaurants;
+
+                // Sync fullscreen map jika sedang terbuka
+                if (!document.getElementById('fs-map-modal').classList.contains('hidden')) {
+                    fsOpenWithData(data.campus, data.restaurants);
+                }
+
                 document.getElementById('map-subtitle').textContent =
                     `${data.campus.name} · ${data.restaurants.length} hidden gem`;
 
@@ -933,9 +1095,256 @@
         }
 
         // ═══════════════════════════════════════════════════════════
+        // FULLSCREEN MAP
+        // ═══════════════════════════════════════════════════════════
+        const FsState = {
+            map: null,
+            markerLayer: null,
+            userMarker: null,
+            accuracyCircle: null,
+            routingControl: null,
+            activeFilter: 'all',
+            currentResto: null,
+            initialized: false,
+        };
+
+        // Buka fullscreen map
+        function openFullscreenMap() {
+            const modal = document.getElementById('fs-map-modal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            // Lazy-init Leaflet map
+            if (!FsState.initialized) {
+                setTimeout(() => {
+                    FsState.map = L.map('fs-leaflet-map', {
+                        center: State.currentCampus
+                            ? [State.currentCampus.latitude, State.currentCampus.longitude]
+                            : [-6.9, 107.61],
+                        zoom: State.currentCampus ? (State.currentCampus.zoom || 15) : 12,
+                        zoomControl: true,
+                        scrollWheelZoom: true,
+                    });
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap',
+                        maxZoom: 19,
+                    }).addTo(FsState.map);
+
+                    FsState.markerLayer = L.layerGroup().addTo(FsState.map);
+                    FsState.initialized = true;
+
+                    if (State.currentCampus && State.currentRestaurants.length) {
+                        fsOpenWithData(State.currentCampus, State.currentRestaurants);
+                    }
+                }, 80);
+            } else {
+                setTimeout(() => FsState.map.invalidateSize(), 100);
+                if (State.currentCampus && State.currentRestaurants.length) {
+                    fsOpenWithData(State.currentCampus, State.currentRestaurants);
+                }
+            }
+        }
+
+        // Tutup fullscreen map
+        function closeFullscreenMap() {
+            document.getElementById('fs-map-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+            fsCloseBottomSheet();
+        }
+
+        // Sync fullscreen map dengan data kampus
+        function fsOpenWithData(campus, restaurants) {
+            document.getElementById('fs-campus-name').textContent = campus.name;
+
+            fsBuildFilterChips(restaurants);
+            fsRenderMarkers(restaurants, FsState.activeFilter);
+
+            if (FsState.map) {
+                FsState.map.flyTo([campus.latitude, campus.longitude], campus.zoom || 15, { duration: 0.8 });
+            }
+
+            // Tampilkan user marker jika ada
+            if (State.userLat && State.userLng) {
+                fsPlaceUserMarker(State.userLat, State.userLng);
+            }
+        }
+
+        // Buat filter chip dari kategori restoran
+        function fsBuildFilterChips(restaurants) {
+            const bar = document.getElementById('fs-filter-bar');
+            const categories = [...new Set(restaurants.map(r => r.category).filter(Boolean))];
+
+            bar.innerHTML = `
+                <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
+                               font-bold transition-all duration-150
+                               ${FsState.activeFilter === 'all'
+                                   ? 'bg-[#F5A623] text-white'
+                                   : 'bg-black/[0.06] text-dark'}"
+                        data-filter="all">Semua</button>
+                ${categories.map(cat => `
+                    <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
+                                   font-bold transition-all duration-150
+                                   ${FsState.activeFilter === cat
+                                       ? 'bg-[#F5A623] text-white'
+                                       : 'bg-black/[0.06] text-dark'}"
+                            data-filter="${cat}">${cat}</button>
+                `).join('')}
+            `;
+
+            bar.querySelectorAll('.fs-chip').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    FsState.activeFilter = btn.dataset.filter;
+                    fsBuildFilterChips(State.currentRestaurants);
+                    fsRenderMarkers(State.currentRestaurants, FsState.activeFilter);
+                });
+            });
+        }
+
+        // Render marker di fullscreen map (dengan filter)
+        function fsRenderMarkers(restaurants, filter) {
+            if (!FsState.map || !FsState.markerLayer) return;
+            FsState.markerLayer.clearLayers();
+
+            // Campus marker
+            if (State.currentCampus) {
+                const campusIcon = L.divIcon({
+                    className: '',
+                    html: `<div style="width:34px;height:34px;background:#F5A623;border-radius:10px;
+                                      border:2.5px solid #fff;box-shadow:0 3px 10px rgba(245,166,35,0.4);
+                                      display:flex;align-items:center;justify-content:center;font-size:17px;">
+                               🏫
+                           </div>`,
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17],
+                });
+                L.marker([State.currentCampus.latitude, State.currentCampus.longitude],
+                    { icon: campusIcon })
+                    .addTo(FsState.markerLayer)
+                    .bindPopup(`<b style="font-size:13px;">${State.currentCampus.name}</b>`);
+            }
+
+            // Restaurant markers
+            const filtered = filter === 'all'
+                ? restaurants
+                : restaurants.filter(r => r.category === filter);
+
+            filtered.forEach(r => {
+                const icon = L.divIcon({
+                    className: '',
+                    html: `<div style="width:32px;height:32px;background:#02b176;border-radius:50%;
+                                      border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);
+                                      display:flex;align-items:center;justify-content:center;font-size:15px;">
+                               🍜
+                           </div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -36],
+                });
+
+                L.marker([r.latitude, r.longitude], { icon })
+                    .addTo(FsState.markerLayer)
+                    .on('click', () => fsOpenBottomSheet(r));
+            });
+        }
+
+        // Buka bottom sheet dengan data restoran
+        function fsOpenBottomSheet(r) {
+            FsState.currentResto = r;
+
+            const ratingStr = r.rating != null ? `★ ${parseFloat(r.rating).toFixed(1)}` : '★ —';
+            const distStr   = calcRestoDistance(r.latitude, r.longitude, r.distance);
+
+            document.getElementById('fs-bs-image').src           = r.image;
+            document.getElementById('fs-bs-image').alt           = r.name;
+            document.getElementById('fs-bs-name').textContent    = r.name;
+            document.getElementById('fs-bs-rating').textContent  = ratingStr;
+            document.getElementById('fs-bs-distance').textContent = distStr;
+            document.getElementById('fs-bs-desc').textContent    = r.description || 'Tidak ada deskripsi.';
+            document.getElementById('fs-bs-address').textContent = r.address || '—';
+            document.getElementById('fs-bs-hours').textContent   = r.open_hours || '—';
+            document.getElementById('fs-bs-price').textContent   = r.price_range || '—';
+
+            // Google Maps link
+            const gmapsEl = document.getElementById('fs-bs-gmaps');
+            if (r.gmaps_link) {
+                gmapsEl.href = r.gmaps_link;
+                gmapsEl.classList.remove('hidden');
+            } else {
+                gmapsEl.href = `https://www.google.com/maps?q=${r.latitude},${r.longitude}`;
+                gmapsEl.classList.remove('hidden');
+            }
+
+            // Navigasi button
+            document.getElementById('fs-bs-nav-btn').onclick = () => {
+                closeFullscreenMap();
+                startNavigation(r.latitude, r.longitude);
+            };
+
+            const sheet = document.getElementById('fs-bottom-sheet');
+            sheet.classList.remove('hidden');
+
+            // Geser peta sedikit ke atas supaya marker tidak tertutup bottom sheet
+            if (FsState.map) {
+                FsState.map.panTo([r.latitude, r.longitude], { animate: true });
+            }
+        }
+
+        // Tutup bottom sheet
+        function fsCloseBottomSheet() {
+            document.getElementById('fs-bottom-sheet').classList.add('hidden');
+            FsState.currentResto = null;
+        }
+
+        // Tempatkan user marker di fullscreen map
+        function fsPlaceUserMarker(lat, lng) {
+            if (!FsState.map) return;
+
+            if (FsState.userMarker) FsState.userMarker.remove();
+            if (FsState.accuracyCircle) FsState.accuracyCircle.remove();
+
+            FsState.accuracyCircle = L.circle([lat, lng], {
+                radius: 60, color: '#3B82F6', fillColor: '#3B82F6', fillOpacity: 0.08, weight: 1,
+            }).addTo(FsState.map);
+
+            const userIcon = L.divIcon({
+                className: '',
+                html: `<div style="width:16px;height:16px;background:#3B82F6;border-radius:50%;
+                                   border:2.5px solid #fff;box-shadow:0 2px 6px rgba(59,130,246,0.5);
+                                   animation:userPulse 2s ease-in-out infinite;"></div>`,
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
+            });
+
+            FsState.userMarker = L.marker([lat, lng], { icon: userIcon })
+                .addTo(FsState.map)
+                .bindPopup('<b>Lokasi Kamu</b>');
+        }
+
+        // GPS di fullscreen map
+        function fsDetectGPS() {
+            if (!navigator.geolocation) {
+                alert('GPS tidak didukung di perangkat ini.');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const { latitude: lat, longitude: lng } = pos.coords;
+                    State.userLat = lat;
+                    State.userLng = lng;
+                    fsPlaceUserMarker(lat, lng);
+                    if (FsState.map) FsState.map.flyTo([lat, lng], 16, { duration: 0.8 });
+                },
+                () => alert('Tidak dapat mendeteksi GPS. Coba izinkan akses lokasi.'),
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // ═══════════════════════════════════════════════════════════
         // EVENT LISTENERS
         // ═══════════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', () => {
+
             initMap();
 
             // ── Kampus click ──

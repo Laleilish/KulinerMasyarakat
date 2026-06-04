@@ -28,5 +28,17 @@
 
         <div id="leaflet-map" class="w-full h-[240px] md:h-[420px] lg:h-[520px] xl:h-[620px] z-0">
         </div>
+
+        {{-- Tap-to-expand overlay (mobile-friendly) --}}
+        <button id="map-expand-btn"
+                onclick="openFullscreenMap()"
+                class="absolute bottom-3 right-3 z-[100]
+                       w-10 h-10 rounded-full
+                       bg-white shadow-[0_2px_12px_rgba(0,0,0,0.18)]
+                       flex items-center justify-center
+                       hover:scale-110 transition-transform duration-200"
+                title="Buka Peta Penuh">
+            <i class="fas fa-expand-alt text-[14px] text-dark"></i>
+        </button>
     </div>
 </section>
