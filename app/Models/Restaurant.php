@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -27,12 +28,15 @@ class Restaurant extends Model
         'rating',
     ];
 
-    // ── Relationships ──
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
 
-    // Scope featured
-    public function scopeFeatured($query)
+    public function user(): BelongsTo
     {
-        return $query->where('is_featured', true);
+        return $this->belongsTo(User::class);
     }
 
     public function campus(): BelongsTo
@@ -50,14 +54,27 @@ class Restaurant extends Model
         return $this->hasMany(Food::class);
     }
 
-    // ── Scopes ──
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
 
     public function scopeApproved($query)
     {
         return $query->where('status', 'approved');
     }
 
-    // ── Accessors ──
+    /*
+    |--------------------------------------------------------------------------
+    | Accessors
+    |--------------------------------------------------------------------------
+    */
 
     public function getAverageRatingAttribute(): float
     {

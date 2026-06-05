@@ -7,19 +7,17 @@ use Illuminate\Database\Eloquent\Collection;
 
 class RestaurantService
 {
-    /**
-     * Get restaurant detail with all related data.
-     */
     public function getDetail(Restaurant $restaurant): Restaurant
     {
-        $restaurant->load(['reviews.user', 'campus', 'user']);
+        $restaurant->load([
+            'user',
+            'campus',
+            'reviews.user'
+        ]);
 
         return $restaurant;
     }
 
-    /**
-     * Get related restaurants from the same campus.
-     */
     public function getRelated(Restaurant $restaurant, int $limit = 5): Collection
     {
         return Restaurant::approved()

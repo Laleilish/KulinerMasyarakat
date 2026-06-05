@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use App\Services\RestaurantService;
+use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
@@ -14,12 +15,14 @@ class RestaurantController extends Controller
         $this->restaurantService = $restaurantService;
     }
 
-    /**
-     * Display the specified restaurant.
-     */
+    public function index()
+    {
+        $restaurants = Restaurant::latest()->paginate(12);
+        return view('restaurants.index', compact('restaurants'));
+    }
+
     public function show(Restaurant $restaurant)
     {
-        // Only show approved restaurants
         if ($restaurant->status !== 'approved') {
             abort(404);
         }
@@ -27,30 +30,18 @@ class RestaurantController extends Controller
         $restaurant = $this->restaurantService->getDetail($restaurant);
         $relatedRestaurants = $this->restaurantService->getRelated($restaurant);
 
-        // Check if current user has already reviewed
         $hasReviewed = false;
+
         if (auth()->check()) {
             $hasReviewed = $restaurant->reviews
                 ->where('user_id', auth()->id())
                 ->isNotEmpty();
         }
 
-        return view('restorant.show', compact('restaurant', 'relatedRestaurants', 'hasReviewed'));
-    }
-}
-
-<?php
-
-namespace App\Http\Controllers;
-
-use App\Models\Restaurant;
-use Illuminate\Http\Request;
-
-class RestaurantController extends Controller
-{
-    public function index()
-    {
-        $restaurants = Restaurant::latest()->paginate(12);
-        return view('restaurants.index', compact('restaurants'));
+        return view('restorant.show', compact(
+            'restaurant',
+            'relatedRestaurants',
+            'hasReviewed'
+        ));
     }
 }

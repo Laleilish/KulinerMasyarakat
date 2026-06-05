@@ -816,7 +816,7 @@
         // ═══════════════════════════════════════════════════════════
         // SELECT CAMPUS
         // ═══════════════════════════════════════════════════════════
-        async function selectCampus(campusId, scroll = true) {
+        async function selectCampus(campusId, scroll = true, updateSearchText = true) {
             if (State.activeCampusId === campusId) {
                 // Jika kampus yang sama diklik lagi, batalkan pemilihan (reset ke default)
                 window.location.reload();
@@ -825,12 +825,14 @@
             State.activeCampusId = campusId;
 
             // ← Tambah ini: update location bar saat kampus diklik
-            const campus = CAMPUSES.find(c => c.id === campusId);
-            if (campus) {
-                updateLocationBar({
-                    label: 'Kampus dipilih',
-                    value: campus.name,
-                });
+            if (updateSearchText) {
+                const campus = CAMPUSES.find(c => c.id === campusId);
+                if (campus) {
+                    updateLocationBar({
+                        label: 'Kampus dipilih',
+                        value: campus.name,
+                    });
+                }
             }
 
             // Update active state UI kampus
@@ -926,7 +928,7 @@
                         value: placeName || nearest.name,
                     });
 
-                    await selectCampus(nearest.id, false);
+                    await selectCampus(nearest.id, false, false);
                 },
                 (err) => {
                     const msgs = { 1: 'Izin ditolak', 2: 'Lokasi tidak tersedia', 3: 'Timeout' };
@@ -1365,7 +1367,7 @@
 
             // ── Kampus click ──
             document.querySelectorAll('.kampus-item').forEach(el => {
-                el.addEventListener('click', () => selectCampus(parseInt(el.dataset.id), true));
+                el.addEventListener('click', () => selectCampus(parseInt(el.dataset.id), true, true));
             });
 
             // ── Search input ──
@@ -1376,7 +1378,16 @@
             input.addEventListener('input', (e) => handleSearchInput(e.target.value.trim()));
 
             input.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') { closeDropdown(); input.blur(); }
+                if (e.key === 'Escape') { 
+                    closeDropdown(); 
+                    input.blur(); 
+                } else if (e.key === 'Enter') {
+                    e.preventDefault(); // Mencegah reload halaman
+                    const firstItem = document.querySelector('.dropdown-item:not(.hidden)');
+                    if (firstItem) {
+                        firstItem.click();
+                    }
+                }
             });
 
             // ── Clear button ──
@@ -1393,39 +1404,42 @@
 
             // ── Dropdown item click ──
             document.getElementById('loc-dropdown').addEventListener('click', async (e) => {
-                const item = e.target.closest('.dropdown-item');
-                if (!item) return;
+            const item = e.target.closest('.dropdown-item');
+            if (!item) return;
 
-                const { type, id, lat, lng, name } = item.dataset;
-                input.value = name;
-                document.getElementById('loc-clear').classList.remove('hidden');
-                closeDropdown();
+            const { type, id, lat, lng, name } = item.dataset;
+            input.value = name;
+            document.getElementById('loc-clear').classList.remove('hidden');
+            closeDropdown();
 
-                if (type === 'campus') {
-                    updateLocationBar({ label: 'Kampus dipilih', value: name });
-                    await selectCampus(parseInt(id), true);
+            if (type === 'campus') {
+                updateLocationBar({ label: 'Kampus dipilih', value: name });
 
-                } else {
-                    const fLat = parseFloat(lat);
-                    const fLng = parseFloat(lng);
+                // Reset dulu supaya tidak ter-skip
+                State.activeCampusId = null;
+                await selectCampus(parseInt(id), true, false);
 
-                    // ✅ SIMPAN ke State supaya navigasi bisa pakai koordinat ini
-                    State.userLat = fLat;
-                    State.userLng = fLng;
+            } else {
+                const fLat = parseFloat(lat);
+                const fLng = parseFloat(lng);
 
-                    const nearest = detectNearestCampus(fLat, fLng);
-                    const distText = nearest.dist < 1
-                        ? `${Math.round(nearest.dist * 1000)}m ke ${nearest.name.split(' ')[0]}`
-                        : `${nearest.dist.toFixed(1)}km ke ${nearest.name.split(' ')[0]}`;
+                State.userLat = fLat;
+                State.userLng = fLng;
 
-                    updateLocationBar({ label: distText, value: name });
+                const nearest = detectNearestCampus(fLat, fLng);
+                const distText = nearest.dist < 1
+                    ? `${Math.round(nearest.dist * 1000)}m ke ${nearest.name.split(' ')[0]}`
+                    : `${nearest.dist.toFixed(1)}km ke ${nearest.name.split(' ')[0]}`;
 
-                    renderUserLocation(fLat, fLng, 100, '<b>Lokasi Kamu</b>');
+                updateLocationBar({ label: distText, value: name });
+                renderUserLocation(fLat, fLng, 100, '<b>Lokasi Kamu</b>');
+                State.map.flyTo([fLat, fLng], 15, { duration: 1 });
 
-                    State.map.flyTo([fLat, fLng], 15, { duration: 1 });
-                    await selectCampus(nearest.id, false);
-                }
-            });
+                // Reset dulu supaya tidak ter-skip
+                State.activeCampusId = null;
+                await selectCampus(nearest.id, false, false);
+            }
+        });
 
             // ── Close dropdown on outside click ──
             document.addEventListener('click', (e) => {
