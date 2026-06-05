@@ -12,7 +12,7 @@
 
     {{-- Desktop Dropdown --}}
     <div id="profileDropdown"
-         x-data="{ settingsOpen: false, language: 'ID' }"
+         x-data="{ settingsOpen: false }"
          class="hidden absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-card border border-gray-100 py-2 z-50">
         <div class="px-4 py-3 border-b border-gray-100">
             <p class="text-sm font-semibold text-dark truncate">{{ auth()->user()->name }}</p>
@@ -27,7 +27,7 @@
                      <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/>
                      </svg>
-                     <span>Dashboard</span>
+                     <span data-i18n="Dashboard">Dashboard</span>
                  </div>
                 <svg class="w-4 h-4 text-muted group-hover:text-dark transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -43,7 +43,7 @@
                      <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                      </svg>
-                     <span>Profil Saya</span>
+                     <span data-i18n="Profil Saya">Profil Saya</span>
                  </div>
                 <svg class="w-4 h-4 text-muted group-hover:text-dark transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -61,7 +61,7 @@
                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                          </svg>
-                         <span>Pengaturan</span>
+                         <span data-i18n="Pengaturan">Pengaturan</span>
                      </div>
                     <svg class="w-4 h-4 text-muted transition-transform" :class="settingsOpen ? 'rotate-90' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -78,8 +78,8 @@
 
                 {{-- Notifikasi --}}
                 <div class="flex items-center justify-between py-1.5">
-                    <span class="text-xs font-semibold text-dark">Notifikasi</span>
-                    <span class="text-xs font-medium text-secondary cursor-pointer">Izinkan</span>
+                    <span class="text-xs font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</span>
+                    <span class="text-xs font-medium text-secondary cursor-pointer" data-i18n="Izinkan">Izinkan</span>
                 </div>
 
                 {{-- Divider --}}
@@ -87,19 +87,21 @@
 
                 {{-- Language --}}
                 <div class="flex items-center justify-between py-1.5">
-                    <span class="text-xs font-semibold text-dark">Bahasa</span>
-                    <div class="relative">
-                        <button type="button" @click="$refs.dtLangMenu.classList.toggle('hidden')"
-                                class="flex items-center gap-1 text-xs font-medium text-muted hover:text-dark transition-colors bg-transparent border-none cursor-pointer">
-                            <span x-text="language"></span>
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            </svg>
+                    <span class="text-xs font-semibold text-dark" data-i18n="Bahasa">Bahasa</span>
+                    <div class="flex items-center gap-1">
+                        <button type="button"
+                                @click="$store.i18n.setLocale('ID')"
+                                :class="$store.i18n.locale === 'ID' ? 'font-bold text-dark' : 'text-muted'"
+                                class="text-xs bg-transparent border-none cursor-pointer transition-colors hover:text-dark">
+                            ID
                         </button>
-                        <div x-ref="dtLangMenu" class="hidden absolute right-0 top-6 bg-white rounded-lg shadow-card border border-black/8 py-1 min-w-[80px] z-10">
-                            <button type="button" @click="language = 'ID'; $refs.dtLangMenu.classList.add('hidden')" :class="language === 'ID' ? 'font-semibold text-dark' : 'text-muted'" class="w-full text-left px-3 py-1.5 text-xs hover:bg-black/5 bg-transparent border-none cursor-pointer">ID</button>
-                            <button type="button" @click="language = 'EN'; $refs.dtLangMenu.classList.add('hidden')" :class="language === 'EN' ? 'font-semibold text-dark' : 'text-muted'" class="w-full text-left px-3 py-1.5 text-xs hover:bg-black/5 bg-transparent border-none cursor-pointer">EN</button>
-                        </div>
+                        <span class="text-xs text-muted">|</span>
+                        <button type="button"
+                                @click="$store.i18n.setLocale('EN')"
+                                :class="$store.i18n.locale === 'EN' ? 'font-bold text-dark' : 'text-muted'"
+                                class="text-xs bg-transparent border-none cursor-pointer transition-colors hover:text-dark">
+                            EN
+                        </button>
                     </div>
                 </div>
             </div>
@@ -112,7 +114,7 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
-                <span>Keluar</span>
+                <span data-i18n="Keluar">Keluar</span>
             </button>
         </form>
     </div>

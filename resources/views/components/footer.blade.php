@@ -9,11 +9,11 @@
                 <img src="{{ asset('assets/img/icon-kumar-white.png') }}" alt="KUMAR" class="h-10">
             </div>
 
-            <h2 class="text-lg md:text-xl font-bold text-dark leading-tight">
+            <h2 class="text-lg md:text-xl font-bold text-dark leading-tight" data-i18n="Seperti memiliki dapur tersembunyi di setiap sudut kota">
                 Seperti memiliki dapur tersembunyi di setiap sudut kota
             </h2>
 
-            <p class="text-sm md:text-base text-dark">
+            <p class="text-sm md:text-base text-dark" data-i18n="Temukan kuliner hidden gem dengan rasa autentik dan pengalaman baru di sekitarmu.">
                 Temukan kuliner hidden gem dengan rasa autentik dan pengalaman baru di sekitarmu.
             </p>
 
@@ -25,17 +25,17 @@
             <a href="{{ route('privacy') }}" 
                 target="_blank"
                 class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
-                Privasi & Keamanan
+                <span data-i18n="Privasi & Keamanan">Privasi & Keamanan</span>
             </a>
 
             <a href="{{ route('terms') }}" 
                 target="_blank"
                 class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
-                Syarat & Ketentuan
+                <span data-i18n="Syarat & Ketentuan">Syarat & Ketentuan</span>
             </a>
 
             <div class="flex items-center gap-3 font-semibold text-dark">
-                <span>Ikuti Kami</span>
+                <span data-i18n="Ikuti Kami">Ikuti Kami</span>
                 <i class="fa-brands fa-instagram text-xl"></i>
                 <i class="fa-brands fa-facebook text-xl"></i>
                 <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -46,7 +46,7 @@
         {{-- Kanan --}}
         <p class="text-xs md:text-sm text-dark max-w-xs leading-relaxed">
             &copy; 2026 KUMAR <br>
-            Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.
+            <span data-i18n="Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.">Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.</span>
         </p>
 
     </div>
