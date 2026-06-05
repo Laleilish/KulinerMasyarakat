@@ -5,6 +5,14 @@
             toast.id = 'toast-' + Date.now();
             this.toasts.push(toast);
             setTimeout(() => this.remove(toast.id), 4500);
+            
+            // Trigger push notification if enabled
+            if (Alpine.store('notif') && Alpine.store('notif').canSend()) {
+                new Notification('KUMAR', {
+                    body: toast.title + ': ' + toast.message,
+                    icon: '/assets/img/icon-kumar.png',
+                });
+            }
         },
         remove(id) {
             this.toasts = this.toasts.filter(t => t.id !== id);

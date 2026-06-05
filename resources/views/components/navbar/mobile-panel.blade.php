@@ -117,7 +117,10 @@
             {{-- Notifikasi Row --}}
             <div class="flex items-center justify-between py-3">
                 <span class="text-sm font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</span>
-                <span class="text-sm font-medium text-secondary cursor-pointer" data-i18n="Izinkan">Izinkan</span>
+                <span class="text-sm font-medium cursor-pointer transition-colors" 
+                      :class="[$store.notif.color, $store.notif.clickable ? 'hover:opacity-80' : 'cursor-default']"
+                      @click="$store.notif.request()"
+                      x-text="$store.notif.label">Izinkan</span>
             </div>
 
             {{-- Divider --}}
