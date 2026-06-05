@@ -12,7 +12,7 @@
 
     {{-- Desktop Dropdown --}}
     <div id="profileDropdown"
-         x-data="{ settingsOpen: false, theme: 'light', language: 'ID' }"
+         x-data="{ settingsOpen: false, language: 'ID' }"
          class="hidden absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-card border border-gray-100 py-2 z-50">
         <div class="px-4 py-3 border-b border-gray-100">
             <p class="text-sm font-semibold text-dark truncate">{{ auth()->user()->name }}</p>
@@ -76,23 +76,14 @@
                  x-transition:enter-end="opacity-100 translate-y-0"
                  class="border-t border-gray-100 bg-gray-50/70 px-4 py-2">
 
-                {{-- Theme --}}
+                {{-- Notifikasi --}}
                 <div class="flex items-center justify-between py-1.5">
-                    <span class="text-xs font-semibold text-dark">Tema</span>
-                    <div class="relative">
-                        <button type="button" @click="$refs.dtThemeMenu.classList.toggle('hidden')"
-                                class="flex items-center gap-1 text-xs font-medium text-muted hover:text-dark transition-colors bg-transparent border-none cursor-pointer">
-                            <span x-text="theme === 'light' ? 'Light' : 'Dark'"></span>
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </button>
-                        <div x-ref="dtThemeMenu" class="hidden absolute right-0 top-6 bg-white rounded-lg shadow-card border border-black/8 py-1 min-w-[80px] z-10">
-                            <button type="button" @click="theme = 'light'; $refs.dtThemeMenu.classList.add('hidden')" :class="theme === 'light' ? 'font-semibold text-dark' : 'text-muted'" class="w-full text-left px-3 py-1.5 text-xs hover:bg-black/5 bg-transparent border-none cursor-pointer">Light</button>
-                            <button type="button" @click="theme = 'dark'; $refs.dtThemeMenu.classList.add('hidden')" :class="theme === 'dark' ? 'font-semibold text-dark' : 'text-muted'" class="w-full text-left px-3 py-1.5 text-xs hover:bg-black/5 bg-transparent border-none cursor-pointer">Dark</button>
-                        </div>
-                    </div>
+                    <span class="text-xs font-semibold text-dark">Notifikasi</span>
+                    <span class="text-xs font-medium text-secondary cursor-pointer">Izinkan</span>
                 </div>
+
+                {{-- Divider --}}
+                <div class="h-px bg-black/8"></div>
 
                 {{-- Language --}}
                 <div class="flex items-center justify-between py-1.5">
@@ -113,20 +104,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- Notifikasi --}}
-        <a href="#" class="flex items-center gap-2 px-4 py-2.5 text-sm text-dark hover:bg-black/5 transition-colors no-underline">
-            <div class="flex justify-between items-center w-full">
-                <div class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                    <span>Notifikasi</span>
-                </div>
-                <span class="text-sm font-medium text-secondary">Izinkan</span>
-            </div>
-        </a>
         
         <hr class="my-1 border-gray-100">
         <form method="POST" action="{{ route('logout') }}">
