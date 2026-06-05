@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SubmitPlaceController as AdminSubmitPlaceControll
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\HiddenGemController;
+use App\Http\Controllers\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/dashboard", function () {
@@ -113,5 +114,8 @@ Route::get("/split-bill", fn() => view("split-bill.index"))->name(
 
 Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");
 Route::get("/kebijakan-privasi", fn() => view("pages.privacy"))->name("privacy");
+
+Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])
+    ->name('tanggal-tua.index');
 
 require __DIR__ . "/auth.php";

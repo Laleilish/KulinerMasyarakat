@@ -299,15 +299,26 @@
                class="text-[12px] text-muted leading-[1.7] mb-3"></p>
             <p id="modal-price"
                class="text-[13px] font-bold text-dark mb-4"></p>
-            <a id="modal-nav-btn" href="#" target="_blank"
-               class="flex items-center justify-center gap-2
-                      bg-secondary text-white font-extrabold text-[14px]
-                      py-3 rounded-full w-full
-                      shadow-[0_4px_16px_rgba(2,177,118,0.35)]
-                      transition-all duration-200 hover:brightness-110">
-                <i class="fas fa-diamond-turn-right"></i>
-                Navigasi ke Sini
-            </a>
+            <div class="flex gap-2">
+                <a id="modal-detail-btn" href="#"
+                   class="flex-1 flex items-center justify-center gap-2
+                          bg-[#F5A623] text-white font-extrabold text-[14px]
+                          py-3 rounded-full
+                          shadow-[0_4px_16px_rgba(245,166,35,0.35)]
+                          transition-all duration-200 hover:brightness-110">
+                    <i class="fas fa-file-alt"></i>
+                    Detail
+                </a>
+                <a id="modal-nav-btn" href="#" target="_blank"
+                   class="flex-1 flex items-center justify-center gap-2
+                          bg-secondary text-white font-extrabold text-[14px]
+                          py-3 rounded-full
+                          shadow-[0_4px_16px_rgba(2,177,118,0.35)]
+                          transition-all duration-200 hover:brightness-110">
+                    <i class="fas fa-diamond-turn-right"></i>
+                    Navigasi
+                </a>
+            </div>
         </div>
     </div>
 </div>

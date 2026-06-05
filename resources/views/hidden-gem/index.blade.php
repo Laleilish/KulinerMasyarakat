@@ -90,8 +90,15 @@
                     <div class="flex items-center gap-3">
                         <span id="fs-bs-rating" class="text-[#FFD700] text-[13px] font-bold"></span>
                         <span id="fs-bs-distance" class="text-white/80 text-[12px]"></span>
+                        <a id="fs-bs-detail-btn" href="#"
+                                class="ml-auto flex items-center gap-2 bg-[#F5A623] text-white
+                                       px-4 py-[7px] rounded-full text-[12px] font-extrabold
+                                       hover:brightness-110 active:scale-95 transition-all duration-150">
+                            <i class="fas fa-file-alt text-[11px]"></i>
+                            Detail
+                        </a>
                         <button id="fs-bs-nav-btn"
-                                class="ml-auto flex items-center gap-2 bg-[#02b176] text-white
+                                class="flex items-center gap-2 bg-[#02b176] text-white
                                        px-4 py-[7px] rounded-full text-[12px] font-extrabold
                                        hover:brightness-110 active:scale-95 transition-all duration-150">
                             <i class="fas fa-diamond-turn-right text-[11px]"></i>
@@ -1080,6 +1087,11 @@
             document.getElementById('modal-desc').textContent     = r.description || '';
             document.getElementById('modal-price').textContent    = r.price_range || '—';
             
+            const detailBtn = document.getElementById('modal-detail-btn');
+            if (detailBtn) {
+                detailBtn.href = `/restoran/${r.id}`;
+            }
+
             const navBtn = document.getElementById('modal-nav-btn');
             navBtn.href = "javascript:void(0)";
             navBtn.removeAttribute('target');
@@ -1282,6 +1294,11 @@
             document.getElementById('fs-bs-address').textContent = r.address || '—';
             document.getElementById('fs-bs-hours').textContent   = r.open_hours || '—';
             document.getElementById('fs-bs-price').textContent   = r.price_range || '—';
+
+            const detailBtn = document.getElementById('fs-bs-detail-btn');
+            if (detailBtn) {
+                detailBtn.href = `/restoran/${r.id}`;
+            }
 
             // Google Maps link
             const gmapsEl = document.getElementById('fs-bs-gmaps');

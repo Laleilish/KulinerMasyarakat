@@ -44,4 +44,14 @@ class RestaurantController extends Controller
             'hasReviewed'
         ));
     }
+
+    public function tanggalTua()
+    {
+        $restaurants = Restaurant::approved()
+            ->tanggalTua()
+            ->latest()
+            ->paginate(12);
+
+        return view('tanggal-tua.index', compact('restaurants'));
+    }
 }

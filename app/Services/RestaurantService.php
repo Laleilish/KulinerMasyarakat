@@ -28,4 +28,11 @@ class RestaurantService
             ->limit($limit)
             ->get();
     }
+
+    public function getTanggalTua()
+    {
+        return Restaurant::where('price', '<=', 15000)
+            ->latest()
+            ->paginate(12);
+    }
 }

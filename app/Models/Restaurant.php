@@ -85,4 +85,13 @@ class Restaurant extends Model
     {
         return $this->reviews()->count();
     }
+
+    public function scopeTanggalTua($query)
+    {
+        return $query->where(function ($q) {
+            $q->where('price_range', 'like', 'Rp 5.000%')
+            ->orWhere('price_range', 'like', 'Rp 10.000%')
+            ->orWhere('price_range', 'like', 'Rp 15.000%');
+        });
+    }
 }
