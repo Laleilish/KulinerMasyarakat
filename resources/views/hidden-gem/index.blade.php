@@ -11,6 +11,157 @@
     @include('hidden-gem.kampus')
     @include('hidden-gem.map')
     @include('hidden-gem.rating')
+
+    {{-- ═══════════════════════════════════════════════════════════
+         FULLSCREEN MAP MODAL
+    ═══════════════════════════════════════════════════════════ --}}
+    <div id="fs-map-modal"
+         class="hidden fixed inset-0 z-[3000] bg-white flex flex-col"
+         style="padding-top:env(safe-area-inset-top)">
+
+        {{-- Header --}}
+        <div class="flex items-center gap-3 px-4 py-3 bg-white border-b border-black/[0.06] z-10 flex-shrink-0">
+            <button onclick="closeFullscreenMap()"
+                    class="w-9 h-9 rounded-full bg-black/[0.06] flex items-center
+                           justify-center hover:bg-black/10 transition-colors duration-150">
+                <i class="fas fa-arrow-left text-[14px] text-dark"></i>
+            </button>
+            <div class="flex-1 min-w-0">
+                <p class="text-[10px] text-muted font-semibold uppercase tracking-wider leading-none mb-[2px]">Peta</p>
+                <h3 id="fs-campus-name" class="text-[14px] font-extrabold text-dark truncate">
+                    Pilih kampus terlebih dahulu
+                </h3>
+            </div>
+        </div>
+
+        {{-- Category filter chips --}}
+        <div id="fs-filter-bar"
+             class="flex gap-2 px-4 py-[10px] overflow-x-auto [scrollbar-width:none]
+                    [&::-webkit-scrollbar]:hidden flex-shrink-0 bg-white
+                    border-b border-black/[0.04]">
+            <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
+                           font-bold bg-[#F5A623] text-white transition-all duration-150"
+                    data-filter="all">Semua</button>
+        </div>
+
+        {{-- Map area --}}
+        <div class="flex-1 relative overflow-hidden">
+            <div id="fs-leaflet-map" class="w-full h-full z-0"></div>
+
+            {{-- GPS floating button --}}
+            <button onclick="fsDetectGPS()"
+                    class="absolute bottom-5 right-4 z-[400]
+                           w-14 h-14 rounded-full
+                           bg-[#F5A623] shadow-[0_4px_20px_rgba(245,166,35,0.5)]
+                           flex items-center justify-center
+                           hover:scale-110 active:scale-95 transition-transform duration-150">
+                <i class="fas fa-crosshairs text-white text-[20px]"></i>
+            </button>
+        </div>
+
+        {{-- Bottom Sheet --}}
+        <div id="fs-bottom-sheet"
+             class="hidden absolute bottom-0 left-0 right-0 z-[500]
+                    bg-white rounded-t-[28px]
+                    shadow-[0_-8px_40px_rgba(0,0,0,0.18)]"
+             style="max-height:72vh;overflow-y:auto;">
+
+            {{-- Drag handle --}}
+            <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
+                <div class="w-10 h-[4px] rounded-full bg-black/15"></div>
+            </div>
+
+            {{-- Tombol tutup --}}
+            <button onclick="fsCloseBottomSheet()"
+                    class="absolute top-4 right-4 w-8 h-8 bg-black/10
+                           rounded-full flex items-center justify-center
+                           hover:bg-black/20 transition-colors z-10">
+                <i class="fas fa-xmark text-[13px] text-dark"></i>
+            </button>
+
+            {{-- Hero image --}}
+            <div class="relative w-full h-[160px] overflow-hidden flex-shrink-0">
+                <img id="fs-bs-image" src="" alt=""
+                     class="w-full h-full object-cover"
+                     onerror="this.src='/assets/img/resto/default.png'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4">
+                    <h2 id="fs-bs-name" class="text-white text-[17px] font-extrabold leading-tight mb-[6px]"></h2>
+                    <div class="flex items-center gap-3">
+                        <span id="fs-bs-rating" class="text-[#FFD700] text-[13px] font-bold"></span>
+                        <span id="fs-bs-distance" class="text-white/80 text-[12px]"></span>
+                        <button id="fs-bs-nav-btn"
+                                class="ml-auto flex items-center gap-2 bg-[#02b176] text-white
+                                       px-4 py-[7px] rounded-full text-[12px] font-extrabold
+                                       hover:brightness-110 active:scale-95 transition-all duration-150">
+                            <i class="fas fa-diamond-turn-right text-[11px]"></i>
+                            Navigasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Content body --}}
+            <div class="px-5 py-4 space-y-4">
+
+                {{-- About --}}
+                <div>
+                    <h3 class="text-[14px] font-extrabold text-dark mb-[6px]">About</h3>
+                    <p id="fs-bs-desc" class="text-[12px] text-muted leading-[1.75]"></p>
+                </div>
+
+                <hr class="border-black/[0.06]">
+
+                {{-- Info Detail --}}
+                <div>
+                    <h3 class="text-[14px] font-extrabold text-dark mb-3">Info Detail</h3>
+                    <div class="space-y-3">
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-location-dot text-[#C07A2A] text-[13px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Alamat</p>
+                                <p id="fs-bs-address" class="text-[12px] text-dark font-medium leading-[1.55]"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-clock text-[#C07A2A] text-[13px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Jam Buka</p>
+                                <p id="fs-bs-hours" class="text-[12px] text-dark font-medium"></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-tag text-[#C07A2A] text-[13px]"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Kisaran Harga</p>
+                                <p id="fs-bs-price" class="text-[12px] text-dark font-medium"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {{-- Google Maps link --}}
+                <a id="fs-bs-gmaps" href="#" target="_blank" rel="noopener"
+                   class="flex items-center justify-center gap-2 w-full py-3 rounded-full
+                          border-2 border-[#02b176] text-[#02b176] text-[13px] font-bold
+                          hover:bg-[#02b176] hover:text-white transition-all duration-200">
+                    <i class="fas fa-map text-[13px]"></i>
+                    Lihat di Google Maps
+                </a>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -38,6 +189,8 @@
             searchTimer: null,
             isDropdownOpen: false,
             routingControl: null,
+            currentCampus: null,
+            currentRestaurants: [],
         };
 
         // ═══════════════════════════════════════════════════════════
@@ -51,6 +204,31 @@
                 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180)
                 * Math.sin(dLng / 2) ** 2;
             return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // HITUNG JARAK RESTO DARI LOKASI USER (DINAMIS)
+        // ═══════════════════════════════════════════════════════════
+        function calcRestoDistance(rLat, rLng, fallback) {
+            let baseLat = null;
+            let baseLng = null;
+
+            if (State.userLat != null && State.userLng != null) {
+                baseLat = State.userLat;
+                baseLng = State.userLng;
+            } else if (State.currentCampus != null) {
+                baseLat = State.currentCampus.latitude;
+                baseLng = State.currentCampus.longitude;
+            }
+
+            if (baseLat != null && baseLng != null) {
+                const km = haversine(baseLat, baseLng, rLat, rLng);
+                if (km < 1)  return `${Math.round(km * 1000)} m`;
+                if (km < 10) return `${km.toFixed(1)} km`;
+                return `${Math.round(km)} km`;
+            }
+
+            return fallback || '—';
         }
 
         // ═══════════════════════════════════════════════════════════
@@ -68,8 +246,8 @@
         // ═══════════════════════════════════════════════════════════
         function initMap() {
             State.map = L.map('leaflet-map', {
-                center: [-6.8612798, 107.5888298],
-                zoom: 15,
+                center: [-6.9, 107.61],
+                zoom: 12,
                 zoomControl: true,
                 scrollWheelZoom: false,
             });
@@ -163,8 +341,13 @@
             const labelEl = document.getElementById('loc-label');
             const input = document.getElementById('loc-input');
 
-            spinner.classList.toggle('hidden', !loading);
-            icon.classList.toggle('hidden', loading);
+            if (loading) {
+                spinner.classList.remove('hidden');
+                icon.classList.add('hidden');
+            } else {
+                spinner.classList.add('hidden');
+                icon.classList.remove('hidden');
+            }
 
             if (label) labelEl.textContent = label;
             if (value !== undefined && value !== null) input.value = value;
@@ -275,8 +458,14 @@
                 .bindPopup(`<b style="font-size:13px;">${campus.name}</b>`)
                 .openPopup();
 
+            // Cache data restoran secara global agar bisa diakses dari popup onclick
+            if (!window.__restoCache) window.__restoCache = {};
+
             // Marker restoran
             restaurants.forEach(r => {
+                // Simpan data ke cache global dengan key id restoran
+                window.__restoCache[r.id] = r;
+
                 const restoIcon = L.divIcon({
                     className: '',
                     html: `<div style="width:32px;height:32px;background:#02b176;border-radius:50%;
@@ -289,45 +478,58 @@
                     popupAnchor: [0, -34],
                 });
 
-                const gpsReady = State.userLat && State.userLng;
-                const navBtnStyle = gpsReady
-                    ? 'background:#02b176;cursor:pointer;'
-                    : 'background:#aaa;cursor:not-allowed;';
-                const navBtnLabel = gpsReady
-                    ? '🗺️ Navigasi ke Sini'
-                    : '📍 Aktifkan GPS dulu';
+                const ratingVal = r.rating != null ? parseFloat(r.rating).toFixed(1) : '—';
+                const distanceVal = calcRestoDistance(r.latitude, r.longitude, r.distance);
 
+                // Navigasi selalu aktif — startNavigation() sudah punya
+                // fallback ke kampus aktif jika GPS/lokasi belum dipilih
                 const popupHTML = `
-                    <div style="width:210px;font-family:'Plus Jakarta Sans',sans-serif;">
+                    <div style="width:220px;font-family:'Plus Jakarta Sans',sans-serif;">
                         <img src="${r.image}" alt="${r.name}"
                             style="width:100%;height:90px;object-fit:cover;
-                                    border-radius:10px;margin-bottom:8px;display:block;">
-                        <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:3px;">
+                                    border-radius:10px;margin-bottom:8px;display:block;"
+                            onerror="this.src='/assets/img/resto/default.png'">
+
+                        <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:2px;
+                                    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             ${r.name}
                         </div>
-                        <div style="font-size:11px;color:#5d6e86;margin-bottom:6px;">
-                            ${r.category} · ${r.distance}
+                        <div style="font-size:11px;color:#5d6e86;margin-bottom:5px;">
+                            ${r.category || '—'} &middot; ${distanceVal}
                         </div>
                         <div style="display:flex;align-items:center;justify-content:space-between;
-                                    margin-bottom:8px;">
+                                    margin-bottom:10px;">
                             <span style="color:#F5A623;font-size:12px;font-weight:700;">
-                                ★ ${r.rating}
+                                &#9733; ${ratingVal}
                             </span>
-                            <span style="font-size:11px;color:#5d6e86;">${r.price_range}</span>
+                            <span style="font-size:11px;color:#5d6e86;">${r.price_range || '—'}</span>
                         </div>
-                        <a href="javascript:void(0)"
-                        onclick="startNavigation(${r.latitude}, ${r.longitude})"
-                        style="display:flex;align-items:center;justify-content:center;gap:6px;
-                                ${navBtnStyle}
-                                color:#fff;padding:8px;border-radius:99px;
-                                font-size:12px;font-weight:700;text-decoration:none;">
-                            ${navBtnLabel}
-                        </a>
+
+                        <div style="display:flex;gap:6px;">
+                            <a href="javascript:void(0)"
+                               onclick="openModal(window.__restoCache[${r.id}])"
+                               style="flex:1;display:flex;align-items:center;justify-content:center;
+                                      gap:4px;background:#F5EDE0;color:#C07A2A;
+                                      padding:7px 4px;border-radius:99px;
+                                      font-size:11px;font-weight:700;text-decoration:none;
+                                      cursor:pointer;">
+                                &#128196; Detail
+                            </a>
+                            <a href="javascript:void(0)"
+                               onclick="startNavigation(${r.latitude}, ${r.longitude})"
+                               style="flex:2;display:flex;align-items:center;justify-content:center;
+                                      gap:4px;background:#02b176;color:#fff;
+                                      padding:7px 4px;border-radius:99px;
+                                      font-size:11px;font-weight:700;text-decoration:none;
+                                      cursor:pointer;">
+                                &#128507; Navigasi
+                            </a>
+                        </div>
                     </div>`;
 
                 L.marker([r.latitude, r.longitude], { icon: restoIcon })
                     .addTo(State.markerLayer)
-                    .bindPopup(popupHTML, { maxWidth: 230 });
+                    .bindPopup(popupHTML, { maxWidth: 240 });
             });
         }
 
@@ -420,7 +622,11 @@
                 return;
             }
 
-            const cardHTML = (r) => `
+            const cardHTML = (r) => {
+                const ratingStr = r.rating != null ? parseFloat(r.rating).toFixed(1) : '—';
+                const distStr = calcRestoDistance(r.latitude, r.longitude, r.distance);
+                const priceStr = r.price_range || '—';
+                return `
                                 <div class="top-resto-card bg-white rounded-[16px] overflow-hidden
                                             border border-black/[0.05]
                                             shadow-[0_2px_8px_rgba(0,0,0,0.08)]
@@ -431,7 +637,6 @@
                                             active:scale-[0.98]"
                                      data-resto='${JSON.stringify(r).replace(/'/g, "&#39;")}'>
 
-                                    {{-- Image --}}
                                     <div class="relative w-full h-[130px] overflow-hidden">
                                         <img src="${r.image}"
                                              alt="${r.name}"
@@ -439,7 +644,6 @@
                                                     transition-transform duration-300"
                                              onerror="this.src='/assets/img/resto/default.png'">
 
-                                        {{-- Rating badge --}}
                                         <div class="absolute top-2 right-2">
                                             <span style="
                                                 display:inline-flex;align-items:center;gap:3px;
@@ -448,7 +652,7 @@
                                                 padding:3px 7px;border-radius:99px;
                                                 backdrop-filter:blur(4px);
                                             ">
-                                                ★ ${parseFloat(r.rating).toFixed(1)}
+                                                ★ ${ratingStr}
                                             </span>
                                         </div>
 
@@ -462,7 +666,6 @@
                                         </div>` : ''}
                                     </div>
 
-                                    {{-- Body --}}
                                     <div style="padding:10px 12px 12px;">
                                         <p style="
                                             font-size:12px;font-weight:800;
@@ -473,19 +676,20 @@
                                         ">${r.name}</p>
 
                                         <p style="font-size:11px;color:#5d6e86;margin-bottom:7px;">
-                                            ${r.category}
+                                            ${r.category || '—'}
                                         </p>
 
                                         <div style="display:flex;align-items:center;justify-content:space-between;">
                                             <span style="font-size:11px;color:#02b176;font-weight:700;">
-                                                <i class="fas fa-location-dot text-[9px]"></i> ${r.distance}
+                                                <i class="fas fa-location-dot text-[9px]"></i> ${distStr}
                                             </span>
                                             <span style="font-size:10px;color:#5d6e86;">
-                                                ${r.price_range}
+                                                ${priceStr}
                                             </span>
                                         </div>
                                     </div>
                                 </div>`;
+            };
 
             grid.innerHTML = `
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -529,7 +733,11 @@
                 return;
             }
 
-            track.innerHTML = restaurants.map((r, index) => `
+            track.innerHTML = restaurants.map((r, index) => {
+                const ratingStr = r.rating != null ? parseFloat(r.rating).toFixed(1) : '—';
+                const distStr = calcRestoDistance(r.latitude, r.longitude, r.distance);
+                const descStr = r.description || '';
+                return `
                     <div class="featured-slide flex-shrink-0 snap-start
                     w-[calc(100vw-48px)] md:w-[760px] max-w-none">
 
@@ -539,7 +747,8 @@
 
                     <div class="relative w-full h-[160px] md:h-[220px] overflow-hidden">
                         <img src="${r.image}"
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         onerror="this.src='/assets/img/resto/default.png'">
 
                                 <div class="absolute inset-0
                                             bg-gradient-to-t
@@ -559,7 +768,7 @@
                                     <span class="bg-black/30 text-white
                                                  text-[11px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        ★ ${parseFloat(r.rating).toFixed(1)}
+                                        ★ ${ratingStr}
                                     </span>
                                 </div>
                             </div>
@@ -572,26 +781,27 @@
 
                                 <p class="text-white/80 text-[12px]
                                           line-clamp-2 mb-3">
-                                    ${r.description}
+                                    ${descStr}
                                 </p>
 
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <span class="bg-white/20 text-white
                                                  text-[10px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        📍 ${r.distance}
+                                        📍 ${distStr}
                                     </span>
 
                                     <span class="bg-white/20 text-white
                                                  text-[10px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        ${r.category}
+                                        ${r.category || '—'}
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `;
+            }).join('');
 
             dots.innerHTML = restaurants.map((_, i) => `
                     <button class="carousel-dot
@@ -607,7 +817,11 @@
         // SELECT CAMPUS
         // ═══════════════════════════════════════════════════════════
         async function selectCampus(campusId, scroll = true) {
-            if (State.activeCampusId === campusId) return;
+            if (State.activeCampusId === campusId) {
+                // Jika kampus yang sama diklik lagi, batalkan pemilihan (reset ke default)
+                window.location.reload();
+                return;
+            }
             State.activeCampusId = campusId;
 
             // ← Tambah ini: update location bar saat kampus diklik
@@ -646,6 +860,15 @@
                 updateRestaurants(data.restaurants);
                 if (data.featuredRestaurants) {
                     updateFeaturedCarousel(data.featuredRestaurants);
+                }
+
+                // Simpan data aktif untuk dipakai fullscreen map
+                State.currentCampus      = data.campus;
+                State.currentRestaurants = data.restaurants;
+
+                // Sync fullscreen map jika sedang terbuka
+                if (!document.getElementById('fs-map-modal').classList.contains('hidden')) {
+                    fsOpenWithData(data.campus, data.restaurants);
                 }
 
                 document.getElementById('map-subtitle').textContent =
@@ -715,19 +938,16 @@
 
         function handleGPSFallback(reason) {
             updateLocationBar({
-                label: reason + ' — ketik lokasi manual',
+                label: reason + ' — ketik lokasi atau pilih kampus',
                 value: '',
                 error: true,
             });
 
-            // input supaya user langsung bisa ketik
+            // Buka dropdown supaya user bisa ketik atau pilih kampus
             const input = document.getElementById('loc-input');
             input.placeholder = 'Ketik nama jalan, kelurahan, atau kampus...';
             input.focus();
             openDropdown();
-
-            // Default ke kampus pertama sebagai fallback peta
-            selectCampus(CAMPUSES[0].id, false);
         }
 
         // ═══════════════════════════════════════════════════════════
@@ -851,10 +1071,12 @@
             document.getElementById('modal-image').src = r.image;
             document.getElementById('modal-name').textContent = r.name;
             document.getElementById('modal-category').textContent = r.category;
-            document.getElementById('modal-rating').textContent = `★ ${r.rating}`;
-            document.getElementById('modal-distance').textContent = r.distance;
-            document.getElementById('modal-desc').textContent = r.description;
-            document.getElementById('modal-price').textContent = r.price_range;
+            const modalRating = r.rating != null ? `★ ${parseFloat(r.rating).toFixed(1)}` : '★ —';
+            const modalDist   = calcRestoDistance(r.latitude, r.longitude, r.distance);
+            document.getElementById('modal-rating').textContent   = modalRating;
+            document.getElementById('modal-distance').textContent = modalDist;
+            document.getElementById('modal-desc').textContent     = r.description || '';
+            document.getElementById('modal-price').textContent    = r.price_range || '—';
             
             const navBtn = document.getElementById('modal-nav-btn');
             navBtn.href = "javascript:void(0)";
@@ -889,9 +1111,256 @@
         }
 
         // ═══════════════════════════════════════════════════════════
+        // FULLSCREEN MAP
+        // ═══════════════════════════════════════════════════════════
+        const FsState = {
+            map: null,
+            markerLayer: null,
+            userMarker: null,
+            accuracyCircle: null,
+            routingControl: null,
+            activeFilter: 'all',
+            currentResto: null,
+            initialized: false,
+        };
+
+        // Buka fullscreen map
+        function openFullscreenMap() {
+            const modal = document.getElementById('fs-map-modal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            // Lazy-init Leaflet map
+            if (!FsState.initialized) {
+                setTimeout(() => {
+                    FsState.map = L.map('fs-leaflet-map', {
+                        center: State.currentCampus
+                            ? [State.currentCampus.latitude, State.currentCampus.longitude]
+                            : [-6.9, 107.61],
+                        zoom: State.currentCampus ? (State.currentCampus.zoom || 15) : 12,
+                        zoomControl: true,
+                        scrollWheelZoom: true,
+                    });
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap',
+                        maxZoom: 19,
+                    }).addTo(FsState.map);
+
+                    FsState.markerLayer = L.layerGroup().addTo(FsState.map);
+                    FsState.initialized = true;
+
+                    if (State.currentCampus && State.currentRestaurants.length) {
+                        fsOpenWithData(State.currentCampus, State.currentRestaurants);
+                    }
+                }, 80);
+            } else {
+                setTimeout(() => FsState.map.invalidateSize(), 100);
+                if (State.currentCampus && State.currentRestaurants.length) {
+                    fsOpenWithData(State.currentCampus, State.currentRestaurants);
+                }
+            }
+        }
+
+        // Tutup fullscreen map
+        function closeFullscreenMap() {
+            document.getElementById('fs-map-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+            fsCloseBottomSheet();
+        }
+
+        // Sync fullscreen map dengan data kampus
+        function fsOpenWithData(campus, restaurants) {
+            document.getElementById('fs-campus-name').textContent = campus.name;
+
+            fsBuildFilterChips(restaurants);
+            fsRenderMarkers(restaurants, FsState.activeFilter);
+
+            if (FsState.map) {
+                FsState.map.flyTo([campus.latitude, campus.longitude], campus.zoom || 15, { duration: 0.8 });
+            }
+
+            // Tampilkan user marker jika ada
+            if (State.userLat && State.userLng) {
+                fsPlaceUserMarker(State.userLat, State.userLng);
+            }
+        }
+
+        // Buat filter chip dari kategori restoran
+        function fsBuildFilterChips(restaurants) {
+            const bar = document.getElementById('fs-filter-bar');
+            const categories = [...new Set(restaurants.map(r => r.category).filter(Boolean))];
+
+            bar.innerHTML = `
+                <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
+                               font-bold transition-all duration-150
+                               ${FsState.activeFilter === 'all'
+                                   ? 'bg-[#F5A623] text-white'
+                                   : 'bg-black/[0.06] text-dark'}"
+                        data-filter="all">Semua</button>
+                ${categories.map(cat => `
+                    <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
+                                   font-bold transition-all duration-150
+                                   ${FsState.activeFilter === cat
+                                       ? 'bg-[#F5A623] text-white'
+                                       : 'bg-black/[0.06] text-dark'}"
+                            data-filter="${cat}">${cat}</button>
+                `).join('')}
+            `;
+
+            bar.querySelectorAll('.fs-chip').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    FsState.activeFilter = btn.dataset.filter;
+                    fsBuildFilterChips(State.currentRestaurants);
+                    fsRenderMarkers(State.currentRestaurants, FsState.activeFilter);
+                });
+            });
+        }
+
+        // Render marker di fullscreen map (dengan filter)
+        function fsRenderMarkers(restaurants, filter) {
+            if (!FsState.map || !FsState.markerLayer) return;
+            FsState.markerLayer.clearLayers();
+
+            // Campus marker
+            if (State.currentCampus) {
+                const campusIcon = L.divIcon({
+                    className: '',
+                    html: `<div style="width:34px;height:34px;background:#F5A623;border-radius:10px;
+                                      border:2.5px solid #fff;box-shadow:0 3px 10px rgba(245,166,35,0.4);
+                                      display:flex;align-items:center;justify-content:center;font-size:17px;">
+                               🏫
+                           </div>`,
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17],
+                });
+                L.marker([State.currentCampus.latitude, State.currentCampus.longitude],
+                    { icon: campusIcon })
+                    .addTo(FsState.markerLayer)
+                    .bindPopup(`<b style="font-size:13px;">${State.currentCampus.name}</b>`);
+            }
+
+            // Restaurant markers
+            const filtered = filter === 'all'
+                ? restaurants
+                : restaurants.filter(r => r.category === filter);
+
+            filtered.forEach(r => {
+                const icon = L.divIcon({
+                    className: '',
+                    html: `<div style="width:32px;height:32px;background:#02b176;border-radius:50%;
+                                      border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.2);
+                                      display:flex;align-items:center;justify-content:center;font-size:15px;">
+                               🍜
+                           </div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -36],
+                });
+
+                L.marker([r.latitude, r.longitude], { icon })
+                    .addTo(FsState.markerLayer)
+                    .on('click', () => fsOpenBottomSheet(r));
+            });
+        }
+
+        // Buka bottom sheet dengan data restoran
+        function fsOpenBottomSheet(r) {
+            FsState.currentResto = r;
+
+            const ratingStr = r.rating != null ? `★ ${parseFloat(r.rating).toFixed(1)}` : '★ —';
+            const distStr   = calcRestoDistance(r.latitude, r.longitude, r.distance);
+
+            document.getElementById('fs-bs-image').src           = r.image;
+            document.getElementById('fs-bs-image').alt           = r.name;
+            document.getElementById('fs-bs-name').textContent    = r.name;
+            document.getElementById('fs-bs-rating').textContent  = ratingStr;
+            document.getElementById('fs-bs-distance').textContent = distStr;
+            document.getElementById('fs-bs-desc').textContent    = r.description || 'Tidak ada deskripsi.';
+            document.getElementById('fs-bs-address').textContent = r.address || '—';
+            document.getElementById('fs-bs-hours').textContent   = r.open_hours || '—';
+            document.getElementById('fs-bs-price').textContent   = r.price_range || '—';
+
+            // Google Maps link
+            const gmapsEl = document.getElementById('fs-bs-gmaps');
+            if (r.gmaps_link) {
+                gmapsEl.href = r.gmaps_link;
+                gmapsEl.classList.remove('hidden');
+            } else {
+                gmapsEl.href = `https://www.google.com/maps?q=${r.latitude},${r.longitude}`;
+                gmapsEl.classList.remove('hidden');
+            }
+
+            // Navigasi button
+            document.getElementById('fs-bs-nav-btn').onclick = () => {
+                closeFullscreenMap();
+                startNavigation(r.latitude, r.longitude);
+            };
+
+            const sheet = document.getElementById('fs-bottom-sheet');
+            sheet.classList.remove('hidden');
+
+            // Geser peta sedikit ke atas supaya marker tidak tertutup bottom sheet
+            if (FsState.map) {
+                FsState.map.panTo([r.latitude, r.longitude], { animate: true });
+            }
+        }
+
+        // Tutup bottom sheet
+        function fsCloseBottomSheet() {
+            document.getElementById('fs-bottom-sheet').classList.add('hidden');
+            FsState.currentResto = null;
+        }
+
+        // Tempatkan user marker di fullscreen map
+        function fsPlaceUserMarker(lat, lng) {
+            if (!FsState.map) return;
+
+            if (FsState.userMarker) FsState.userMarker.remove();
+            if (FsState.accuracyCircle) FsState.accuracyCircle.remove();
+
+            FsState.accuracyCircle = L.circle([lat, lng], {
+                radius: 60, color: '#3B82F6', fillColor: '#3B82F6', fillOpacity: 0.08, weight: 1,
+            }).addTo(FsState.map);
+
+            const userIcon = L.divIcon({
+                className: '',
+                html: `<div style="width:16px;height:16px;background:#3B82F6;border-radius:50%;
+                                   border:2.5px solid #fff;box-shadow:0 2px 6px rgba(59,130,246,0.5);
+                                   animation:userPulse 2s ease-in-out infinite;"></div>`,
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
+            });
+
+            FsState.userMarker = L.marker([lat, lng], { icon: userIcon })
+                .addTo(FsState.map)
+                .bindPopup('<b>Lokasi Kamu</b>');
+        }
+
+        // GPS di fullscreen map
+        function fsDetectGPS() {
+            if (!navigator.geolocation) {
+                alert('GPS tidak didukung di perangkat ini.');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const { latitude: lat, longitude: lng } = pos.coords;
+                    State.userLat = lat;
+                    State.userLng = lng;
+                    fsPlaceUserMarker(lat, lng);
+                    if (FsState.map) FsState.map.flyTo([lat, lng], 16, { duration: 0.8 });
+                },
+                () => alert('Tidak dapat mendeteksi GPS. Coba izinkan akses lokasi.'),
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        // ═══════════════════════════════════════════════════════════
         // EVENT LISTENERS
         // ═══════════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', () => {
+
             initMap();
 
             // ── Kampus click ──
@@ -972,8 +1441,8 @@
                 window.location.href = '{{ route("semua-resto") }}';
             });
 
-            // ── Start GPS ──
-            detectUserLocation();
+            // GPS tidak dijalankan otomatis;
+            // user klik tombol GPS atau pilih kampus secara manual
         });
     </script>
 @endpush

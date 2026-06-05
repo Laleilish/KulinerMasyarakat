@@ -90,7 +90,7 @@
                                          px-2 py-1 rounded-full backdrop-blur-sm
                                          flex items-center gap-1">
                                 <i class="fas fa-star text-[#FFD700] text-[9px]"></i>
-                                {{ number_format($r['rating'], 1) }}
+                                {{ $r['rating'] !== null ? number_format($r['rating'], 1) : '—' }}
                             </span>
                         </div>
                     </div>
@@ -111,12 +111,12 @@
                             <span class="flex items-center gap-1 bg-white/20 text-white
                                          text-[10px] font-bold px-2 py-[3px] rounded-full">
                                 <i class="fas fa-location-dot text-[9px]"></i>
-                                {{ $r['distance'] }}
+                                {{ $r['distance'] ?? '—' }}
                             </span>
                             <span class="flex items-center gap-1 bg-white/20 text-white
                                          text-[10px] font-bold px-2 py-[3px] rounded-full">
                                 <i class="fas fa-tag text-[9px]"></i>
-                                {{ $r['price_range'] }}
+                                {{ $r['price_range'] ?? '—' }}
                             </span>
                             <span class="bg-white/20 text-white text-[10px] font-bold
                                          px-2 py-[3px] rounded-full ml-auto">
@@ -207,7 +207,7 @@
                                          bg-black/30 text-white text-[10px] font-bold
                                          px-[7px] py-[3px] rounded-full backdrop-blur-sm">
                                 <i class="fas fa-star text-[#FFD700] text-[9px]"></i>
-                                {{ number_format($r['rating'], 1) }}
+                                {{ $r['rating'] !== null ? number_format($r['rating'], 1) : '—' }}
                             </span>
                         </div>
 
@@ -235,10 +235,10 @@
                             <span class="text-[11px] text-secondary font-bold
                                          flex items-center gap-[3px]">
                                 <i class="fas fa-location-dot text-[10px]"></i>
-                                {{ $r['distance'] }}
+                                {{ $r['distance'] ?? '—' }}
                             </span>
                             <span class="text-[10px] text-muted">
-                                {{ $r['price_range'] }}
+                                {{ $r['price_range'] ?? '—' }}
                             </span>
                         </div>
                     </div>
