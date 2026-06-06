@@ -6,7 +6,7 @@ const translations = {
     // ─── Navbar ───
     'Beranda': 'Home',
     'Hidden Gem': 'Hidden Gem',
-    'Tanggal Tua': 'Budget Eats',
+    'Tanggal Tua': 'Tanggal Tua',
     'Masuk': 'Login',
     'Keluar': 'Logout',
     'Profil Saya': 'My Profile',
