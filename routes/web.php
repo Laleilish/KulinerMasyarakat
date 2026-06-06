@@ -54,6 +54,23 @@ Route::middleware("auth")->group(function () {
 // Detail restoran 
 Route::get("/restoran/{restaurant}", [\App\Http\Controllers\RestaurantController::class, "show"])->name("restoran.show");
 
+// API: reviews untuk popup hidden gem (public, no auth required)
+Route::get('/api/restoran/{restaurant}/reviews', function (\App\Models\Restaurant $restaurant) {
+    $reviews = $restaurant->reviews()
+        ->with('user:id,name')
+        ->latest()
+        ->take(5)
+        ->get()
+        ->map(fn($rv) => [
+            'id'         => $rv->id,
+            'user_name'  => $rv->user->name ?? 'Anonim',
+            'rating'     => $rv->rating,
+            'comment'    => $rv->comment,
+            'created_at' => $rv->created_at->diffForHumans(),
+        ]);
+    return response()->json($reviews);
+})->name('api.restoran.reviews');
+
 // Admin Routes
 Route::middleware(["auth", "role:admin"])
     ->prefix("admin")

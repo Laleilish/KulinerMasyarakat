@@ -320,10 +320,13 @@
 
             track.addEventListener('scroll', updateDots, { passive: true });
 
-            // Klik featured slide → buka modal
+            // Klik featured slide → langsung ke detail resto
             track.querySelectorAll('.featured-slide').forEach(slide => {
                 slide.addEventListener('click', () => {
-                    try { openModal(JSON.parse(slide.dataset.resto)); } catch { }
+                    try {
+                        const r = JSON.parse(slide.dataset.resto);
+                        window.location.href = `/restoran/${r.id}`;
+                    } catch { }
                 });
             });
 
@@ -335,7 +338,10 @@
         // ════════════════════════════════════════════
         document.querySelectorAll('.top-resto-card').forEach(card => {
             card.addEventListener('click', () => {
-                try { openModal(JSON.parse(card.dataset.resto)); } catch { }
+                try {
+                    const r = JSON.parse(card.dataset.resto);
+                    window.location.href = `/restoran/${r.id}`;
+                } catch { }
             });
         });
 
@@ -703,11 +709,12 @@
                                     ${restaurants.map(r => cardHTML(r)).join('')}
                                 </div>`;
 
-            // Attach click listeners
+            // Attach click listeners — langsung ke halaman detail
             grid.querySelectorAll('.top-resto-card').forEach(card => {
                 card.addEventListener('click', () => {
                     try {
-                        openModal(JSON.parse(card.dataset.resto));
+                        const r = JSON.parse(card.dataset.resto);
+                        window.location.href = `/restoran/${r.id}`;
                     } catch (e) {
                         console.error('Parse error:', e);
                     }
@@ -748,7 +755,7 @@
                     <div class="featured-slide flex-shrink-0 snap-start
                     w-[calc(100vw-48px)] md:w-[760px] max-w-none">
 
-                    <div onclick='openModal(${JSON.stringify(r)})'
+                    <div onclick='window.location.href="/restoran/${r.id}"'
                         class="bg-gradient-to-br from-[#D08700] to-[#EFB100]
                             rounded-[22px] overflow-hidden cursor-pointer">
 
@@ -1076,39 +1083,244 @@
         // ═══════════════════════════════════════════════════════════
         // MODAL
         // ═══════════════════════════════════════════════════════════
+
+        // Mini-map instance tracker
+        let _modalMiniMap = null;
+        let _modalMiniMarker = null;
+
         function openModal(r) {
+            // ── Basic fields ──
             document.getElementById('modal-image').src = r.image;
             document.getElementById('modal-name').textContent = r.name;
-            document.getElementById('modal-category').textContent = r.category;
-            const modalRating = r.rating != null ? `★ ${parseFloat(r.rating).toFixed(1)}` : '★ —';
-            const modalDist   = calcRestoDistance(r.latitude, r.longitude, r.distance);
-            document.getElementById('modal-rating').textContent   = modalRating;
-            document.getElementById('modal-distance').textContent = modalDist;
-            document.getElementById('modal-desc').textContent     = r.description || '';
-            document.getElementById('modal-price').textContent    = r.price_range || '—';
-            
-            const detailBtn = document.getElementById('modal-detail-btn');
-            if (detailBtn) {
-                detailBtn.href = `/restoran/${r.id}`;
-            }
+            document.getElementById('modal-category').textContent = r.category || '—';
 
+            const modalRating = r.rating != null
+                ? `★ ${parseFloat(r.rating).toFixed(1)}`
+                : '★ —';
+            const modalDist = calcRestoDistance(r.latitude, r.longitude, r.distance);
+            document.getElementById('modal-rating').textContent   = modalRating;
+            document.getElementById('modal-distance').textContent = modalDist
+                ? `📍 ${modalDist}` : '';
+            document.getElementById('modal-desc').textContent  = r.description || 'Tidak ada deskripsi.';
+            document.getElementById('modal-price').textContent = r.price_range || '—';
+            document.getElementById('modal-address').textContent = r.address || '—';
+            document.getElementById('modal-hours').textContent   = r.open_hours || '—';
+
+            // ── Google Maps link ──
+            const gmapsEl = document.getElementById('modal-gmaps');
+            const gmapsHref = r.gmaps_link
+                || `https://www.google.com/maps?q=${r.latitude},${r.longitude}`;
+            gmapsEl.href = gmapsHref;
+
+            // ── Detail btn ──
+            const detailBtn = document.getElementById('modal-detail-btn');
+            if (detailBtn) detailBtn.href = `/restoran/${r.id}`;
+
+            // ── Tulis Ulasan btn ──
+            const reviewBtn = document.getElementById('modal-review-btn');
+            if (reviewBtn) reviewBtn.href = `/restoran/${r.id}#ulasan`;
+
+            // ── Navigasi btn ──
             const navBtn = document.getElementById('modal-nav-btn');
-            navBtn.href = "javascript:void(0)";
-            navBtn.removeAttribute('target');
-            navBtn.onclick = function(e) {
+            navBtn.onclick = function (e) {
                 e.preventDefault();
                 closeModal();
                 startNavigation(r.latitude, r.longitude);
             };
 
+            // ── Fasilitas chips ──
+            const facWrap = document.getElementById('modal-facilities');
+            const facilities = buildFacilities(r);
+            if (facilities.length) {
+                facWrap.innerHTML = facilities.map(f =>
+                    `<span class="flex items-center gap-2
+                                  bg-white border border-black/[0.08]
+                                  text-dark text-[12px] font-semibold
+                                  px-3 py-[6px] rounded-full
+                                  shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+                        <i class="${f.icon} text-[#C07A2A] text-[11px]"></i>
+                        ${f.label}
+                    </span>`
+                ).join('');
+            } else {
+                facWrap.innerHTML = '<p class="text-[12px] text-muted">—</p>';
+            }
+
+            // ── Mini Map ──
+            renderModalMiniMap(r.latitude, r.longitude, r.name);
+
+            // ── Reviews ──
+            fetchAndRenderReviews(r.id);
+
+            // ── Show modal ──
             document.getElementById('resto-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+
+            // Scroll sheet ke atas
+            const sheet = document.getElementById('modal-sheet');
+            if (sheet) {
+                const scrollable = sheet.querySelector('.overflow-y-auto');
+                if (scrollable) scrollable.scrollTop = 0;
+            }
+        }
+
+        // Build fasilitas dari data restoran yang tersedia
+        function buildFacilities(r) {
+            const chips = [];
+            const ft = (r.food_type || '').toLowerCase();
+            const cat = (r.category || '').toLowerCase();
+
+            // Dari food_type
+            if (ft.includes('halal') || cat.includes('halal')) {
+                chips.push({ icon: 'fas fa-check-circle', label: 'Halal' });
+            }
+            if (ft.includes('outdoor') || ft.includes('lesehan')) {
+                chips.push({ icon: 'fas fa-umbrella-beach', label: 'Outdoor' });
+            }
+            if (ft.includes('indoor')) {
+                chips.push({ icon: 'fas fa-store', label: 'Indoor' });
+            }
+            if (ft.includes('parkir') || ft.includes('parking')) {
+                chips.push({ icon: 'fas fa-square-parking', label: 'Parkir' });
+            }
+            if (ft.includes('wifi') || ft.includes('wi-fi')) {
+                chips.push({ icon: 'fas fa-wifi', label: 'Gratis WiFi' });
+            }
+            if (ft.includes('ac') || ft.includes('ber-ac')) {
+                chips.push({ icon: 'fas fa-snowflake', label: 'Ber-AC' });
+            }
+            if (ft.includes('vegetarian') || ft.includes('vegan')) {
+                chips.push({ icon: 'fas fa-leaf', label: 'Vegetarian' });
+            }
+            if (ft.includes('delivery') || ft.includes('go-jek') || ft.includes('grab')) {
+                chips.push({ icon: 'fas fa-motorcycle', label: 'Delivery' });
+            }
+
+            // Jika tidak ada apapun, tampilkan food_type mentah
+            if (!chips.length && r.food_type) {
+                const raw = r.food_type.split(',').map(s => s.trim()).filter(Boolean);
+                raw.slice(0, 4).forEach(t =>
+                    chips.push({ icon: 'fas fa-utensils', label: t })
+                );
+            }
+
+            return chips;
+        }
+
+        // Render mini-map di dalam modal
+        function renderModalMiniMap(lat, lng, name) {
+            if (!lat || !lng) {
+                document.getElementById('modal-mini-map').innerHTML =
+                    '<div class="w-full h-full bg-black/[0.04] flex items-center justify-center">' +
+                    '<p class="text-[12px] text-muted">Koordinat tidak tersedia</p></div>';
+                return;
+            }
+
+            const container = document.getElementById('modal-mini-map');
+
+            // Hapus map lama
+            if (_modalMiniMap) {
+                _modalMiniMap.remove();
+                _modalMiniMap = null;
+                _modalMiniMarker = null;
+                container.innerHTML = '';
+            }
+
+            // Beri waktu DOM render
+            setTimeout(() => {
+                _modalMiniMap = L.map('modal-mini-map', {
+                    center: [lat, lng],
+                    zoom: 16,
+                    zoomControl: false,
+                    dragging: false,
+                    scrollWheelZoom: false,
+                    doubleClickZoom: false,
+                    boxZoom: false,
+                    keyboard: false,
+                    attributionControl: false,
+                });
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(_modalMiniMap);
+
+                const icon = L.divIcon({
+                    className: '',
+                    html: `<div style="width:28px;height:28px;background:#02b176;border-radius:50%;
+                                      border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.22);
+                                      display:flex;align-items:center;justify-content:center;font-size:13px;">🍜</div>`,
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14],
+                });
+
+                _modalMiniMarker = L.marker([lat, lng], { icon })
+                    .addTo(_modalMiniMap)
+                    .bindPopup(`<b style="font-size:12px;">${name}</b>`)
+                    .openPopup();
+
+                _modalMiniMap.invalidateSize();
+            }, 80);
+        }
+
+        // Fetch dan render ulasan
+        async function fetchAndRenderReviews(restoId) {
+            const listEl    = document.getElementById('modal-reviews-list');
+            const emptyEl   = document.getElementById('modal-reviews-empty');
+            const loadingEl = document.getElementById('modal-reviews-loading');
+
+            listEl.innerHTML    = '';
+            emptyEl.classList.add('hidden');
+            loadingEl.classList.remove('hidden');
+
+            try {
+                const res  = await fetch(`/api/restoran/${restoId}/reviews`);
+                const data = await res.json();
+                loadingEl.classList.add('hidden');
+
+                if (!data.length) {
+                    emptyEl.classList.remove('hidden');
+                    return;
+                }
+
+                listEl.innerHTML = data.map(rv => {
+                    const stars = Array.from({ length: 5 }, (_, i) =>
+                        `<i class="fas fa-star text-[10px] ${i < rv.rating ? 'text-[#F5A623]' : 'text-black/15'}"></i>`
+                    ).join('');
+
+                    const initials = rv.user_name
+                        .split(' ').slice(0, 2)
+                        .map(w => w[0]).join('').toUpperCase();
+
+                    return `
+                        <div class="flex gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#F5A623] to-[#C07A2A]
+                                        flex items-center justify-center flex-shrink-0
+                                        text-white text-[13px] font-extrabold shadow-sm">
+                                ${initials}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-[3px]">
+                                    <p class="text-[13px] font-extrabold text-dark leading-none">${rv.user_name}</p>
+                                    <span class="text-[11px] text-muted">${rv.created_at}</span>
+                                </div>
+                                <div class="flex gap-[2px] mb-1">${stars}</div>
+                                <p class="text-[12px] text-muted leading-[1.6]">${rv.comment || ''}</p>
+                            </div>
+                        </div>`;
+                }).join('');
+
+            } catch (err) {
+                console.error('fetchReviews error:', err);
+                loadingEl.classList.add('hidden');
+                listEl.innerHTML = '<p class="text-[12px] text-red-400 text-center py-3">Gagal memuat ulasan.</p>';
+            }
         }
 
         function closeModal() {
             document.getElementById('resto-modal').classList.add('hidden');
             document.body.style.overflow = '';
         }
+
 
         // ═══════════════════════════════════════════════════════════
         // LOADING
