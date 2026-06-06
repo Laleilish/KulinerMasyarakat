@@ -111,8 +111,11 @@ Route::middleware(["auth", "role:admin"])
 
 Route::get("/", [\App\Http\Controllers\HomeController::class, 'index'])->name("home");
 Route::get('/hidden-gem', [HiddenGemController::class, 'index'])
+    ->middleware('auth')
     ->name('hidden-gem.index');
-Route::get('/hidden-gem/restaurants/{campusId}', [HiddenGemController::class, 'getRestaurants'])->name('hidden-gem.restaurants');
+Route::get('/hidden-gem/restaurants/{campusId}', [HiddenGemController::class, 'getRestaurants'])
+    ->middleware('auth')
+    ->name('hidden-gem.restaurants');
 Route::get('/semua-resto', [RestaurantController::class, 'index'])->name('semua-resto');
 Route::get('/tanggal-tua', fn() => view('tanggal-tua.index'))->name('tanggal-tua.index');
 Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');

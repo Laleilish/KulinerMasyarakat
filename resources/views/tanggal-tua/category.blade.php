@@ -1,73 +1,62 @@
-<section class="px-4 py-5">
+<section class="px-5 mt-4 mb-6">
+    
+    <h2 class="text-[16px] font-bold text-dark mb-3">
+        Semua Makanan Hanya Dibawah 15rb
+    </h2>
 
-    <div class="flex justify-center gap-4 overflow-x-auto">
+    {{-- Filter Chips --}}
+    <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden mb-5">
+        
+        {{-- Icon Filter Box --}}
+        <button class="flex items-center justify-center w-8 h-8 rounded-md border border-[#F5A623] text-[#F5A623] flex-shrink-0 bg-transparent">
+            <i class="fas fa-sliders-h text-[13px]"></i>
+        </button>
 
-        <div class="flex flex-col items-center gap-2">
+        {{-- Chips --}}
+        <button class="px-3 py-1 rounded-full border border-[#F5A623] text-[#F5A623] text-[12px] font-bold flex-shrink-0 bg-transparent">
+            Dibawah 10k
+        </button>
+        <button class="px-3 py-1 rounded-full border border-[#F5A623] text-[#F5A623] text-[12px] font-bold flex-shrink-0 bg-transparent">
+            Terdekat
+        </button>
+        <button class="px-3 py-1 rounded-full border border-[#F5A623] text-[#F5A623] text-[12px] font-bold flex-shrink-0 bg-transparent">
+            Populer
+        </button>
+        <button class="px-3 py-1 rounded-full border border-[#F5A623] text-[#F5A623] text-[12px] font-bold flex-shrink-0 bg-transparent">
+            Penilaian
+        </button>
+        
+    </div>
 
-            <div
-                class="w-14 h-14 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-orange shadow-card">
+    {{-- Circle Categories --}}
+    <div class="flex gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1">
 
-                <img
-                    src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150"
-                    class="w-full h-full object-cover">
-
+        <div class="flex flex-col items-center gap-1 cursor-pointer">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-[#F5A623] shadow-sm flex items-center justify-center p-1 bg-white">
+                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150" class="w-full h-full object-cover rounded-full">
             </div>
-
-            <span class="font-semibold text-xs md:text-base">
-                Semua
-            </span>
-
+            <span class="font-extrabold text-[10px] text-dark">Nasi</span>
         </div>
 
-        <div class="flex flex-col items-center gap-2">
-
-            <div
-                class="w-14 h-14 md:w-24 md:h-24 rounded-full overflow-hidden shadow-card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150"
-                    class="w-full h-full object-cover">
-
+        <div class="flex flex-col items-center gap-1 cursor-pointer">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-[#F5A623] shadow-sm flex items-center justify-center p-1 bg-white">
+                <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=150" class="w-full h-full object-cover rounded-full">
             </div>
-
-            <span class="font-semibold text-xs md:text-base text-muted">
-                Nasi
-            </span>
-
+            <span class="font-extrabold text-[10px] text-dark">Mie</span>
         </div>
 
-        <div class="flex flex-col items-center gap-2">
-
-            <div
-                class="w-14 h-14 md:w-24 md:h-24 rounded-full overflow-hidden shadow-card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=150"
-                    class="w-full h-full object-cover">
-
+        <div class="flex flex-col items-center gap-1 cursor-pointer">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-[#F5A623] shadow-sm flex items-center justify-center p-1 bg-white">
+                <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=150" class="w-full h-full object-cover rounded-full">
             </div>
-
-            <span class="font-semibold text-xs md:text-base text-muted">
-                Mie
-            </span>
-
+            <span class="font-extrabold text-[10px] text-dark">Jajanan</span>
         </div>
 
-        <div class="flex flex-col items-center gap-2">
-
-            <div
-                class="w-14 h-14 md:w-24 md:h-24 rounded-full overflow-hidden shadow-card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=150"
-                    class="w-full h-full object-cover">
-
+        <div class="flex flex-col items-center gap-1 cursor-pointer">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-[#F5A623] shadow-sm flex items-center justify-center p-1 bg-white">
+                <img src="https://images.unsplash.com/photo-1563805042-7684c8a9e9cb?w=150" class="w-full h-full object-cover rounded-full">
             </div>
-
-            <span class="font-semibold text-xs md:text-base text-muted">
-                Jajanan
-            </span>
-
+            <span class="font-extrabold text-[10px] text-dark">Makanan Manis</span>
         </div>
 
     </div>

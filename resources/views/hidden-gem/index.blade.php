@@ -19,49 +19,57 @@
          class="hidden fixed inset-0 z-[3000] bg-white flex flex-col"
          style="padding-top:env(safe-area-inset-top)">
 
-        {{-- Header --}}
-        <div class="flex items-center gap-3 px-4 py-3 bg-white border-b border-black/[0.06] z-10 flex-shrink-0">
-            <button onclick="closeFullscreenMap()"
-                    class="w-9 h-9 rounded-full bg-black/[0.06] flex items-center
-                           justify-center hover:bg-black/10 transition-colors duration-150">
-                <i class="fas fa-arrow-left text-[14px] text-dark"></i>
-            </button>
-            <div class="flex-1 min-w-0">
-                <p class="text-[10px] text-muted font-semibold uppercase tracking-wider leading-none mb-[2px]">Peta</p>
-                <h3 id="fs-campus-name" class="text-[14px] font-extrabold text-dark truncate">
-                    Pilih kampus terlebih dahulu
-                </h3>
-            </div>
-        </div>
-
-        {{-- Category filter chips --}}
-        <div id="fs-filter-bar"
-             class="flex gap-2 px-4 py-[10px] overflow-x-auto [scrollbar-width:none]
-                    [&::-webkit-scrollbar]:hidden flex-shrink-0 bg-white
-                    border-b border-black/[0.04]">
-            <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
-                           font-bold bg-[#F5A623] text-white transition-all duration-150"
-                    data-filter="all">Semua</button>
-        </div>
-
         {{-- Map + Side Panel container --}}
-        <div class="flex-1 relative overflow-hidden flex flex-row">
+        <div class="flex-1 relative overflow-hidden flex flex-row w-full h-full">
 
             {{-- ── PETA ── --}}
             <div id="fs-leaflet-map" class="flex-1 h-full z-0"></div>
 
+            {{-- ── FLOATING UI ELEMENTS (Absolute on top of map) ── --}}
+            <div class="absolute top-4 left-0 right-0 z-[1000] pointer-events-none flex flex-col items-center">
+                
+                {{-- Header (Floating Search-like Bar) --}}
+                <div class="w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] pointer-events-auto bg-white rounded-full shadow-[0_4px_24px_rgba(0,0,0,0.12)] flex items-center px-4 py-3 gap-3">
+                    <button onclick="closeFullscreenMap()"
+                            class="w-8 h-8 rounded-full bg-transparent flex items-center
+                                   justify-center hover:bg-black/5 active:scale-90 transition-all duration-150 flex-shrink-0">
+                        <i class="fas fa-arrow-left text-[15px] text-dark"></i>
+                    </button>
+                    
+                    <div class="flex-1 min-w-0 flex items-center justify-center">
+                        <h3 id="fs-campus-name" class="text-[14px] font-bold text-dark truncate">
+                            Pilih kampus terlebih dahulu
+                        </h3>
+                    </div>
+
+                    <button class="w-8 h-8 rounded-full bg-transparent flex items-center
+                                   justify-center hover:bg-black/5 active:scale-90 transition-all duration-150 flex-shrink-0 text-dark">
+                        <i class="fas fa--h text-[14px]"></i>
+                    </button>
+                </div>
+
+                {{-- Category filter chips (Floating below Header) --}}
+                <div id="fs-filter-bar"
+                     class="w-[calc(100%-1rem)] md:w-[calc(100%-4rem)] mt-3 pointer-events-auto flex gap-2 px-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <button class="fs-chip flex-shrink-0 px-4 py-2 rounded-full text-[12px]
+                                   font-bold bg-[#F5A623] text-white shadow-sm border border-transparent transition-all duration-150"
+                            data-filter="all">All</button>
+                </div>
+            </div>
+
             {{-- GPS floating button --}}
             <button onclick="fsDetectGPS()"
                     class="absolute bottom-5 right-4 z-[400]
-                           w-14 h-14 rounded-full
-                           bg-[#F5A623] shadow-[0_4px_20px_rgba(245,166,35,0.5)]
+                           w-[48px] h-[48px] rounded-full
+                           bg-[#F5A623] shadow-[0_4px_20px_rgba(245,166,35,0.4)]
                            flex items-center justify-center
                            hover:scale-110 active:scale-95 transition-transform duration-150">
-                <i class="fas fa-crosshairs text-white text-[20px]"></i>
+                <i class="fas fa-crosshairs text-white text-[18px]"></i>
+
             </button>
             {{-- ════════════════════════════════════════════
-                 MOBILE: Bottom Sheet (slide-up)
-                 DESKTOP (md+): Left Panel (like Google Maps)
+                 MOBILE: Bottom Sheet
+                 DESKTOP Left Panel
             ═════════════════════════════════════════════ --}}
             <div id="fs-bottom-sheet"
                  class="hidden z-[500] bg-white overflow-y-auto
@@ -221,6 +229,11 @@
         #fs-bottom-sheet.fs-panel-open {
             transform: translateY(0);
         }
+        
+        /* Hide leaflet zoom control on mobile */
+        .leaflet-control-zoom {
+            display: none !important;
+        }
     }
 </style>
 @endpush
@@ -237,6 +250,11 @@
         const API_URL = '{{ url("/hidden-gem/restaurants") }}';
         const NOMINATIM = 'https://nominatim.openstreetmap.org';
 
+        // Format category name (e.g. "makanan_berat" to "Makanan Berat")
+        function formatCategory(str) {
+            if (!str) return '—';
+            return str.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        }
         // ═══════════════════════════════════════════════════════════
         // STATE
         // ═══════════════════════════════════════════════════════════
@@ -563,7 +581,7 @@
                             ${r.name}
                         </div>
                         <div style="font-size:11px;color:#5d6e86;margin-bottom:5px;">
-                            ${r.category || '—'} &middot; ${distanceVal}
+                            ${formatCategory(r.category)} &middot; ${distanceVal}
                         </div>
                         <div style="display:flex;align-items:center;justify-content:space-between;
                                     margin-bottom:10px;">
@@ -744,7 +762,7 @@
                                         ">${r.name}</p>
 
                                         <p style="font-size:11px;color:#5d6e86;margin-bottom:7px;">
-                                            ${r.category || '—'}
+                                            ${formatCategory(r.category)}
                                         </p>
 
                                         <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -863,7 +881,7 @@
                                     <span class="bg-white/20 text-white
                                                  text-[10px] font-bold
                                                  px-2 py-1 rounded-full">
-                                        ${r.category || '—'}
+                                        ${formatCategory(r.category)}
                                     </span>
                                 </div>
                             </div>
@@ -1147,7 +1165,7 @@
             // ── Basic fields ──
             document.getElementById('modal-image').src = r.image;
             document.getElementById('modal-name').textContent = r.name;
-            document.getElementById('modal-category').textContent = r.category || '—';
+            document.getElementById('modal-category').textContent = formatCategory(r.category);
 
             const modalRating = r.rating != null
                 ? `★ ${parseFloat(r.rating).toFixed(1)}`
@@ -1474,18 +1492,18 @@
 
             bar.innerHTML = `
                 <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
-                               font-bold transition-all duration-150
+                               font-bold transition-all duration-150 border
                                ${FsState.activeFilter === 'all'
-                                   ? 'bg-[#F5A623] text-white'
-                                   : 'bg-black/[0.06] text-dark'}"
-                        data-filter="all">Semua</button>
+                                   ? 'bg-[#F5A623] text-white border-transparent shadow-[0_2px_8px_rgba(245,166,35,0.4)]'
+                                   : 'bg-white text-dark border-black/[0.1] shadow-sm hover:bg-black/[0.02]'}"
+                        data-filter="all">All</button>
                 ${categories.map(cat => `
                     <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
-                                   font-bold transition-all duration-150
+                                   font-bold transition-all duration-150 border
                                    ${FsState.activeFilter === cat
-                                       ? 'bg-[#F5A623] text-white'
-                                       : 'bg-black/[0.06] text-dark'}"
-                            data-filter="${cat}">${cat}</button>
+                                       ? 'bg-[#F5A623] text-white border-transparent shadow-[0_2px_8px_rgba(245,166,35,0.4)]'
+                                       : 'bg-white text-dark border-black/[0.1] shadow-sm hover:bg-black/[0.02]'}"
+                            data-filter="${cat}">${formatCategory(cat)}</button>
                 `).join('')}
             `;
 
@@ -1579,8 +1597,7 @@
 
             // Navigasi button
             document.getElementById('fs-bs-nav-btn').onclick = () => {
-                closeFullscreenMap();
-                startNavigation(r.latitude, r.longitude);
+                fsStartNavigation(r.latitude, r.longitude);
             };
 
             const sheet = document.getElementById('fs-bottom-sheet');
@@ -1600,6 +1617,58 @@
                     FsState.map.panBy([0, 150], { animate: true });
                 }
             }
+        }
+
+        // Navigasi khusus Fullscreen Map
+        function fsStartNavigation(destLat, destLng) {
+            let fromLat = null;
+            let fromLng = null;
+            let fromLabel = '';
+
+            if (State.userLat && State.userLng) {
+                fromLat = State.userLat;
+                fromLng = State.userLng;
+                fromLabel = '<b>Posisi Kamu</b>';
+            } else {
+                const campus = CAMPUSES.find(c => c.id === State.activeCampusId);
+                if (!campus) {
+                    alert('Pilih kampus atau masukkan lokasi kamu terlebih dahulu.');
+                    return;
+                }
+                fromLat = campus.latitude;
+                fromLng = campus.longitude;
+                fromLabel = `<b>Titik Awal: ${campus.name}</b>`;
+            }
+
+            if (FsState.routingControl) {
+                FsState.map.removeControl(FsState.routingControl);
+                FsState.routingControl = null;
+            }
+
+            FsState.routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(fromLat, fromLng),
+                    L.latLng(destLat, destLng)
+                ],
+                routeWhileDragging: false,
+                addWaypoints: false,
+                fitSelectedRoutes: true,
+                showAlternatives: false,
+                show: false,
+                collapsible: false,
+                lineOptions: {
+                    styles: [{ color: '#02b176', opacity: 0.8, weight: 6 }]
+                },
+                // Let Leaflet Routing Machine draw default markers for start/end so they don't look "lost"
+                router: L.Routing.osrmv1({
+                    language: 'id',
+                    profile: 'car',
+                    serviceUrl: 'https://router.project-osrm.org/route/v1'
+                })
+            }).addTo(FsState.map);
+
+            // Jangan tutup bottom sheet agar info resto tetap terlihat
+            // fsCloseBottomSheet();
         }
 
         // Tutup bottom sheet
