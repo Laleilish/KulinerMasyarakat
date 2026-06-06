@@ -8,10 +8,12 @@
         <div class="flex items-center gap-3 px-4 h-[54px]">
 
             {{-- Icon kiri --}}
-            <div id="loc-icon-wrap" class="flex-shrink-0 w-5 flex items-center justify-center">
-                <div id="loc-spinner" class="hidden w-4 h-4 rounded-full border-2 border-[#F5A623]
-                            border-t-transparent animate-spin"></div>
-                <i id="loc-icon" class="fas fa-location-dot text-[#F5A623] text-[16px]"></i>
+            <div id="loc-icon-wrap" class="shrink-0 w-5 h-5 flex items-center justify-center gap-2">
+                <div id="loc-spinner"
+                    class="hidden shrink-0 w-4 h-4 rounded-full border-2 border-[#F5A623] border-t-transparent animate-spin">
+                </div>
+
+                <i id="loc-icon" class="fa-solid fa-location-dot text-[#F5A623] shrink-0 leading-none"></i>
             </div>
 
             {{-- Input --}}

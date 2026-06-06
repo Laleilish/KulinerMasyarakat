@@ -125,15 +125,16 @@ class SubmitPlaceController extends Controller
             'name' => 'required|string|max:255',
             'campus_id' => 'required|exists:campuses,id',
             'category' => 'required|string|max:255',
-            'food_type' => 'nullable|string|max:255',
+            'food_type' => 'required|string|max:255',
             'description' => 'required|string',
             'address' => 'required|string',
-            'open_hours' => 'nullable|string|max:255',
-            'price_range' => 'nullable|string|max:255',
-            'gmaps_link' => 'nullable|url|max:255',
+            'open_hours' => 'required|string|max:255',
+            'price_range' => 'required|string|max:255',
+            'gmaps_link' => 'required|url|max:255',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'landmark' => 'nullable|string|max:255',
+            'landmark_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -146,6 +147,16 @@ class SubmitPlaceController extends Controller
             $validated['photo'] = $request->file('photo')->store('submit-places', 'public');
         } else {
             unset($validated['photo']);
+        }
+
+        // Handle landmark_photo upload
+        if ($request->hasFile('landmark_photo')) {
+            if ($submitPlace->landmark_photo) {
+                Storage::disk('public')->delete($submitPlace->landmark_photo);
+            }
+            $validated['landmark_photo'] = $request->file('landmark_photo')->store('submit-places/landmarks', 'public');
+        } else {
+            unset($validated['landmark_photo']);
         }
 
         $isApproved = $submitPlace->status === 'approved';
@@ -177,6 +188,10 @@ class SubmitPlaceController extends Controller
                 // Also sync photo if it was changed
                 if (isset($validated['photo'])) {
                     $syncData['image'] = $submitPlace->photo;
+                }
+                
+                if (isset($validated['landmark_photo'])) {
+                    $syncData['landmark_photo'] = $submitPlace->landmark_photo;
                 }
 
                 $restaurant->update($syncData);
