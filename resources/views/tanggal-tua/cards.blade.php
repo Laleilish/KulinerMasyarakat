@@ -43,17 +43,17 @@
             <div class="mb-5">
                 <p class="font-bold text-[13px] text-dark mb-3">Range Harga</p>
                 <div class="space-y-2" id="tt-price-group">
-                    <div class="tt-price-btn flex items-center gap-2.5 cursor-pointer group" data-value="dibawah15k">
+                    <div class="tt-price-btn flex items-center gap-2.5 cursor-pointer group" data-value="dibawah10k">
                         <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
                             <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
                         </span>
-                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Dibawah 15rb</span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Dibawah 10rb</span>
                     </div>
-                    <div class="tt-price-btn flex items-center gap-2.5 cursor-pointer group" data-value="15k-20k">
+                    <div class="tt-price-btn flex items-center gap-2.5 cursor-pointer group" data-value="10k-15k">
                         <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
                             <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
                         </span>
-                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">15k – 20k</span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">10rb – 15rb</span>
                     </div>
                 </div>
             </div>
@@ -127,14 +127,15 @@
 
             {{-- Mobile Filter Button (only on mobile) --}}
             <div class="flex items-center gap-2 mb-4 md:hidden overflow-x-auto no-scrollbar pb-2">
-                <button id="tt-btn-filter-modal" class="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors shadow-sm flex-shrink-0">
-                    <i class="fas fa-sliders-h text-gray-500 tt-btn-filter-icon"></i> Filter
+                <button id="tt-btn-filter-modal" class="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-[13px] font-semibold text-dark hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 transition-all shadow-sm flex-shrink-0">
+                    <i class="fas fa-sliders-h text-gray-500 tt-btn-filter-icon"></i>
+                    <span class="tt-filter-text">Filter</span>
                 </button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="populer">Populer</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="terdekat">Terdekat</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="penilaian">Rating 4.5+</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="termurah">Termurah</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="bawah10k">Dibawah 10k</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="populer">Populer</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="terdekat">Terdekat</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="penilaian">Rating 4.5+</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="termurah">Termurah</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="bawah10k">Dibawah 10k</button>
             </div>
 
             {{-- Header: Count info only --}}
@@ -262,13 +263,13 @@
         }
 
         // 3. Filter range harga
-        if (State.priceRange === 'dibawah15k') {
-            list = list.filter(r => parseMaxPrice(r.price_range) <= 15000);
-        } else if (State.priceRange === '15k-20k') {
+        if (State.priceRange === 'dibawah10k') {
+            list = list.filter(r => parseMaxPrice(r.price_range) <= 10000);
+        } else if (State.priceRange === '10k-15k') {
             list = list.filter(r => {
                 const min = parseMinPrice(r.price_range);
                 const max = parseMaxPrice(r.price_range);
-                return min >= 15000 && max <= 20000;
+                return min >= 10000 && max <= 15000;
             });
         }
 
@@ -491,18 +492,28 @@
             b.classList.toggle('bg-white', !isActive);
             b.classList.toggle('text-dark', !isActive);
             b.classList.toggle('border-gray-300', !isActive);
+            // Hover: hanya muncul saat belum dipilih (inactive)
+            b.classList.toggle('hover:bg-[#F5A623]/10', !isActive);
+            b.classList.toggle('hover:border-[#F5A623]/30', !isActive);
         });
 
         const btnFilter = document.getElementById('tt-btn-filter-modal');
         const iconFilter = btnFilter ? btnFilter.querySelector('.tt-btn-filter-icon') : null;
+        const textFilter = btnFilter ? btnFilter.querySelector('.tt-filter-text') : null;
         if (btnFilter && iconFilter) {
             const isFilterActive = State.sortBy !== null;
             btnFilter.classList.toggle('bg-[#F5A623]', isFilterActive);
             btnFilter.classList.toggle('border-[#F5A623]', isFilterActive);
+            btnFilter.classList.toggle('hover:bg-[#F5A623]/10', !isFilterActive);
+            btnFilter.classList.toggle('hover:border-[#F5A623]/30', !isFilterActive);
             iconFilter.classList.toggle('text-white', isFilterActive);
+            iconFilter.classList.toggle('text-gray-500', !isFilterActive);
+            if (textFilter) {
+                textFilter.classList.toggle('text-white', isFilterActive);
+                textFilter.classList.toggle('text-dark', !isFilterActive);
+            }
             btnFilter.classList.toggle('bg-white', !isFilterActive);
             btnFilter.classList.toggle('border-gray-300', !isFilterActive);
-            iconFilter.classList.toggle('text-gray-500', !isFilterActive);
         }
     }
 

@@ -27,7 +27,7 @@
                 <span class="text-[14px] md:text-[16px] font-extrabold text-[#5A3805]">
                     Makan Enak Tanpa Biaya Lebih
                 </span>
-                <span class="bg-[#50E3C2] text-[#00604A] font-black text-[14px] md:text-[18px] px-4 py-1 rounded-full shadow-sm">
+                <span class="bg-[#50E3C2] text-[#00604A] font-black text-[18px] md:text-[25px] px-4 py-1 rounded-full shadow-sm">
                     15k
                 </span>
             </div>

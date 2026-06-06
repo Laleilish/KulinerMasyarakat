@@ -88,18 +88,10 @@ class Restaurant extends Model
 
     public function scopeTanggalTua($query)
     {
-        // Tampilkan restoran dengan harga di bawah 15.000 (tidak termasuk 15k)
-        return $query->where(function ($q) {
-            $q->where('price_range', 'like', 'Rp 5.000%')
-              ->orWhere('price_range', 'like', 'Rp 10.000%')
-              ->orWhere('price_range', 'like', 'Rp 6.000%')
-              ->orWhere('price_range', 'like', 'Rp 7.000%')
-              ->orWhere('price_range', 'like', 'Rp 8.000%')
-              ->orWhere('price_range', 'like', 'Rp 9.000%')
-              ->orWhere('price_range', 'like', 'Rp 11.000%')
-              ->orWhere('price_range', 'like', 'Rp 12.000%')
-              ->orWhere('price_range', 'like', 'Rp 13.000%')
-              ->orWhere('price_range', 'like', 'Rp 14.000%');
-        });
+        // Tampilkan restoran yang harga MAKSIMUM-nya tidak melebihi 15.000
+        // Ekstrak angka terakhir dari string price_range (contoh: "Rp 10.000 - Rp 15.000" → 15000)
+        return $query->whereRaw(
+            "CAST(REPLACE(REPLACE(SUBSTRING_INDEX(price_range, 'Rp ', -1), '.', ''), ' ', '') AS UNSIGNED) <= 15000"
+        );
     }
 }
