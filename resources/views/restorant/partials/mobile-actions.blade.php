@@ -7,7 +7,7 @@
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
         </button>
     </div>
-    <a href="https://www.google.com/maps/dir/?api=1&destination={{ $restaurant->latitude }},{{ $restaurant->longitude }}" target="_blank" class="flex-1 bg-[#00A896] text-white font-bold h-12 rounded-full flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(0,168,150,0.3)]">
+    <a href="{{ route('hidden-gem.index') }}?nav_lat={{ $restaurant->latitude }}&nav_lng={{ $restaurant->longitude }}&nav_campus_id={{ $restaurant->campus_id }}" class="flex-1 bg-[#00A896] text-white font-bold h-12 rounded-full flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(0,168,150,0.3)]">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
         Navigasi
     </a>

@@ -28,7 +28,7 @@
                 <button onclick="copyLink()" class="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/60 transition shadow-lg">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
                 </button>
-                <a href="https://www.google.com/maps/dir/?api=1&destination={{ $restaurant->latitude }},{{ $restaurant->longitude }}" target="_blank" class="px-6 py-2.5 rounded-full bg-[#00A896] hover:bg-[#028c7d] text-white font-bold flex items-center gap-2 transition shadow-lg">
+                <a href="{{ route('hidden-gem.index') }}?nav_lat={{ $restaurant->latitude }}&nav_lng={{ $restaurant->longitude }}&nav_campus_id={{ $restaurant->campus_id }}" class="px-6 py-2.5 rounded-full bg-[#00A896] hover:bg-[#028c7d] text-white font-bold flex items-center gap-2 transition shadow-lg">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                     Navigasi
                 </a>

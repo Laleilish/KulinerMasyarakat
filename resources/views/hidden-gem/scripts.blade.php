@@ -318,7 +318,8 @@
                                       padding:7px 4px;border-radius:99px;
                                       font-size:11px;font-weight:700;text-decoration:none;
                                       cursor:pointer;">
-                                &#128196; Detail
+                                <svg style="width:14px;height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Detail
                             </a>
                             <a href="javascript:void(0)"
                                onclick="startNavigation(${r.latitude}, ${r.longitude})"
@@ -327,7 +328,8 @@
                                       padding:7px 4px;border-radius:99px;
                                       font-size:11px;font-weight:700;text-decoration:none;
                                       cursor:pointer;">
-                                &#128507; Navigasi
+                                <svg style="width:14px;height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                Navigasi
                             </a>
                         </div>
                     </div>`;
@@ -1470,6 +1472,44 @@
         document.addEventListener('DOMContentLoaded', () => {
 
             initMap();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const navLat = urlParams.get('nav_lat');
+            const navLng = urlParams.get('nav_lng');
+            const navCampusId = urlParams.get('nav_campus_id');
+
+            if (navLat && navLng && navCampusId) {
+                updateLocationBar({ label: 'Mendeteksi lokasi untuk rute...', value: '', loading: true });
+
+                const runFallback = async (reason) => {
+                    handleGPSFallback(reason);
+                    await selectCampus(parseInt(navCampusId), true, true);
+                    startNavigation(parseFloat(navLat), parseFloat(navLng));
+                };
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        async (pos) => {
+                            // Berhasil dapat GPS
+                            const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+                            State.userLat = lat;
+                            State.userLng = lng;
+                            
+                            renderUserLocation(lat, lng, accuracy);
+                            const placeName = await reverseGeocode(lat, lng);
+                            updateLocationBar({ label: 'Rute dari lokasi kamu', value: placeName || 'Lokasi Kamu' });
+                            
+                            // Tetap load kampus restoran tersebut agar marker muncul
+                            await selectCampus(parseInt(navCampusId), true, true);
+                            startNavigation(parseFloat(navLat), parseFloat(navLng));
+                        },
+                        () => runFallback('GPS gagal, rute dari kampus terdekat'),
+                        { enableHighAccuracy: true, timeout: 7000, maximumAge: 60000 }
+                    );
+                } else {
+                    runFallback('GPS tidak didukung, rute dari kampus terdekat');
+                }
+            }
 
             //  Kampus click
             document.querySelectorAll('.kampus-item').forEach(el => {
