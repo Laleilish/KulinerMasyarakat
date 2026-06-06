@@ -88,10 +88,15 @@
                     </div>
 
                     {{-- Patokan --}}
-                    <template x-if="landmark">
+                    <template x-if="landmark || previewLandmarkPhoto">
                         <div>
                             <h3 class="font-bold text-gray-800 text-[15px] mb-2">Patokan</h3>
-                            <p class="text-sm text-gray-500" x-text="landmark"></p>
+                            <template x-if="landmark">
+                                <p class="text-sm text-gray-500 mb-2" x-text="landmark"></p>
+                            </template>
+                            <template x-if="previewLandmarkPhoto">
+                                <img :src="previewLandmarkPhoto" class="w-full h-32 object-cover rounded-xl border border-gray-100 mt-2">
+                            </template>
                         </div>
                     </template>
                 </div>
