@@ -70,11 +70,11 @@ class HiddenGemController extends Controller
 
         $selectedCampus = $campuses->first();
 
-        // Hanya restoran featured, max 5, rating tertinggi
+        // Hanya restoran featured, max 3, rating tertinggi
         $featuredRestaurants = Restaurant::where('campus_id', $selectedCampus->id)
             ->where('is_featured', true)
             ->orderByDesc('rating')
-            ->take(10)
+            ->take(3)
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $selectedCampus));
 
@@ -105,7 +105,7 @@ class HiddenGemController extends Controller
         $featuredRestaurants = Restaurant::where('campus_id', $campusId)
             ->where('is_featured', true)
             ->orderByDesc('rating')
-            ->take(10)
+            ->take(3)
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $campus));
 

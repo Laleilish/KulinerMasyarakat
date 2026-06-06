@@ -268,9 +268,7 @@
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════
-     MODAL DETAIL RESTORAN (Bottom Sheet)
-═══════════════════════════════════════ --}}
+{{-- MODAL DETAIL RESTORAN (Bottom Sheet) --}}
 @include('hidden-gem.modal')
 
 <style>

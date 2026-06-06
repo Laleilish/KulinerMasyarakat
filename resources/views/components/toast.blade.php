@@ -13,7 +13,9 @@
                 const skipPush = msg.includes('logged in') || 
                                  msg.includes('berhasil masuk') || 
                                  msg.includes('berhasil diubah menjadi admin') || 
-                                 msg.includes('berhasil diubah menjadi user');
+                                 msg.includes('berhasil diubah menjadi user') ||
+                                 msg.includes('ulasan berhasil ditambahkan') ||
+                                 msg.includes('ulasan berhasil dihapus');
                 
                 if (!skipPush) {
                     new Notification('KUMAR', {

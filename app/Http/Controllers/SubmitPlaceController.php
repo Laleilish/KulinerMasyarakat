@@ -37,6 +37,8 @@ class SubmitPlaceController extends Controller
             'open_hours'             => 'required|string',
             'price_range'            => 'required|string',
             'gmaps_link'             => 'required|url',
+            'latitude'               => 'nullable|numeric',
+            'longitude'              => 'nullable|numeric',
             'landmark'               => 'nullable|string',
             'landmark_photo'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'initial_rating'         => 'required|integer|min:1|max:5',
@@ -59,12 +61,16 @@ class SubmitPlaceController extends Controller
             }
         }
 
-        // Extract coordinates from Google Maps link
-        $mapsService = new GoogleMapsService();
-        $coordinates = $mapsService->extractCoordinates($validated['gmaps_link']);
-
-        $latitude  = $coordinates['latitude'] ?? null;
-        $longitude = $coordinates['longitude'] ?? null;
+        // Use submitted coordinates if available, otherwise extract from link
+        if (!empty($validated['latitude']) && !empty($validated['longitude'])) {
+            $latitude  = $validated['latitude'];
+            $longitude = $validated['longitude'];
+        } else {
+            $mapsService = new GoogleMapsService();
+            $coordinates = $mapsService->extractCoordinates($validated['gmaps_link']);
+            $latitude  = $coordinates['latitude'] ?? null;
+            $longitude = $coordinates['longitude'] ?? null;
+        }
 
         // Find nearest campus using Haversine formula
         $campusId = $this->findNearestCampus($latitude, $longitude);
