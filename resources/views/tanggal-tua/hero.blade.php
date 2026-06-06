@@ -10,7 +10,7 @@
 
         {{-- Left Image --}}
         <img
-            src="{{ asset('storage/banner/tanggal-tua-banner.png') }}"
+            src="{{ asset('assets/img/Tanggal Tua/tanggal-tua-banner.png') }}"
             alt="Tanggal Tua"
             class="relative z-10 self-end h-[160px] w-auto max-w-[45%] md:h-[280px] md:max-w-[320px] object-contain drop-shadow-md ml-0 md:ml-8 flex-shrink-0">
 
