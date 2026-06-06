@@ -19,7 +19,7 @@
             <label id="home-loc-label" class="text-xs font-semibold text-dark block mb-2 transition-all duration-200">
                 Lokasi Kamu
             </label>
-            <div class="flex flex-col md:flex-row gap-2 md:gap-3 md:items-center">
+            <div class="flex flex-row gap-2 md:gap-3 items-center">
                 <div class="flex items-center gap-2 border border-gray-300 rounded-xl flex-1 px-3 py-2 bg-white">
                     <div id="home-loc-spinner" class="hidden w-4 h-4 rounded-full border-2 border-[#F5A623] border-t-transparent animate-spin"></div>
                     <i id="home-loc-icon" class="fa-solid fa-location-dot text-[#F5A623] shrink-0"></i>

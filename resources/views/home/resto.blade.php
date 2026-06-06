@@ -27,7 +27,7 @@
     {{-- Kontainer cards —  diisi oleh JS --}}
     <div id="home-cards-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
         {{-- Skeleton loading awal --}}
-        @for($i = 0; $i < 8; $i++)
+        @for($i = 0; $i < 12; $i++)
             <div class="bg-white rounded-xl overflow-hidden border border-black/[0.05] animate-pulse">
                 <div class="w-full h-[130px] md:h-[230px] bg-gray-200"></div>
                 <div class="p-3 space-y-2">
@@ -62,8 +62,8 @@
                 list = list.filter(r => r.campus_id === State.activeCampusId);
                 title.textContent = 'Restoran di Lokasi Ini';
             } else {
-                // Default home page -> top 8 only
-                list = list.slice(0, 8);
+                // Default home page -> top 12 only
+                list = list.slice(0, 12);
                 title.textContent = 'Restoran Terfavorit';
             }
 
