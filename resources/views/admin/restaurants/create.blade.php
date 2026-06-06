@@ -48,10 +48,13 @@
                                     <input type="file" name="image" accept="image/*" class="hidden" @change="handlePhotoChange($event)">
                                     <div class="px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all">
                                         <svg class="w-6 h-6 mx-auto mb-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-                                        <p class="text-xs font-semibold text-gray-600">Pilih foto restoran</p>
+                                        <p class="text-xs font-semibold text-gray-600">Pilih foto restoran <span class="text-rose-500">*</span></p>
                                         <p class="text-[10px] text-gray-400 mt-0.5">JPG, PNG, WEBP (maks. 2MB)</p>
                                     </div>
                                 </label>
+                                @error('image')
+                                    <p class="mt-2 text-xs text-rose-500 font-semibold">{{ $message }}</p>
+                                @enderror
                                 <button type="button" x-show="previewPhoto" @click="resetPhoto()" class="mt-2 text-xs text-rose-500 hover:text-rose-700 font-semibold cursor-pointer">
                                     ✕ Hapus foto
                                 </button>
@@ -95,24 +98,24 @@
 
                         {{-- Tipe Makanan --}}
                         <div>
-                            <label for="food_type" class="block text-sm font-semibold text-gray-700 mb-1">Tipe Makanan</label>
-                            <input type="text" name="food_type" id="food_type" x-model="food_type"
+                            <label for="food_type" class="block text-sm font-semibold text-gray-700 mb-1">Tipe Makanan <span class="text-rose-500">*</span></label>
+                            <input type="text" name="food_type" id="food_type" x-model="food_type" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"
                                 placeholder="Contoh: Nasi Goreng, Ayam Geprek">
                         </div>
 
                         {{-- Rentang Harga --}}
                         <div>
-                            <label for="price_range" class="block text-sm font-semibold text-gray-700 mb-1">Rentang Harga</label>
-                            <input type="text" name="price_range" id="price_range" x-model="price_range"
+                            <label for="price_range" class="block text-sm font-semibold text-gray-700 mb-1">Rentang Harga <span class="text-rose-500">*</span></label>
+                            <input type="text" name="price_range" id="price_range" x-model="price_range" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"
                                 placeholder="Contoh: Rp 15.000 - 30.000">
                         </div>
 
                         {{-- Jam Buka --}}
                         <div>
-                            <label for="open_hours" class="block text-sm font-semibold text-gray-700 mb-1">Jam Buka</label>
-                            <input type="text" name="open_hours" id="open_hours" x-model="open_hours"
+                            <label for="open_hours" class="block text-sm font-semibold text-gray-700 mb-1">Jam Buka <span class="text-rose-500">*</span></label>
+                            <input type="text" name="open_hours" id="open_hours" x-model="open_hours" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"
                                 placeholder="Contoh: 08:00 - 22:00">
                         </div>
@@ -166,8 +169,8 @@
 
                         {{-- Link Google Maps --}}
                         <div class="col-span-1 md:col-span-2">
-                            <label for="gmaps_link" class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps</label>
-                            <input type="url" name="gmaps_link" id="gmaps_link" value="{{ old('gmaps_link') }}"
+                            <label for="gmaps_link" class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps <span class="text-rose-500">*</span></label>
+                            <input type="url" name="gmaps_link" id="gmaps_link" value="{{ old('gmaps_link') }}" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors">
                         </div>
 

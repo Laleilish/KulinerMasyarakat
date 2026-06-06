@@ -74,6 +74,9 @@
                                         <p class="text-[10px] text-gray-400 mt-0.5">JPG, PNG, WEBP (maks. 2MB)</p>
                                     </div>
                                 </label>
+                                @error('photo')
+                                    <p class="mt-2 text-xs text-rose-500 font-semibold">{{ $message }}</p>
+                                @enderror
                                 <button type="button" x-show="photoChanged" @click="resetPhoto()" class="mt-2 text-xs text-rose-500 hover:text-rose-700 font-semibold cursor-pointer">
                                     ✕ Batalkan perubahan foto
                                 </button>
@@ -117,24 +120,24 @@
 
                         {{-- Tipe Makanan --}}
                         <div>
-                            <label for="food_type" class="block text-sm font-semibold text-gray-700 mb-1">Tipe Makanan</label>
-                            <input type="text" name="food_type" id="food_type" x-model="food_type"
+                            <label for="food_type" class="block text-sm font-semibold text-gray-700 mb-1">Tipe Makanan <span class="text-rose-500">*</span></label>
+                            <input type="text" name="food_type" id="food_type" x-model="food_type" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors"
                                 placeholder="Contoh: Nasi Goreng, Ayam Geprek">
                         </div>
 
                         {{-- Rentang Harga --}}
                         <div>
-                            <label for="price_range" class="block text-sm font-semibold text-gray-700 mb-1">Rentang Harga</label>
-                            <input type="text" name="price_range" id="price_range" x-model="price_range"
+                            <label for="price_range" class="block text-sm font-semibold text-gray-700 mb-1">Rentang Harga <span class="text-rose-500">*</span></label>
+                            <input type="text" name="price_range" id="price_range" x-model="price_range" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors"
                                 placeholder="Contoh: Rp 15.000 - 30.000">
                         </div>
 
                         {{-- Jam Buka --}}
                         <div>
-                            <label for="open_hours" class="block text-sm font-semibold text-gray-700 mb-1">Jam Buka</label>
-                            <input type="text" name="open_hours" id="open_hours" x-model="open_hours"
+                            <label for="open_hours" class="block text-sm font-semibold text-gray-700 mb-1">Jam Buka <span class="text-rose-500">*</span></label>
+                            <input type="text" name="open_hours" id="open_hours" x-model="open_hours" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors"
                                 placeholder="Contoh: 08:00 - 22:00">
                         </div>
@@ -188,8 +191,8 @@
 
                         {{-- Link Google Maps --}}
                         <div class="col-span-1 md:col-span-2">
-                            <label for="gmaps_link" class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps</label>
-                            <input type="url" name="gmaps_link" id="gmaps_link" value="{{ old('gmaps_link', $submitPlace->gmaps_link) }}"
+                            <label for="gmaps_link" class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps <span class="text-rose-500">*</span></label>
+                            <input type="url" name="gmaps_link" id="gmaps_link" value="{{ old('gmaps_link', $submitPlace->gmaps_link) }}" required
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors">
                         </div>
 
