@@ -9,15 +9,25 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Get approved restaurants, ordered by average rating and then by number of reviews
-        $restaurants = Restaurant::approved()
+        // Ambil semua restoran approved, urutkan berdasarkan rating dan review
+        $restaurants = \App\Models\Restaurant::approved()
             ->withCount('reviews')
             ->withAvg('reviews', 'rating')
             ->orderBy('reviews_avg_rating', 'desc')
             ->orderBy('reviews_count', 'desc')
-            ->take(8)
             ->get();
 
-        return view('home.index', compact('restaurants'));
+        // Ambil semua kampus untuk location selector
+        $campuses = \App\Models\Campus::all();
+
+        $campusesData = $campuses->map(fn($c) => [
+            'id'        => $c->id,
+            'name'      => $c->name,
+            'logo'      => asset('assets/img/kampus/' . $c->logo),
+            'latitude'  => (float) $c->latitude,
+            'longitude' => (float) $c->longitude,
+        ])->values();
+
+        return view('home.index', compact('restaurants', 'campuses', 'campusesData'));
     }
 }
