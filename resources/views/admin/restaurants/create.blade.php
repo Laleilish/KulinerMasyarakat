@@ -118,11 +118,36 @@
                         </div>
 
                         {{-- Patokan (Landmark) --}}
-                        <div>
+                        <div class="col-span-1 md:col-span-2">
                             <label for="landmark" class="block text-sm font-semibold text-gray-700 mb-1">Patokan (Landmark)</label>
                             <input type="text" name="landmark" id="landmark" x-model="landmark"
                                 class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"
                                 placeholder="Samping minimarket...">
+                        </div>
+                        
+                        {{-- Foto Patokan --}}
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Patokan (Opsional)</label>
+                            <div class="flex items-start gap-4">
+                                <div class="w-20 h-20 rounded-xl bg-gray-100 overflow-hidden shrink-0 border-2 border-dashed border-gray-200">
+                                    <img :src="previewLandmarkPhoto" class="w-full h-full object-cover" x-show="previewLandmarkPhoto">
+                                    <div class="w-full h-full flex items-center justify-center text-gray-400 text-[10px] font-bold" x-show="!previewLandmarkPhoto">
+                                        KOSONG
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block w-full cursor-pointer">
+                                        <input type="file" name="landmark_photo" accept="image/*" class="hidden" @change="handleLandmarkPhotoChange($event)">
+                                        <div class="px-4 py-4 border-2 border-dashed border-gray-200 rounded-xl text-center hover:border-[#B87A29]/50 hover:bg-[#B87A29]/5 transition-all">
+                                            <svg class="w-5 h-5 mx-auto mb-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+                                            <p class="text-xs font-semibold text-gray-600">Klik untuk pilih foto patokan</p>
+                                        </div>
+                                    </label>
+                                    <button type="button" x-show="previewLandmarkPhoto" @click="resetLandmarkPhoto()" class="mt-2 text-xs text-rose-500 hover:text-rose-700 font-semibold cursor-pointer">
+                                        ✕ Hapus foto
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         {{-- Deskripsi --}}
@@ -187,6 +212,7 @@ function createForm() {
         price_range: @js(old('price_range', '')),
         landmark: @js(old('landmark', '')),
         previewPhoto: null,
+        previewLandmarkPhoto: null,
 
         handlePhotoChange(event) {
             const file = event.target.files[0];
@@ -198,6 +224,19 @@ function createForm() {
         resetPhoto() {
             this.previewPhoto = null;
             const input = document.querySelector('input[name="image"]');
+            if (input) input.value = '';
+        },
+
+        handleLandmarkPhotoChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.previewLandmarkPhoto = URL.createObjectURL(file);
+            }
+        },
+
+        resetLandmarkPhoto() {
+            this.previewLandmarkPhoto = null;
+            const input = document.querySelector('input[name="landmark_photo"]');
             if (input) input.value = '';
         }
     }

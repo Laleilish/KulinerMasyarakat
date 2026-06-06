@@ -59,11 +59,16 @@ class RestaurantController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'landmark' => 'nullable|string|max:255',
+            'landmark_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('restaurants', 'public');
+        }
+
+        if ($request->hasFile('landmark_photo')) {
+            $validated['landmark_photo'] = $request->file('landmark_photo')->store('restaurants/landmarks', 'public');
         }
 
         // Set user_id to current admin for directly created restaurants
@@ -104,6 +109,7 @@ class RestaurantController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'landmark' => 'nullable|string|max:255',
+            'landmark_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -112,6 +118,13 @@ class RestaurantController extends Controller
                 Storage::disk('public')->delete($restaurant->image);
             }
             $validated['image'] = $request->file('image')->store('restaurants', 'public');
+        }
+
+        if ($request->hasFile('landmark_photo')) {
+            if ($restaurant->landmark_photo) {
+                Storage::disk('public')->delete($restaurant->landmark_photo);
+            }
+            $validated['landmark_photo'] = $request->file('landmark_photo')->store('restaurants/landmarks', 'public');
         }
 
         $restaurant->update($validated);
