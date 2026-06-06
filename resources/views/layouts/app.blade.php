@@ -57,7 +57,7 @@
                                 
                                 unreadNotifs.forEach(n => {
                                     if (!notified.includes(n.id)) {
-                                        new Notification('KUMAR 🍜', {
+                                        new Notification('KUMAR', {
                                             body: n.message,
                                             icon: '/assets/img/icon-kumar.png',
                                         });
