@@ -8,6 +8,7 @@ use App\Models\Restaurant;
 use App\Models\Review;
 use App\Models\SubmitPlace;
 use App\Notifications\PlaceApprovedNotification;
+use App\Notifications\PlaceRejectedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -218,6 +219,9 @@ class SubmitPlaceController extends Controller
     public function reject(SubmitPlace $submitPlace)
     {
         $submitPlace->update(['status' => 'rejected']);
+
+        // Notify the user
+        $submitPlace->user->notify(new PlaceRejectedNotification($submitPlace));
 
         return redirect()->back()
             ->with('success', 'Usulan tempat telah ditolak.');

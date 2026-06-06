@@ -16,7 +16,7 @@
     <div id="notificationDropdown"
          class="hidden absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-card border border-gray-100 py-2 z-50">
         <div class="px-4 py-3 border-b border-gray-100">
-            <p class="text-sm font-semibold text-dark">Notifikasi</p>
+            <p class="text-sm font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</p>
         </div>
         <div class="max-h-80 overflow-y-auto">
             @forelse(auth()->user()->unreadNotifications->take(5) as $notification)
@@ -26,7 +26,7 @@
                 </a>
             @empty
                 <div class="px-4 py-4 text-center text-sm text-muted">
-                    Tidak ada notifikasi baru.
+                    <span data-i18n="Tidak ada notifikasi baru.">Tidak ada notifikasi baru.</span>
                 </div>
             @endforelse
         </div>

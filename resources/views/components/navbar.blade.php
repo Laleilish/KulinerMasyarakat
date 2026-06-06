@@ -24,12 +24,18 @@
             <div class="hidden md:flex items-center gap-6">
                 <a href="{{ route('login') }}"
                    class="bg-secondary hover:bg-secondary-dark text-white px-4 py-2 rounded-full font-bold no-underline transition-colors">
-                    Masuk
+                    <span data-i18n="Masuk">Masuk</span>
                 </a>
                 <div class="flex items-center gap-2 font-semibold">
-                    <span class="text-dark cursor-pointer">ID</span>
+                    <button type="button"
+                            @click="$store.i18n.setLocale('ID')"
+                            :class="$store.i18n.locale === 'ID' ? 'text-dark' : 'text-muted'"
+                            class="bg-transparent border-none cursor-pointer font-semibold transition-colors hover:text-dark">ID</button>
                     <span class="text-muted">|</span>
-                    <span class="text-muted cursor-pointer">EN</span>
+                    <button type="button"
+                            @click="$store.i18n.setLocale('EN')"
+                            :class="$store.i18n.locale === 'EN' ? 'text-dark' : 'text-muted'"
+                            class="bg-transparent border-none cursor-pointer font-semibold transition-colors hover:text-dark">EN</button>
                 </div>
             </div>
         @endauth

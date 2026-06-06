@@ -15,19 +15,19 @@
     <li class="w-full py-3 border-b border-black/5 md:w-auto md:py-0 md:border-none">
         <a href="{{ route('home') }}"
            class="no-underline font-semibold text-base {{ request()->routeIs('home') ? 'text-dark border-b-2 border-red-logo pb-1' : 'text-muted' }}">
-            Beranda
+            <span data-i18n="Beranda">Beranda</span>
         </a>
     </li>
     <li class="w-full py-3 border-b border-black/5 md:w-auto md:py-0 md:border-none">
         <a href="{{ route('hidden-gem.index') }}"
            class="no-underline font-semibold text-base {{ request()->routeIs('hidden-gem.*') ? 'text-dark border-b-2 border-red-logo pb-1' : 'text-muted' }}">
-            Hidden Gem
+            <span data-i18n="Hidden Gem">Hidden Gem</span>
         </a>
     </li>
     <li class="w-full py-3 border-b border-black/5 md:w-auto md:py-0 md:border-none">
         <a href="{{ route('tanggal-tua.index') }}"
            class="no-underline font-semibold text-base {{ request()->routeIs('tanggal-tua.*') ? 'text-dark border-b-2 border-red-logo pb-1' : 'text-muted' }}">
-            Tanggal Tua
+            <span data-i18n="Tanggal Tua">Tanggal Tua</span>
         </a>
     </li>
 
@@ -36,14 +36,9 @@
         <div class="flex flex-col w-full md:hidden">
             <li class="w-full py-3 border-b border-black/5">
                 <a href="{{ route('login') }}"
-                   class="no-underline font-semibold text-base text-muted">Masuk</a>
-            </li>
-            <li class="w-full py-3">
-                <div class="flex items-center gap-2 font-semibold">
-                    <span class="text-dark cursor-pointer">ID</span>
-                    <span class="text-muted">|</span>
-                    <span class="text-muted cursor-pointer">EN</span>
-                </div>
+                   class="no-underline font-semibold text-base text-muted">
+                    <span data-i18n="Masuk">Masuk</span>
+                </a>
             </li>
         </div>
     @endguest

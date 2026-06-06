@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\RoleChangedNotification;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -46,6 +47,9 @@ class UserController extends Controller
         // Toggle admin status
         $user->role = $user->role === 'admin' ? 'user' : 'admin';
         $user->save();
+
+        // Notify the user about the role change
+        $user->notify(new RoleChangedNotification($user->role));
 
         return redirect()->back()->with('success', "Peran untuk {$user->name} berhasil diubah menjadi " . strtoupper($user->role) . ".");
     }
