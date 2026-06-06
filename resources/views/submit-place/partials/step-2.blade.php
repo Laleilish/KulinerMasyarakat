@@ -134,7 +134,12 @@
                                 </template>
 
                                 {{-- Upload Area --}}
-                                <label x-show="!landmarkPreview" for="landmark-upload" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-emerald-400 border-dashed rounded-2xl bg-white hover:bg-emerald-50 transition-colors cursor-pointer group">
+                                <label x-show="!landmarkPreview" 
+                                       for="landmark-upload" 
+                                       @dragover.prevent="$el.classList.add('bg-emerald-50')" 
+                                       @dragleave.prevent="$el.classList.remove('bg-emerald-50')" 
+                                       @drop.prevent="$el.classList.remove('bg-emerald-50'); handleLandmark($event)"
+                                       class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-emerald-400 border-dashed rounded-2xl bg-white hover:bg-emerald-50 transition-colors cursor-pointer group">
                                     <div class="space-y-2 text-center flex flex-col items-center">
                                         <svg class="h-8 w-8 text-emerald-500 group-hover:text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />

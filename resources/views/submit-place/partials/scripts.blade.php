@@ -45,7 +45,8 @@ function submitPlaceForm() {
 
         // Photo Handlers
         handlePhoto(e) {
-            const file = e.target.files[0];
+            const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+            const file = files[0];
             if (!file) return;
             
             if (file.size > 2 * 1024 * 1024) {
@@ -64,7 +65,8 @@ function submitPlaceForm() {
         },
 
         handleLandmark(e) {
-            const file = e.target.files[0];
+            const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+            const file = files[0];
             if (!file) return;
 
             if (file.size > 2 * 1024 * 1024) {
@@ -83,7 +85,8 @@ function submitPlaceForm() {
         },
 
         handleReviewPhotos(e) {
-            const files = Array.from(e.target.files);
+            const filesArray = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+            const files = Array.from(filesArray);
             const remaining = 5 - this.reviewPreviews.length;
             const toAdd = files.slice(0, remaining);
 
