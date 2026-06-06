@@ -66,14 +66,20 @@
 
     // ─────────────────────────────────────────────────────────────────
     // PARSE HARGA dari price_range string → angka
-    // e.g. "Rp 5.000 - Rp 10.000" → 5000
+    // e.g. "Rp 5.000 - Rp 10.000" → min: 5000, max: 10000
     // ─────────────────────────────────────────────────────────────────
     function parseMinPrice(priceRange) {
         if (!priceRange) return Infinity;
         const nums = priceRange.replace(/[^0-9.]/g, ' ').trim().split(/\s+/).filter(Boolean);
         if (!nums.length) return Infinity;
-        // Ambil angka pertama, hapus titik ribuan
         return parseInt(nums[0].replace(/\./g, ''), 10) || Infinity;
+    }
+
+    function parseMaxPrice(priceRange) {
+        if (!priceRange) return Infinity;
+        const nums = priceRange.replace(/[^0-9.]/g, ' ').trim().split(/\s+/).filter(Boolean);
+        if (!nums.length) return Infinity;
+        return parseInt(nums[nums.length - 1].replace(/\./g, ''), 10) || Infinity;
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -117,7 +123,7 @@
 
         // 3. Filter sort "Dibawah 10k"
         if (State.sortBy === 'bawah10k') {
-            list = list.filter(r => parseMinPrice(r.price_range) <= 10000);
+            list = list.filter(r => parseMaxPrice(r.price_range) <= 10000);
         }
 
         // 4. Sort
@@ -240,10 +246,11 @@
                 const isActive = b.dataset.sort === State.sortBy;
                 b.classList.toggle('bg-[#F5A623]', isActive);
                 b.classList.toggle('text-white', isActive);
-                b.classList.toggle('border-transparent', isActive);
-                b.classList.toggle('text-[#F5A623]', !isActive);
-                b.classList.toggle('border-[#F5A623]', !isActive);
-                b.classList.toggle('bg-transparent', !isActive);
+                b.classList.toggle('border-[#F5A623]', isActive);
+                b.classList.toggle('bg-white', !isActive);
+                b.classList.toggle('text-dark', !isActive);
+                b.classList.toggle('border-gray-300', !isActive);
+                b.classList.toggle('hover:bg-gray-50', !isActive);
             });
 
             renderCards();
@@ -251,26 +258,39 @@
     });
 
     // ─────────────────────────────────────────────────────────────────
-    // CATEGORY CHIPS
+    // CATEGORY CIRCLES (GoFood Style)
     // ─────────────────────────────────────────────────────────────────
-    document.querySelectorAll('.tt-cat-chip').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const cat = btn.dataset.category;
+    document.querySelectorAll('.tt-cat-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const cat = item.dataset.category;
 
-            // Toggle
-            if (State.activeCategory === cat) {
+            // Toggle logic
+            if (cat === 'semua') {
+                State.activeCategory = null;
+            } else if (State.activeCategory === cat) {
                 State.activeCategory = null;
             } else {
                 State.activeCategory = cat;
             }
 
             // Update visual
-            document.querySelectorAll('.tt-cat-chip').forEach(b => {
-                const isActive = b.dataset.category === State.activeCategory;
-                b.classList.toggle('bg-[#F5A623]', isActive);
-                b.classList.toggle('text-white', isActive);
-                b.classList.toggle('bg-transparent', !isActive);
-                b.classList.toggle('text-[#F5A623]', !isActive);
+            document.querySelectorAll('.tt-cat-item').forEach(i => {
+                const isCat = i.dataset.category;
+                const isActive = (isCat === State.activeCategory) || (!State.activeCategory && isCat === 'semua');
+                
+                const label = i.querySelector('.cat-label');
+
+                if (isActive) {
+                    i.classList.remove('border-transparent', 'hover:border-gray-300');
+                    i.classList.add('border-[#F5A623]');
+                    label.classList.remove('text-muted', 'font-medium');
+                    label.classList.add('text-dark', 'font-bold');
+                } else {
+                    i.classList.remove('border-[#F5A623]');
+                    i.classList.add('border-transparent', 'hover:border-gray-300');
+                    label.classList.remove('text-dark', 'font-bold');
+                    label.classList.add('text-muted', 'font-medium');
+                }
             });
 
             renderCards();
