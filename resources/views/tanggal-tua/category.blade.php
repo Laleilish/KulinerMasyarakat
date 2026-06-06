@@ -5,9 +5,9 @@
     </h2>
 
     {{-- Filter Chips (Sort) - GoFood Style --}}
-    <div class="flex gap-2 overflow-x-auto md:justify-center mb-6 px-1 py-1 pb-2">
-        <button class="flex items-center justify-center px-4 py-2 rounded-full border border-gray-300 text-dark flex-shrink-0 bg-white hover:bg-gray-50 transition-colors shadow-sm">
-            <i class="fas fa-sliders-h text-[13px] text-gray-500"></i>
+    <div class="flex gap-2 overflow-x-auto md:justify-start mb-6 px-1 py-1 pb-2">
+        <button id="tt-btn-filter-modal" class="flex items-center justify-center px-4 py-2 rounded-full border border-gray-300 text-dark flex-shrink-0 bg-white hover:bg-gray-50 transition-colors shadow-sm">
+            <i class="fas fa-sliders-h text-[13px] text-gray-500 tt-btn-filter-icon"></i>
         </button>
         <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="populer">
             Populer
@@ -24,55 +24,40 @@
     </div>
 
     {{-- Category Circles - GoFood Style --}}
-    <div class="flex gap-4 md:gap-8 overflow-x-auto md:justify-center border-b border-gray-200 pb-2">
-        
+    <div class="flex gap-4 md:gap-8 overflow-x-auto md:justify-start border-b border-gray-200 pb-2">
+
         {{-- Semua --}}
-        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[70px] flex-shrink-0 pb-3 border-b-[3px] border-[#F5A623] transition-colors" data-category="semua">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 group-hover:bg-gray-200 transition-colors">
-                <i class="fas fa-utensils text-gray-500 text-xl"></i>
+        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[80px] flex-shrink-0 pb-3 border-b-[3px] border-[#F5A623] transition-colors" data-category="semua">
+            <div class="w-[75px] h-[75px] rounded-full overflow-hidden flex items-center justify-center bg-amber-50 group-hover:bg-amber-100 transition-colors shadow-sm">
+                <i class="fas fa-utensils text-[#F5A623] text-2xl"></i>
             </div>
             <span class="cat-label font-bold text-[13px] text-dark">Semua</span>
         </div>
 
-        {{-- Makanan --}}
-        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[70px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="makanan">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
-                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150" class="w-full h-full object-cover">
+        {{-- Makanan Berat --}}
+        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[80px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="makanan_berat">
+            <div class="w-[75px] h-[75px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=150" class="w-full h-full object-cover" alt="Makanan Berat">
             </div>
-            <span class="cat-label font-medium text-[13px] text-muted">Makanan</span>
-        </div>
-
-        {{-- Minuman --}}
-        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[70px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="minuman">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
-                <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=150" class="w-full h-full object-cover">
-            </div>
-            <span class="cat-label font-medium text-[13px] text-muted">Minuman</span>
+            <span class="cat-label font-medium text-[13px] text-muted">Makanan Berat</span>
         </div>
 
         {{-- Jajanan --}}
-        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[70px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="jajanan">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
-                <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=150" class="w-full h-full object-cover">
+        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[80px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="jajanan">
+            <div class="w-[75px] h-[75px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=150" class="w-full h-full object-cover" alt="Jajanan">
             </div>
             <span class="cat-label font-medium text-[13px] text-muted">Jajanan</span>
         </div>
 
-        {{-- Manis --}}
-        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[70px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="manis">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c8a9e9cb?w=150" class="w-full h-full object-cover">
+        {{-- Minuman --}}
+        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[80px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="minuman">
+            <div class="w-[75px] h-[75px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=150" class="w-full h-full object-cover" alt="Minuman">
             </div>
-            <span class="cat-label font-medium text-[13px] text-muted">Manis</span>
+            <span class="cat-label font-medium text-[13px] text-muted">Minuman</span>
         </div>
 
-        {{-- Mie --}}
-        <div class="tt-cat-item flex flex-col items-center gap-2 cursor-pointer select-none group min-w-[70px] flex-shrink-0 pb-3 border-b-[3px] border-transparent hover:border-gray-300 transition-colors" data-category="mie">
-            <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-sm">
-                <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=150" class="w-full h-full object-cover">
-            </div>
-            <span class="cat-label font-medium text-[13px] text-muted">Mie</span>
-        </div>
     </div>
 
     {{-- Label kampus aktif --}}
