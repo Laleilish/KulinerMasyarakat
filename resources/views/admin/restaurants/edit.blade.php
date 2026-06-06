@@ -30,11 +30,7 @@
                 </div>
             @endif
 
-            @if (session('success'))
-                <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 font-medium">
-                    {{ session('success') }}
-                </div>
-            @endif
+
 
             <form action="{{ route('admin.restaurants.update', $restaurant) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                 @csrf
