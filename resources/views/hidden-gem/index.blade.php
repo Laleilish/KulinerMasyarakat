@@ -44,9 +44,11 @@
                     data-filter="all">Semua</button>
         </div>
 
-        {{-- Map area --}}
-        <div class="flex-1 relative overflow-hidden">
-            <div id="fs-leaflet-map" class="w-full h-full z-0"></div>
+        {{-- Map + Side Panel container --}}
+        <div class="flex-1 relative overflow-hidden flex flex-row">
+
+            {{-- ── PETA ── --}}
+            <div id="fs-leaflet-map" class="flex-1 h-full z-0"></div>
 
             {{-- GPS floating button --}}
             <button onclick="fsDetectGPS()"
@@ -57,119 +59,172 @@
                            hover:scale-110 active:scale-95 transition-transform duration-150">
                 <i class="fas fa-crosshairs text-white text-[20px]"></i>
             </button>
-        </div>
+            {{-- ════════════════════════════════════════════
+                 MOBILE: Bottom Sheet (slide-up)
+                 DESKTOP (md+): Left Panel (like Google Maps)
+            ═════════════════════════════════════════════ --}}
+            <div id="fs-bottom-sheet"
+                 class="hidden z-[500] bg-white overflow-y-auto
+                        [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+                        {{-- Mobile: absolute bottom sheet --}}
+                        absolute bottom-0 left-0 right-0
+                        rounded-t-[28px]
+                        shadow-[0_-8px_40px_rgba(0,0,0,0.18)]
+                        {{-- Desktop: relative left panel, full height --}}
+                        md:static md:bottom-auto md:left-auto md:right-auto
+                        md:rounded-none
+                        md:shadow-[4px_0_32px_rgba(0,0,0,0.12)]
+                        md:w-[360px] md:flex-shrink-0 md:h-full
+                        md:order-first md:border-r md:border-black/[0.06]"
+                 style="max-height:72vh;">
 
-        {{-- Bottom Sheet --}}
-        <div id="fs-bottom-sheet"
-             class="hidden absolute bottom-0 left-0 right-0 z-[500]
-                    bg-white rounded-t-[28px]
-                    shadow-[0_-8px_40px_rgba(0,0,0,0.18)]"
-             style="max-height:72vh;overflow-y:auto;">
-
-            {{-- Drag handle --}}
-            <div class="flex justify-center pt-3 pb-1 flex-shrink-0">
-                <div class="w-10 h-[4px] rounded-full bg-black/15"></div>
-            </div>
-
-            {{-- Tombol tutup --}}
-            <button onclick="fsCloseBottomSheet()"
-                    class="absolute top-4 right-4 w-8 h-8 bg-black/10
-                           rounded-full flex items-center justify-center
-                           hover:bg-black/20 transition-colors z-10">
-                <i class="fas fa-xmark text-[13px] text-dark"></i>
-            </button>
-
-            {{-- Hero image --}}
-            <div class="relative w-full h-[160px] overflow-hidden flex-shrink-0">
-                <img id="fs-bs-image" src="" alt=""
-                     class="w-full h-full object-cover"
-                     onerror="this.src='/assets/img/resto/default.png'">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                    <h2 id="fs-bs-name" class="text-white text-[17px] font-extrabold leading-tight mb-[6px]"></h2>
-                    <div class="flex items-center gap-3">
-                        <span id="fs-bs-rating" class="text-[#FFD700] text-[13px] font-bold"></span>
-                        <span id="fs-bs-distance" class="text-white/80 text-[12px]"></span>
-                        <a id="fs-bs-detail-btn" href="#"
-                                class="ml-auto flex items-center gap-2 bg-[#F5A623] text-white
-                                       px-4 py-[7px] rounded-full text-[12px] font-extrabold
-                                       hover:brightness-110 active:scale-95 transition-all duration-150">
-                            <i class="fas fa-file-alt text-[11px]"></i>
-                            Detail
-                        </a>
-                        <button id="fs-bs-nav-btn"
-                                class="flex items-center gap-2 bg-[#02b176] text-white
-                                       px-4 py-[7px] rounded-full text-[12px] font-extrabold
-                                       hover:brightness-110 active:scale-95 transition-all duration-150">
-                            <i class="fas fa-diamond-turn-right text-[11px]"></i>
-                            Navigasi
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Content body --}}
-            <div class="px-5 py-4 space-y-4">
-
-                {{-- About --}}
-                <div>
-                    <h3 class="text-[14px] font-extrabold text-dark mb-[6px]">About</h3>
-                    <p id="fs-bs-desc" class="text-[12px] text-muted leading-[1.75]"></p>
+                {{-- Mobile drag handle --}}
+                <div class="flex justify-center pt-3 pb-1 flex-shrink-0 md:hidden">
+                    <div class="w-10 h-[4px] rounded-full bg-black/15"></div>
                 </div>
 
-                <hr class="border-black/[0.06]">
+                {{-- Desktop top bar --}}
+                <div class="hidden md:flex items-center justify-between
+                            px-4 py-3 border-b border-black/[0.06] flex-shrink-0
+                            sticky top-0 bg-white z-10">
+                    <p class="text-[11px] font-bold text-muted uppercase tracking-wider">Info Tempat</p>
+                    <button onclick="fsCloseBottomSheet()"
+                            class="w-8 h-8 bg-black/[0.05] rounded-full flex items-center justify-center
+                                   hover:bg-black/10 transition-colors">
+                        <i class="fas fa-xmark text-[13px] text-dark"></i>
+                    </button>
+                </div>
 
-                {{-- Info Detail --}}
-                <div>
-                    <h3 class="text-[14px] font-extrabold text-dark mb-3">Info Detail</h3>
-                    <div class="space-y-3">
+                {{-- Close button (mobile) --}}
+                <button onclick="fsCloseBottomSheet()"
+                        class="md:hidden absolute top-4 right-4 w-8 h-8 bg-black/10
+                               rounded-full flex items-center justify-center
+                               hover:bg-black/20 transition-colors z-10">
+                    <i class="fas fa-xmark text-[13px] text-dark"></i>
+                </button>
 
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-location-dot text-[#C07A2A] text-[13px]"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Alamat</p>
-                                <p id="fs-bs-address" class="text-[12px] text-dark font-medium leading-[1.55]"></p>
-                            </div>
+                {{-- Hero image --}}
+                <div class="relative w-full h-[160px] overflow-hidden flex-shrink-0">
+                    <img id="fs-bs-image" src="" alt=""
+                         class="w-full h-full object-cover"
+                         onerror="this.src='/assets/img/resto/default.png'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4">
+                        <h2 id="fs-bs-name" class="text-white text-[17px] font-extrabold leading-tight mb-[6px]"></h2>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <span id="fs-bs-rating" class="text-[#FFD700] text-[13px] font-bold"></span>
+                            <span id="fs-bs-distance" class="text-white/80 text-[12px]"></span>
+                            <a id="fs-bs-detail-btn" href="#"
+                                    class="ml-auto flex items-center gap-2 bg-[#F5A623] text-white
+                                           px-4 py-[7px] rounded-full text-[12px] font-extrabold
+                                           hover:brightness-110 active:scale-95 transition-all duration-150">
+                                <i class="fas fa-arrow-up-right-from-square text-[11px]"></i>
+                                Detail
+                            </a>
+                            <button id="fs-bs-nav-btn"
+                                    class="flex items-center gap-2 bg-[#02b176] text-white
+                                           px-4 py-[7px] rounded-full text-[12px] font-extrabold
+                                           hover:brightness-110 active:scale-95 transition-all duration-150">
+                                <i class="fas fa-diamond-turn-right text-[11px]"></i>
+                                Navigasi
+                            </button>
                         </div>
-
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-clock text-[#C07A2A] text-[13px]"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Jam Buka</p>
-                                <p id="fs-bs-hours" class="text-[12px] text-dark font-medium"></p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
-                                <i class="fas fa-tag text-[#C07A2A] text-[13px]"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Kisaran Harga</p>
-                                <p id="fs-bs-price" class="text-[12px] text-dark font-medium"></p>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
-                {{-- Google Maps link --}}
-                <a id="fs-bs-gmaps" href="#" target="_blank" rel="noopener"
-                   class="flex items-center justify-center gap-2 w-full py-3 rounded-full
-                          border-2 border-[#02b176] text-[#02b176] text-[13px] font-bold
-                          hover:bg-[#02b176] hover:text-white transition-all duration-200">
-                    <i class="fas fa-map text-[13px]"></i>
-                    Lihat di Google Maps
-                </a>
+                {{-- Content body --}}
+                <div class="px-5 py-4 space-y-4">
 
+                    {{-- About --}}
+                    <div>
+                        <h3 class="text-[14px] font-extrabold text-dark mb-[6px]">About</h3>
+                        <p id="fs-bs-desc" class="text-[12px] text-muted leading-[1.75]"></p>
+                    </div>
+
+                    <hr class="border-black/[0.06]">
+
+                    {{-- Info Detail --}}
+                    <div>
+                        <h3 class="text-[14px] font-extrabold text-dark mb-3">Info Detail</h3>
+                        <div class="space-y-3">
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-location-dot text-[#C07A2A] text-[13px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Alamat</p>
+                                    <p id="fs-bs-address" class="text-[12px] text-dark font-medium leading-[1.55]"></p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-clock text-[#C07A2A] text-[13px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Jam Buka</p>
+                                    <p id="fs-bs-hours" class="text-[12px] text-dark font-medium"></p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-[10px] bg-[#F5EDE0] flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-tag text-[#C07A2A] text-[13px]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-muted font-bold uppercase tracking-wider mb-[2px]">Kisaran Harga</p>
+                                    <p id="fs-bs-price" class="text-[12px] text-dark font-medium"></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {{-- Google Maps link --}}
+                    <a id="fs-bs-gmaps" href="#" target="_blank" rel="noopener"
+                       class="flex items-center justify-center gap-2 w-full py-3 rounded-full
+                              border-2 border-[#02b176] text-[#02b176] text-[13px] font-bold
+                              hover:bg-[#02b176] hover:text-white transition-all duration-200">
+                        <i class="fas fa-map text-[13px]"></i>
+                        Lihat di Google Maps
+                    </a>
+
+                </div>
             </div>
-        </div>
+
+        </div>{{-- end map+panel container --}}
     </div>
+
 @endsection
+
+@push('styles_extra')
+<style>
+    /* ── Panel kiri desktop (Google Maps style) ── */
+    @media (min-width: 768px) {
+        #fs-bottom-sheet {
+            max-height: 100% !important;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #fs-bottom-sheet.fs-panel-open {
+            transform: translateX(0);
+        }
+    }
+
+    /* ── Bottom sheet mobile ── */
+    @media (max-width: 767px) {
+        #fs-bottom-sheet {
+            transform: translateY(100%);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #fs-bottom-sheet.fs-panel-open {
+            transform: translateY(0);
+        }
+    }
+</style>
+@endpush
+
 
 @push('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1529,17 +1584,34 @@
             };
 
             const sheet = document.getElementById('fs-bottom-sheet');
-            sheet.classList.remove('hidden');
+            sheet.classList.remove('hidden'); // In case it has hidden initially
+            // Pakai setTimeout supaya transisi CSS jalan
+            setTimeout(() => {
+                sheet.classList.add('fs-panel-open');
+            }, 10);
 
-            // Geser peta sedikit ke atas supaya marker tidak tertutup bottom sheet
+            // Geser peta sedikit ke atas (mobile) atau ke kanan (desktop) supaya marker tidak tertutup
             if (FsState.map) {
-                FsState.map.panTo([r.latitude, r.longitude], { animate: true });
+                if (window.innerWidth >= 768) {
+                    // Desktop: pan ke kanan sedikit
+                    FsState.map.panBy([-180, 0], { animate: true });
+                } else {
+                    // Mobile: pan ke bawah sedikit
+                    FsState.map.panBy([0, 150], { animate: true });
+                }
             }
         }
 
         // Tutup bottom sheet
         function fsCloseBottomSheet() {
-            document.getElementById('fs-bottom-sheet').classList.add('hidden');
+            const sheet = document.getElementById('fs-bottom-sheet');
+            sheet.classList.remove('fs-panel-open');
+            // Hide element setelah transisi selesai (opsional, tapi bagus untuk layout)
+            setTimeout(() => {
+                if (!sheet.classList.contains('fs-panel-open')) {
+                    sheet.classList.add('hidden');
+                }
+            }, 350); 
             FsState.currentResto = null;
         }
 
