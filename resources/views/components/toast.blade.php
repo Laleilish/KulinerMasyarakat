@@ -9,8 +9,11 @@
             // Trigger push notification if enabled
             if (Alpine.store('notif') && Alpine.store('notif').canSend()) {
                 const msg = toast.message.toLowerCase();
-                // Skip push notification for login events
-                const skipPush = msg.includes('logged in') || msg.includes('berhasil masuk');
+                // Skip push notification for login events and role change confirmations (admin side)
+                const skipPush = msg.includes('logged in') || 
+                                 msg.includes('berhasil masuk') || 
+                                 msg.includes('berhasil diubah menjadi admin') || 
+                                 msg.includes('berhasil diubah menjadi user');
                 
                 if (!skipPush) {
                     new Notification('KUMAR', {
