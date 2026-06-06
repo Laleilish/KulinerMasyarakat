@@ -65,6 +65,39 @@ class SubmitPlaceController extends Controller
     }
 
     /**
+     * Display a report of restaurants.
+     */
+    public function report()
+    {
+        $totalRestaurants = Restaurant::count();
+        $totalApproved = SubmitPlace::where('status', 'approved')->count();
+        $totalPending = SubmitPlace::where('status', 'pending')->count();
+        $totalRejected = SubmitPlace::where('status', 'rejected')->count();
+        $totalReviews = Review::count();
+        $avgRating = Restaurant::avg('rating') ?? 0;
+
+        $campusRecap = Restaurant::select('campus_id', DB::raw('count(*) as total'))
+            ->groupBy('campus_id')
+            ->with('campus')
+            ->get();
+
+        $categoryRecap = Restaurant::select('category', DB::raw('count(*) as total'))
+            ->groupBy('category')
+            ->get();
+
+        return view('admin.submit-places.report', compact(
+            'totalRestaurants',
+            'totalApproved',
+            'totalPending',
+            'totalRejected',
+            'totalReviews',
+            'avgRating',
+            'campusRecap',
+            'categoryRecap'
+        ));
+    }
+
+    /**
      * Display the specified submitted place.
      */
     public function show(SubmitPlace $submitPlace)

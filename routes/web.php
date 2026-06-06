@@ -84,6 +84,9 @@ Route::middleware(["auth", "role:admin"])
         Route::get("/submit-places", [AdminSubmitPlaceController::class, "index"])->name(
             "submit-places.index",
         );
+        Route::get("/submit-places/report", [AdminSubmitPlaceController::class, "report"])->name(
+            "submit-places.report",
+        );
         Route::get("/submit-places/{submitPlace}", [AdminSubmitPlaceController::class, "show"])->name(
             "submit-places.show",
         );
