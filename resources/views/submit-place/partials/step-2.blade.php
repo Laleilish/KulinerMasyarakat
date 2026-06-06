@@ -77,8 +77,36 @@
                                 @error('price_range')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 
+                            {{-- Peta Lokasi --}}
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="block text-sm font-bold text-gray-700">Peta Lokasi & Titik Koordinat</label>
+                                    <button type="button" @click="detectLocation()" class="text-xs bg-[#F5A623] hover:bg-orange-500 text-white font-bold py-1.5 px-3 rounded-full transition-colors flex items-center gap-1 shadow-sm">
+                                        <i class="fas fa-crosshairs"></i> Deteksi Lokasi
+                                    </button>
+                                </div>
+                                
+                                <div class="relative rounded-2xl overflow-hidden border-2 border-gray-100 shadow-sm mb-2" wire:ignore>
+                                    {{-- Loading Overlay --}}
+                                    <div x-show="isLocating" class="absolute inset-0 bg-white/80 backdrop-blur-sm z-[999] flex flex-col items-center justify-center transition-opacity duration-300" style="display: none;">
+                                        <div class="w-8 h-8 rounded-full border-4 border-[#F5A623] border-t-transparent animate-spin mb-2"></div>
+                                        <span class="text-xs font-bold text-gray-600">Mencari lokasi...</span>
+                                    </div>
+                                    
+                                    <div id="submit-map" class="w-full h-[250px] z-0"></div>
+                                </div>
+
+                                <div class="text-xs text-gray-500 mb-4 bg-gray-50 p-2.5 rounded-lg border border-gray-100 flex items-start gap-2">
+                                    <i class="fas fa-info-circle text-[#F5A623] mt-0.5"></i>
+                                    <p>Geser marker <i class="fas fa-map-marker-alt text-red-500 mx-0.5"></i> di peta untuk titik yang lebih akurat. Alamat dan link Maps akan otomatis terisi.</p>
+                                </div>
+                                
+                                <input type="hidden" name="latitude" x-model="form.latitude">
+                                <input type="hidden" name="longitude" x-model="form.longitude">
+                            </div>
+
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-1">Link Google Maps <span class="text-red-500">*</span></label>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Link Maps <span class="text-red-500">*</span></label>
                                 <input type="url" name="gmaps_link" x-model="form.gmaps_link" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="https://maps.app.goo.gl/...">
                                 <p x-show="errors.gmaps_link" x-text="errors.gmaps_link" class="text-red-500 text-xs mt-1"></p>
                                 @error('gmaps_link')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror

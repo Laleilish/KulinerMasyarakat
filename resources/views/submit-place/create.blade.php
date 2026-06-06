@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+@endpush
+
 @section('content')
 
     <div class="min-h-screen bg-[#FDF8F0] py-12 flex items-center justify-center">
@@ -44,4 +48,8 @@
     </div>
 
     @include('submit-place.partials.scripts')
+
+    @push('scripts')
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    @endpush
 @endsection

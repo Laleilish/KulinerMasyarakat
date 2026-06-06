@@ -21,6 +21,10 @@ function submitPlaceForm() {
         selectKeydownClearTimeout: null,
         selectDropdownPosition: 'bottom',
 
+        isLocating: false,
+        map: null,
+        marker: null,
+
         form: {
             name: '{{ old("name", "") }}',
             category: '{{ old("category", "") }}',
@@ -32,6 +36,8 @@ function submitPlaceForm() {
             price_min: '{{ old("price_min", "") }}',
             price_max: '{{ old("price_max", "") }}',
             gmaps_link: '{{ old("gmaps_link", "") }}',
+            latitude: '{{ old("latitude", "") }}',
+            longitude: '{{ old("longitude", "") }}',
             landmark: '{{ old("landmark", "") }}',
             rating: {{ old('initial_rating', 0) }},
             review: '{{ old("initial_review", "") }}',
@@ -112,6 +118,91 @@ function submitPlaceForm() {
             document.getElementById('review-upload').files = dt.files;
         },
 
+        // Map Handlers
+        initMap() {
+            // Default center (e.g. Bandung)
+            let initialLat = this.form.latitude ? parseFloat(this.form.latitude) : -6.914744;
+            let initialLng = this.form.longitude ? parseFloat(this.form.longitude) : 107.609810;
+            
+            this.map = L.map('submit-map').setView([initialLat, initialLng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(this.map);
+
+            const restoIcon = L.icon({
+                iconUrl: '/assets/img/icon-loc.png',
+                iconSize: [28],
+                iconAnchor: [14, 28],
+            });
+
+            this.marker = L.marker([initialLat, initialLng], { 
+                icon: restoIcon, 
+                draggable: true 
+            }).addTo(this.map);
+
+            this.marker.on('dragend', (e) => {
+                const position = e.target.getLatLng();
+                this.updateLocation(position.lat, position.lng, true);
+            });
+            
+            // Allow clicking map to place marker
+            this.map.on('click', (e) => {
+                this.marker.setLatLng(e.latlng);
+                this.updateLocation(e.latlng.lat, e.latlng.lng, true);
+            });
+        },
+
+        updateLocation(lat, lng, fetchAddress = true) {
+            this.form.latitude = lat;
+            this.form.longitude = lng;
+            this.form.gmaps_link = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+            
+            if (fetchAddress) {
+                this.isLocating = true;
+                fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.display_name) {
+                            // Extract relevant parts for a cleaner address
+                            const parts = data.display_name.split(', ');
+                            this.form.address = parts.slice(0, 3).join(', ');
+                        }
+                    })
+                    .finally(() => {
+                        this.isLocating = false;
+                    });
+            }
+        },
+
+        detectLocation() {
+            if (!navigator.geolocation) {
+                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'Error', message: 'Browser Anda tidak mendukung deteksi lokasi.' } }));
+                return;
+            }
+
+            this.isLocating = true;
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    if (this.map) {
+                        this.map.setView([lat, lng], 16);
+                    }
+                    if (this.marker) {
+                        this.marker.setLatLng([lat, lng]);
+                    }
+                    this.updateLocation(lat, lng, true);
+                },
+                (error) => {
+                    this.isLocating = false;
+                    window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'Gagal', message: 'Tidak dapat mendeteksi lokasi. Pastikan izin lokasi aktif.' } }));
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        },
+
         // Validation
         validateStep(stepNum) {
             this.errors = {};
@@ -173,8 +264,19 @@ function submitPlaceForm() {
                 }
             }
 
-            this.$watch('step', () => {
+            this.$watch('step', (newStep) => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Initialize map if switching to step 2
+                if (newStep === 2) {
+                    setTimeout(() => {
+                        if (!this.map) {
+                            this.initMap();
+                        } else {
+                            this.map.invalidateSize(); // Fix Leaflet rendering issue in hidden divs
+                        }
+                    }, 200);
+                }
             });
 
             this.$watch('selectOpen', (value) => {
