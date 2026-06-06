@@ -33,6 +33,11 @@
 
     <div class="hidden md:flex flex-1 justify-end items-center">
         <img
+            class="absolute rounded-full object-cover w-[20%] aspect-square bottom-[-13%] right-[-2%]"
+            src="{{ asset('assets/img/Header/foto5.png') }}"
+            alt="food"
+        >
+        <img
             class="absolute rounded-full object-cover w-[20%] aspect-square top-[-20%] left-[-2%]"
             src="{{ asset('assets/img/Header/foto1.png') }}"
             alt="food"
@@ -50,11 +55,6 @@
         <img
             class="absolute rounded-full object-cover w-[25%] aspect-square bottom-[8%] right-[20%]"
             src="{{ asset('assets/img/Header/foto4.png') }}"
-            alt="food"
-        >
-        <img
-            class="absolute rounded-full object-cover w-[20%] aspect-square bottom-[-13%] right-[-2%]"
-            src="{{ asset('assets/img/Header/foto5.png') }}"
             alt="food"
         >
     </div>
