@@ -18,7 +18,7 @@
 
             {{-- Input --}}
             <div class="flex-1 flex flex-col justify-center min-w-0">
-                <label id="loc-label" class="text-[9px] text-muted font-semibold uppercase
+                <label id="loc-label" class="text-[9px] text-muted font-semibold 
                               tracking-wider leading-none mb-[3px] transition-all duration-200">
                     Lokasi Kamu
                 </label>
