@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- nanti diisi --}}
+
+<div class="bg-[#FCF5E9] min-h-screen pb-8 font-sans text-dark">
+
+    @include('tanggal-tua.hero')
+
+    @include('tanggal-tua.category')
+
+    @include('tanggal-tua.cards')
+
+</div>
+
 @endsection

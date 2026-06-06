@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('food', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->decimal('price', 10, 2);
-            $table->enum('category', ['makanan', 'minuman', 'dessert']);
-            $table->string('image')->nullable();
+            $table->tinyInteger('rating')->unsigned();
+            $table->text('comment')->nullable();
+            $table->json('photos')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('food');
+        Schema::dropIfExists('reviews');
     }
 };

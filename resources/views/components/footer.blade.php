@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <footer class="bg-[#EF950F] px-4 md:px-10 py-6 md:py-10 rounded-t-[25px] w-full">
+<footer class="bg-[#EF950F] px-4 md:px-10 py-6 md:py-10 rounded-t-[25px] w-full">
 
     <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
 
@@ -17,30 +9,33 @@
                 <img src="{{ asset('assets/img/icon-kumar-white.png') }}" alt="KUMAR" class="h-10">
             </div>
 
-            <h2 class="text-lg md:text-xl font-bold text-dark leading-tight">
+            <h2 class="text-lg md:text-xl font-bold text-dark leading-tight" data-i18n="Seperti memiliki dapur tersembunyi di setiap sudut kota">
                 Seperti memiliki dapur tersembunyi di setiap sudut kota
             </h2>
 
-            <p class="text-sm md:text-base text-dark">
+            <p class="text-sm md:text-base text-dark" data-i18n="Temukan kuliner hidden gem dengan rasa autentik dan pengalaman baru di sekitarmu.">
                 Temukan kuliner hidden gem dengan rasa autentik dan pengalaman baru di sekitarmu.
             </p>
 
         </div>
 
-        {{-- Tengah / Links --}}
+        {{-- Tengah --}}
         <div class="flex flex-wrap md:flex-col gap-4 md:gap-3">
 
-            <a href="#" class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
-                Privasi & Keamanan
+            <a href="{{ route('privacy') }}" 
+                target="_blank"
+                class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
+                <span data-i18n="Privasi & Keamanan">Privasi & Keamanan</span>
             </a>
 
-            <a href="#" class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
-                Syarat & Ketentuan
+            <a href="{{ route('terms') }}" 
+                target="_blank"
+                class="flex items-center gap-2 font-semibold text-dark hover:opacity-80">
+                <span data-i18n="Syarat & Ketentuan">Syarat & Ketentuan</span>
             </a>
 
             <div class="flex items-center gap-3 font-semibold text-dark">
-                <span>Ikuti Kami</span>
-
+                <span data-i18n="Ikuti Kami">Ikuti Kami</span>
                 <i class="fa-brands fa-instagram text-xl"></i>
                 <i class="fa-brands fa-facebook text-xl"></i>
                 <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -48,14 +43,12 @@
 
         </div>
 
-        {{-- Kanan / Copyright --}}
+        {{-- Kanan --}}
         <p class="text-xs md:text-sm text-dark max-w-xs leading-relaxed">
-            © 2026 KUMAR <br>
-            Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.
+            &copy; 2026 KUMAR <br>
+            <span data-i18n="Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.">Kuliner Masyarakat aplikasi karya anak bangsa. Dirancang untuk membantu menemukan kuliner tersembunyi terbaik.</span>
         </p>
 
     </div>
 
 </footer>
-</body>
-</html>
