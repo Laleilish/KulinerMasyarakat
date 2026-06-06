@@ -8,10 +8,9 @@
             <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Dashboard</h1>
             <p class="text-sm text-gray-700 mt-1">Selamat datang, {{ auth()->user()->name }}. Ini laporan hari ini</p>
         </div>
-        
-        <button class="px-5 py-2.5 bg-[#B87A29] hover:bg-[#9d6722] text-white font-semibold text-sm rounded-lg shadow-sm transition-colors cursor-pointer border-none flex items-center gap-2">
+        <a href="{{ route('admin.submit-places.report') }}" target="_blank" class="px-5 py-2.5 bg-[#B87A29] hover:bg-[#9d6722] text-white font-semibold text-sm rounded-lg shadow-sm transition-colors cursor-pointer border-none flex items-center gap-2">
             Cetak Laporan
-        </button>
+        </a>
     </div>
 
     <!-- Stats Grid -->
