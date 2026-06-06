@@ -120,14 +120,10 @@ Route::get('/hidden-gem/restaurants/{campusId}', [HiddenGemController::class, 'g
     ->middleware('auth')
     ->name('hidden-gem.restaurants');
 Route::get('/semua-resto', [RestaurantController::class, 'index'])->name('semua-resto');
-Route::get('/tanggal-tua', fn() => view('tanggal-tua.index'))->name('tanggal-tua.index');
+Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])->name('tanggal-tua.index');
 Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');
 Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
 Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.index');
-
-Route::get("/tanggal-tua", fn() => view("tanggal-tua.index"))->name(
-    "tanggal-tua.index",
-);
 Route::get("/terserah", fn() => view("terserah.index"))->name(
     "terserah.index"
 );
@@ -138,7 +134,6 @@ Route::get("/split-bill", fn() => view("split-bill.index"))->name(
 Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");
 Route::get("/kebijakan-privasi", fn() => view("pages.privacy"))->name("privacy");
 
-Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])
-    ->name('tanggal-tua.index');
+
 
 require __DIR__ . "/auth.php";

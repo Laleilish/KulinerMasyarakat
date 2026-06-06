@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campus;
 use App\Models\Restaurant;
 use App\Services\RestaurantService;
 use Illuminate\Http\Request;
@@ -47,11 +48,26 @@ class RestaurantController extends Controller
 
     public function tanggalTua()
     {
+        // Ambil restoran approved dengan harga di bawah 15k, pola sama seperti landing page
         $restaurants = Restaurant::approved()
             ->tanggalTua()
-            ->latest()
-            ->paginate(12);
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->orderBy('reviews_avg_rating', 'desc')
+            ->orderBy('reviews_count', 'desc')
+            ->get();
 
-        return view('tanggal-tua.index', compact('restaurants'));
+        // Ambil semua kampus untuk location selector (sama seperti hidden gem)
+        $campuses = Campus::all();
+
+        $campusesData = $campuses->map(fn($c) => [
+            'id'        => $c->id,
+            'name'      => $c->name,
+            'logo'      => asset('assets/img/kampus/' . $c->logo),
+            'latitude'  => (float) $c->latitude,
+            'longitude' => (float) $c->longitude,
+        ])->values();
+
+        return view('tanggal-tua.index', compact('restaurants', 'campuses', 'campusesData'));
     }
 }
