@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Campus;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryService;
 
 class RestaurantController extends Controller
 {
@@ -64,11 +64,11 @@ class RestaurantController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('restaurants', 'public');
+            $validated['image'] = CloudinaryService::upload($request->file('image'), 'restaurants');
         }
 
         if ($request->hasFile('landmark_photo')) {
-            $validated['landmark_photo'] = $request->file('landmark_photo')->store('restaurants/landmarks', 'public');
+            $validated['landmark_photo'] = CloudinaryService::upload($request->file('landmark_photo'), 'restaurants/landmarks');
         }
 
         // Set user_id to current admin for directly created restaurants
@@ -115,16 +115,16 @@ class RestaurantController extends Controller
 
         if ($request->hasFile('image')) {
             if ($restaurant->image) {
-                Storage::disk('public')->delete($restaurant->image);
+                CloudinaryService::delete($restaurant->image);
             }
-            $validated['image'] = $request->file('image')->store('restaurants', 'public');
+            $validated['image'] = CloudinaryService::upload($request->file('image'), 'restaurants');
         }
 
         if ($request->hasFile('landmark_photo')) {
             if ($restaurant->landmark_photo) {
-                Storage::disk('public')->delete($restaurant->landmark_photo);
+                CloudinaryService::delete($restaurant->landmark_photo);
             }
-            $validated['landmark_photo'] = $request->file('landmark_photo')->store('restaurants/landmarks', 'public');
+            $validated['landmark_photo'] = CloudinaryService::upload($request->file('landmark_photo'), 'restaurants/landmarks');
         }
 
         $restaurant->update($validated);
@@ -139,7 +139,10 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         if ($restaurant->image) {
-            Storage::disk('public')->delete($restaurant->image);
+            CloudinaryService::delete($restaurant->image);
+        }
+        if ($restaurant->landmark_photo) {
+            CloudinaryService::delete($restaurant->landmark_photo);
         }
         
         $restaurant->delete();

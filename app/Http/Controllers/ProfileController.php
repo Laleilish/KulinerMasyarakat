@@ -7,7 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryService;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -37,17 +37,15 @@ class ProfileController extends Controller
 
             // Delete old avatar if it exists and is not from OAuth provider
             if ($user->avatar && !$user->provider) {
-                
-                // Check if file exists in storage
+                // Remove /storage/ prefix if present for local deletion, though CloudinaryService handles URLs too
                 $oldAvatarPath = str_replace("/storage/", "", $user->avatar);
-                if (Storage::disk("public")->exists($oldAvatarPath)) {
-                    Storage::disk("public")->delete($oldAvatarPath);
-                }
+                CloudinaryService::delete($oldAvatarPath);
+                // Also try deleting the original avatar just in case it was a Cloudinary URL
+                CloudinaryService::delete($user->avatar);
             }
 
             // Store new avatar
-            $avatarPath = $request->file("avatar")->store("avatars", "public");
-            $user->avatar = "/storage/" . $avatarPath;
+            $user->avatar = CloudinaryService::upload($request->file("avatar"), "avatars");
         }
 
         // Update other profile fields

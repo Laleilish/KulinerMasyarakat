@@ -10,7 +10,7 @@ use App\Services\GoogleMapsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryService;
 
 class SubmitPlaceController extends Controller
 {
@@ -48,16 +48,13 @@ class SubmitPlaceController extends Controller
         ]);
 
         // Upload photos
-        $photoPath = $request->file('photo')
-            ->store('submit-places', 'public');
-
-        $landmarkPhotoPath = $request->file('landmark_photo')
-            ->store('submit-places', 'public');
+        $photoPath = CloudinaryService::upload($request->file('photo'), 'submit-places');
+        $landmarkPhotoPath = CloudinaryService::upload($request->file('landmark_photo'), 'submit-places');
 
         $reviewPhotoPaths = [];
         if ($request->hasFile('initial_review_photos')) {
             foreach ($request->file('initial_review_photos') as $file) {
-                $reviewPhotoPaths[] = $file->store('submit-places', 'public');
+                $reviewPhotoPaths[] = CloudinaryService::upload($file, 'submit-places');
             }
         }
 

@@ -11,7 +11,7 @@ use App\Notifications\PlaceApprovedNotification;
 use App\Notifications\PlaceRejectedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryService;
 
 class SubmitPlaceController extends Controller
 {
@@ -142,9 +142,9 @@ class SubmitPlaceController extends Controller
         if ($request->hasFile('photo')) {
             // Delete old photo
             if ($submitPlace->photo) {
-                Storage::disk('public')->delete($submitPlace->photo);
+                CloudinaryService::delete($submitPlace->photo);
             }
-            $validated['photo'] = $request->file('photo')->store('submit-places', 'public');
+            $validated['photo'] = CloudinaryService::upload($request->file('photo'), 'submit-places');
         } else {
             unset($validated['photo']);
         }
@@ -152,9 +152,9 @@ class SubmitPlaceController extends Controller
         // Handle landmark_photo upload
         if ($request->hasFile('landmark_photo')) {
             if ($submitPlace->landmark_photo) {
-                Storage::disk('public')->delete($submitPlace->landmark_photo);
+                CloudinaryService::delete($submitPlace->landmark_photo);
             }
-            $validated['landmark_photo'] = $request->file('landmark_photo')->store('submit-places/landmarks', 'public');
+            $validated['landmark_photo'] = CloudinaryService::upload($request->file('landmark_photo'), 'submit-places/landmarks');
         } else {
             unset($validated['landmark_photo']);
         }
@@ -207,6 +207,13 @@ class SubmitPlaceController extends Controller
      */
     public function destroy(SubmitPlace $submitPlace)
     {
+        if ($submitPlace->photo) {
+            CloudinaryService::delete($submitPlace->photo);
+        }
+        if ($submitPlace->landmark_photo) {
+            CloudinaryService::delete($submitPlace->landmark_photo);
+        }
+        
         $submitPlace->delete();
 
         return redirect()->route('admin.submit-places.index')

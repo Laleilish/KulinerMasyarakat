@@ -4,7 +4,7 @@
         return [
             'id'          => $r->id,
             'name'        => $r->name,
-            'image'       => $r->image ? asset('storage/' . $r->image) : asset('assets/img/Restoran Favorit/Nasi Goreng Kambing.png'),
+            'image'       => $r->image ? (str_starts_with($r->image, 'http') ? $r->image : asset('storage/' . $r->image)) : asset('assets/img/Restoran Favorit/Nasi Goreng Kambing.png'),
             'category'    => $r->category,
             'food_type'   => $r->food_type,
             'address'     => $r->address,

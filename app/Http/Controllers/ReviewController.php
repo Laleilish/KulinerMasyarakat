@@ -7,6 +7,7 @@ use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\CloudinaryService;
 
 class ReviewController extends Controller
 {
@@ -35,7 +36,7 @@ class ReviewController extends Controller
         $photoPaths = [];
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $file) {
-                $photoPaths[] = $file->store('reviews', 'public');
+                $photoPaths[] = CloudinaryService::upload($file, 'reviews');
             }
         }
 
@@ -64,7 +65,7 @@ class ReviewController extends Controller
         // Delete photos from storage if exists
         if ($review->photos) {
             foreach ($review->photos as $photo) {
-                Storage::disk('public')->delete($photo);
+                CloudinaryService::delete($photo);
             }
         }
 

@@ -299,12 +299,12 @@ function editForm() {
             return this.price_min && this.price_max ? 'Rp ' + Number(this.price_min).toLocaleString('id-ID') + ' - Rp ' + Number(this.price_max).toLocaleString('id-ID') : '';
         },
         landmark: @js(old('landmark', $submitPlace->landmark)),
-        previewPhoto: @js($submitPlace->photo ? Storage::url($submitPlace->photo) : null),
-        originalPhoto: @js($submitPlace->photo ? Storage::url($submitPlace->photo) : null),
+        previewPhoto: @js($submitPlace->photo ? (str_starts_with($submitPlace->photo, 'http') ? $submitPlace->photo : Storage::url($submitPlace->photo)) : null),
+        originalPhoto: @js($submitPlace->photo ? (str_starts_with($submitPlace->photo, 'http') ? $submitPlace->photo : Storage::url($submitPlace->photo)) : null),
         photoChanged: false,
 
-        previewLandmarkPhoto: @js($submitPlace->landmark_photo ? Storage::url($submitPlace->landmark_photo) : null),
-        originalLandmarkPhoto: @js($submitPlace->landmark_photo ? Storage::url($submitPlace->landmark_photo) : null),
+        previewLandmarkPhoto: @js($submitPlace->landmark_photo ? (str_starts_with($submitPlace->landmark_photo, 'http') ? $submitPlace->landmark_photo : Storage::url($submitPlace->landmark_photo)) : null),
+        originalLandmarkPhoto: @js($submitPlace->landmark_photo ? (str_starts_with($submitPlace->landmark_photo, 'http') ? $submitPlace->landmark_photo : Storage::url($submitPlace->landmark_photo)) : null),
         landmarkPhotoChanged: false,
 
         handlePhotoChange(event) {

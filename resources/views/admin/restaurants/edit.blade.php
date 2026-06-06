@@ -276,12 +276,12 @@ function editForm() {
             return this.price_min && this.price_max ? 'Rp ' + Number(this.price_min).toLocaleString('id-ID') + ' - Rp ' + Number(this.price_max).toLocaleString('id-ID') : '';
         },
         landmark: @js(old('landmark', $restaurant->landmark)),
-        previewPhoto: @js($restaurant->image ? Storage::url($restaurant->image) : null),
-        originalPhoto: @js($restaurant->image ? Storage::url($restaurant->image) : null),
+        previewPhoto: @js($restaurant->image ? (str_starts_with($restaurant->image, 'http') ? $restaurant->image : Storage::url($restaurant->image)) : null),
+        originalPhoto: @js($restaurant->image ? (str_starts_with($restaurant->image, 'http') ? $restaurant->image : Storage::url($restaurant->image)) : null),
         photoChanged: false,
 
-        previewLandmarkPhoto: @js($restaurant->landmark_photo ? Storage::url($restaurant->landmark_photo) : null),
-        originalLandmarkPhoto: @js($restaurant->landmark_photo ? Storage::url($restaurant->landmark_photo) : null),
+        previewLandmarkPhoto: @js($restaurant->landmark_photo ? (str_starts_with($restaurant->landmark_photo, 'http') ? $restaurant->landmark_photo : Storage::url($restaurant->landmark_photo)) : null),
+        originalLandmarkPhoto: @js($restaurant->landmark_photo ? (str_starts_with($restaurant->landmark_photo, 'http') ? $restaurant->landmark_photo : Storage::url($restaurant->landmark_photo)) : null),
         landmarkPhotoChanged: false,
 
         handlePhotoChange(event) {
