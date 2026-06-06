@@ -32,7 +32,7 @@
                 </div>
 
                 {{-- Ulasan Section --}}
-                <div x-data="{ showForm: false }">
+                <div x-data="{ showForm: false, previewImage: null }">
                     {{-- Header Ulasan --}}
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-xl font-bold text-gray-800">Ulasan</h2>
@@ -63,6 +63,24 @@
                                 <p class="text-gray-500">Belum ada ulasan. Jadilah yang pertama!</p>
                             </div>
                         @endforelse
+                    </div>
+
+                    {{-- Image Preview Modal (Lightbox) --}}
+                    <div x-show="previewImage" 
+                         style="display: none;"
+                         x-transition.opacity.duration.300ms
+                         class="fixed inset-0 z-[5000] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm"
+                         @click="previewImage = null"
+                         @keydown.escape.window="previewImage = null">
+                         
+                        <button @click="previewImage = null" class="absolute top-4 right-4 md:top-6 md:right-6 text-white hover:text-gray-300 w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                        
+                        <img :src="previewImage" 
+                             @click.stop
+                             class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" 
+                             alt="Preview Ulasan">
                     </div>
                 </div>
 

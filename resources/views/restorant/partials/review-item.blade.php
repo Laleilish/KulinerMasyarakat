@@ -47,7 +47,8 @@
             @foreach($review->photos as $photo)
                 <img src="{{ Storage::url($photo) }}"
                      alt="Foto ulasan"
-                     class="w-24 h-24 object-cover rounded-xl shadow-sm border border-gray-100">
+                     @click="previewImage = '{{ Storage::url($photo) }}'"
+                     class="w-24 h-24 object-cover rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:opacity-80 transition-opacity">
             @endforeach
         </div>
     @endif
