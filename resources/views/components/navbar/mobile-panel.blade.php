@@ -114,17 +114,19 @@
             {{-- Divider --}}
             <div class="h-px bg-black/8 mb-3"></div>
 
-            {{-- Notifikasi Row --}}
+
+            {{-- Notifikasi Titik Merah --}}
             <div class="flex items-center justify-between py-3">
                 <span class="text-sm font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</span>
-                <span class="text-sm font-medium cursor-pointer transition-colors" 
-                      :class="[$store.notif.color, $store.notif.clickable ? 'hover:opacity-80' : 'cursor-default']"
-                      @click="$store.notif.request()"
-                      x-text="$store.notif.label">Izinkan</span>
+                <button type="button"
+                      @click="$store.notifDot.toggle()"
+                      :class="$store.notifDot.enabled ? 'text-secondary font-bold' : 'text-muted'"
+                      class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:opacity-80"
+                      x-text="$store.notifDot.enabled ? ($store.i18n.locale === 'EN' ? 'On' : 'Nyala') : ($store.i18n.locale === 'EN' ? 'Off' : 'Mati')">Nyala</button>
             </div>
 
             {{-- Divider --}}
-            <div class="h-px bg-black/8"></div>
+            <div class="h-px bg-black/8 mb-3"></div>
 
             {{-- Language Row --}}
             <div class="flex items-center justify-between py-3">

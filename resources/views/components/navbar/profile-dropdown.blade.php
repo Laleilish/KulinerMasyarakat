@@ -76,13 +76,15 @@
                  x-transition:enter-end="opacity-100 translate-y-0"
                  class="border-t border-gray-100 bg-gray-50/70 px-4 py-2">
 
-                {{-- Notifikasi Row --}}
+
+                {{-- Notifikasi Titik Merah --}}
                 <div class="flex items-center justify-between py-1.5">
                     <span class="text-xs font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</span>
-                    <span class="text-xs font-medium cursor-pointer transition-colors" 
-                          :class="[$store.notif.color, $store.notif.clickable ? 'hover:opacity-80' : 'cursor-default']"
-                          @click="$store.notif.request()"
-                          x-text="$store.notif.label">Izinkan</span>
+                    <button type="button"
+                          @click="$store.notifDot.toggle()"
+                          :class="$store.notifDot.enabled ? 'text-secondary font-bold' : 'text-muted'"
+                          class="text-xs bg-transparent border-none cursor-pointer transition-colors hover:opacity-80"
+                          x-text="$store.notifDot.enabled ? ($store.i18n.locale === 'EN' ? 'On' : 'Nyala') : ($store.i18n.locale === 'EN' ? 'Off' : 'Mati')">Nyala</button>
                 </div>
 
                 {{-- Divider --}}

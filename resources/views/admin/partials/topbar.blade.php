@@ -10,14 +10,14 @@
     <!-- Right Actions -->
     <div class="flex items-center gap-4">
         <!-- Notification Bell -->
-        <div class="relative" x-data="{ notifOpen: false }">
-            <button @click="notifOpen = !notifOpen" @click.away="notifOpen = false" type="button" class="relative p-2 text-muted hover:text-dark transition-colors bg-transparent border-none cursor-pointer focus:outline-none">
+        <div class="relative" x-data="{ notifOpen: false }" @click.away="notifOpen = false">
+            <button @click="notifOpen = !notifOpen" type="button" class="relative p-2 text-muted hover:text-dark transition-colors bg-transparent border-none cursor-pointer focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
                 @if(auth()->user()->unreadNotifications->count() > 0)
-                    <span class="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+                    <span x-data x-show="$store.notifDot.enabled" x-cloak class="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
                         {{ auth()->user()->unreadNotifications->count() }}
                     </span>
                 @endif
@@ -52,13 +52,13 @@
         </div>
         
         <!-- Profile Dropdown -->
-        <div class="relative" x-data="{ profileOpen: false }">
-            <button @click="profileOpen = !profileOpen" @click.away="profileOpen = false" class="flex items-center gap-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer focus:outline-none">
-                <div class="w-10 h-10 rounded-full bg-gray-200 shadow-sm overflow-hidden shrink-0">
+        <div class="relative" x-data="{ profileOpen: false, settingsOpen: false }" @click.away="profileOpen = false">
+            <button @click="profileOpen = !profileOpen" class="flex items-center gap-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer focus:outline-none">
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white font-bold overflow-hidden shrink-0">
                     @if(auth()->user()->avatar)
                         <img src="{{ auth()->user()->avatar }}" alt="Avatar" class="w-full h-full object-cover" referrerpolicy="no-referrer">
                     @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=0D8ABC&color=fff" alt="Avatar" class="w-full h-full object-cover" referrerpolicy="no-referrer">
+                        <span class="text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
                     @endif
                 </div>
             </button>
@@ -106,21 +106,65 @@
                      </div>
                 </a>
 
-                {{-- Pengaturan --}}
-                <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors no-underline group">
-                     <div class="flex justify-between items-center w-full">
-                         <div class="flex items-center gap-2">
-                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                             </svg>
-                             <span>Pengaturan</span>
+                {{-- Setting --}}
+                <div class="relative">
+                    <button type="button" @click="settingsOpen = !settingsOpen"
+                            class="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors bg-transparent border-none cursor-pointer">
+                         <div class="flex justify-between items-center w-full">
+                             <div class="flex items-center gap-2">
+                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                 </svg>
+                                 <span data-i18n="Pengaturan">Pengaturan</span>
+                             </div>
+                            <svg class="w-4 h-4 text-gray-400 transition-transform" :class="settingsOpen ? 'rotate-90' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                            </svg>
                          </div>
-                        <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                        </svg>
-                     </div>
-                </a>
+                    </button>
+
+                    {{-- Settings Submenu --}}
+                    <div x-show="settingsOpen" x-cloak
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 -translate-y-1"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         class="border-t border-gray-100 bg-gray-50/70 px-4 py-2">
+
+                        {{-- Notifikasi Titik Merah --}}
+                        <div class="flex items-center justify-between py-1.5">
+                            <span class="text-xs font-semibold text-gray-900" data-i18n="Notifikasi">Notifikasi</span>
+                            <button type="button"
+                                  @click="$store.notifDot.toggle()"
+                                  :class="$store.notifDot.enabled ? 'text-secondary font-bold' : 'text-gray-500'"
+                                  class="text-xs bg-transparent border-none cursor-pointer transition-colors hover:opacity-80"
+                                  x-text="$store.notifDot.enabled ? ($store.i18n.locale === 'EN' ? 'On' : 'Nyala') : ($store.i18n.locale === 'EN' ? 'Off' : 'Mati')">Nyala</button>
+                        </div>
+
+                        {{-- Divider --}}
+                        <div class="h-px bg-black/8 my-1"></div>
+
+                        {{-- Language --}}
+                        <div class="flex items-center justify-between py-1.5">
+                            <span class="text-xs font-semibold text-gray-900" data-i18n="Bahasa">Bahasa</span>
+                            <div class="flex items-center gap-1">
+                                <button type="button"
+                                        @click="$store.i18n.setLocale('ID')"
+                                        :class="$store.i18n.locale === 'ID' ? 'font-bold text-gray-900' : 'text-gray-500'"
+                                        class="text-xs bg-transparent border-none cursor-pointer transition-colors hover:text-gray-900">
+                                    ID
+                                </button>
+                                <span class="text-xs text-gray-400">|</span>
+                                <button type="button"
+                                        @click="$store.i18n.setLocale('EN')"
+                                        :class="$store.i18n.locale === 'EN' ? 'font-bold text-gray-900' : 'text-gray-500'"
+                                        class="text-xs bg-transparent border-none cursor-pointer transition-colors hover:text-gray-900">
+                                    EN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr class="my-1 border-gray-100">
                 

@@ -39,45 +39,6 @@
 
         {{-- Global Confirmation Modal --}}
         <x-confirm-modal />
-
-        @auth
-            <script>
-                document.addEventListener('alpine:init', () => {
-                    const unreadNotifs = @json(auth()->user()->unreadNotifications->take(3)->map(function($n) {
-                        return ['id' => $n->id, 'message' => $n->data['message'] ?? 'Ada notifikasi baru'];
-                    }));
-                    
-                    if (unreadNotifs.length > 0) {
-                        // Wait a bit to ensure Alpine store is initialized and user is not bombarded instantly
-                        setTimeout(() => {
-                            const store = Alpine.store('notif');
-                            if (store && store.canSend()) {
-                                let notified = JSON.parse(localStorage.getItem('kumar_notified_ids') || '[]');
-                                let hasNew = false;
-                                
-                                unreadNotifs.forEach(n => {
-                                    if (!notified.includes(n.id)) {
-                                        new Notification('KUMAR', {
-                                            body: n.message,
-                                            icon: '/assets/img/icon-kumar.png',
-                                        });
-                                        notified.push(n.id);
-                                        hasNew = true;
-                                    }
-                                });
-                                
-                                if (hasNew) {
-                                    // Keep array size manageable
-                                    if (notified.length > 50) notified = notified.slice(-50);
-                                    localStorage.setItem('kumar_notified_ids', JSON.stringify(notified));
-                                }
-                            }
-                        }, 1500);
-                    }
-                });
-            </script>
-        @endauth
-
         @stack('scripts')
     </body>
 </html>
