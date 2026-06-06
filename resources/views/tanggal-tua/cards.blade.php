@@ -22,100 +22,187 @@
     window.TT_RESTAURANTS = @json($ttRestaurantsData);
 </script>
 
-<section class="px-5 md:px-10 pb-6 max-w-[1400px] mx-auto w-full">
+{{-- ───────────────────────────────────────────────────────────────────── --}}
+{{-- MAIN CONTENT AREA: 2-Column Layout on Desktop (Sidebar + Cards)      --}}
+{{-- ───────────────────────────────────────────────────────────────────── --}}
+<div class="px-5 md:px-10 pb-10 max-w-[1400px] mx-auto w-full">
+    <div class="flex gap-6 items-start">
 
-    {{-- Kontainer cards —  diisi oleh JS --}}
-    <div id="tt-cards-container">
-        {{-- Skeleton loading awal --}}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="tt-skeleton">
-            @for($i = 0; $i < 8; $i++)
-                <div class="bg-white rounded-xl overflow-hidden border border-black/[0.05] animate-pulse">
-                    <div class="w-full h-[130px] md:h-[170px] bg-gray-200"></div>
-                    <div class="p-3 space-y-2">
-                        <div class="h-3 bg-gray-200 rounded w-3/4"></div>
-                        <div class="h-2 bg-gray-200 rounded w-1/2"></div>
-                        <div class="h-2 bg-gray-200 rounded w-1/3"></div>
+        {{-- ══════════════════════════════════════════════════════════ --}}
+        {{-- LEFT SIDEBAR FILTER (Hidden on mobile, visible on desktop) --}}
+        {{-- ══════════════════════════════════════════════════════════ --}}
+        <aside class="hidden md:flex flex-col w-[200px] flex-shrink-0 bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.07)] border border-gray-100 p-5 sticky top-4 self-start">
+
+            {{-- Header --}}
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="font-bold text-[15px] text-dark">Filter</h3>
+                <button id="tt-sidebar-reset" class="text-[#F5A623] font-semibold text-[13px] hover:text-[#D4891E] transition-colors">Reset</button>
+            </div>
+
+            {{-- Range Harga --}}
+            <div class="mb-5">
+                <p class="font-bold text-[13px] text-dark mb-3">Range Harga</p>
+                <div class="space-y-2" id="tt-price-group">
+                    <div class="tt-price-btn flex items-center gap-2.5 cursor-pointer group" data-value="dibawah15k">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Dibawah 15rb</span>
+                    </div>
+                    <div class="tt-price-btn flex items-center gap-2.5 cursor-pointer group" data-value="15k-20k">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">15k – 20k</span>
                     </div>
                 </div>
-            @endfor
-        </div>
-    </div>
+            </div>
 
-    {{-- Count info --}}
-    <p id="tt-count-info" class="text-center text-[11px] text-muted mt-4 hidden">
-        Menampilkan <span id="tt-count-num" class="font-bold text-dark"></span> restoran
-    </p>
+            <div class="border-t border-gray-100 mb-5"></div>
 
-    {{-- Filter Modal Overlay --}}
-    <div id="tt-filter-modal" class="fixed inset-0 z-[100] hidden">
-        {{-- Backdrop --}}
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0 duration-300" id="tt-filter-backdrop"></div>
-        
-        {{-- Modal Wrapper (Bottom on mobile, Center on desktop) --}}
-        <div id="tt-filter-modal-wrapper" class="absolute bottom-0 left-0 w-full md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[90%] md:max-w-[500px] transition-all duration-300 transform translate-y-full md:scale-95 md:opacity-0">
-            
-            {{-- Floating Close Button (Mobile Only) --}}
-            <div class="flex justify-end px-4 mb-3 md:hidden">
-                <button id="tt-close-modal-mobile" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-[#00880D] hover:bg-gray-100 transition-colors shadow-lg">
-                    <i class="fas fa-times text-lg font-bold"></i>
+            {{-- Sort By --}}
+            <div class="mb-5">
+                <p class="font-bold text-[13px] text-dark mb-3">Urutkan</p>
+                <div class="space-y-2" id="tt-sort-group">
+                    <div class="tt-sort-btn flex items-center gap-2.5 cursor-pointer group" data-value="populer">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Populer</span>
+                    </div>
+                    <div class="tt-sort-btn flex items-center gap-2.5 cursor-pointer group" data-value="terdekat">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Terdekat</span>
+                    </div>
+                    <div class="tt-sort-btn flex items-center gap-2.5 cursor-pointer group" data-value="penilaian">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Penilaian 4.5+</span>
+                    </div>
+                    <div class="tt-sort-btn flex items-center gap-2.5 cursor-pointer group" data-value="termurah">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Termurah</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-100 mb-5"></div>
+
+            {{-- Kategori --}}
+            <div>
+                <p class="font-bold text-[13px] text-dark mb-3">Kategori</p>
+                <div class="space-y-2" id="tt-cat-group">
+                    <div class="tt-cat-btn flex items-center gap-2.5 cursor-pointer group" data-value="makanan_berat">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Makanan Berat</span>
+                    </div>
+                    <div class="tt-cat-btn flex items-center gap-2.5 cursor-pointer group" data-value="jajanan">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Jajanan</span>
+                    </div>
+                    <div class="tt-cat-btn flex items-center gap-2.5 cursor-pointer group" data-value="minuman">
+                        <span class="tt-radio-dot w-4 h-4 rounded-full border-2 border-gray-400 flex-shrink-0 flex items-center justify-center transition-all">
+                            <span class="tt-radio-inner w-2 h-2 rounded-full bg-[#F5A623] opacity-0 transition-all"></span>
+                        </span>
+                        <span class="tt-radio-label text-[13px] text-dark group-hover:text-[#F5A623] transition-colors">Minuman</span>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        {{-- ══════════════════════════════════════════════════════════ --}}
+        {{-- RIGHT CONTENT: Header Info + Cards Grid                    --}}
+        {{-- ══════════════════════════════════════════════════════════ --}}
+        <div class="flex-1 min-w-0">
+
+            {{-- Mobile Filter Button (only on mobile) --}}
+            <div class="flex items-center gap-2 mb-4 md:hidden overflow-x-auto no-scrollbar pb-2">
+                <button id="tt-btn-filter-modal" class="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors shadow-sm flex-shrink-0">
+                    <i class="fas fa-sliders-h text-gray-500 tt-btn-filter-icon"></i> Filter
                 </button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="populer">Populer</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="terdekat">Terdekat</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="penilaian">Rating 4.5+</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="termurah">Termurah</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-gray-50 shadow-sm" data-sort="bawah10k">Dibawah 10k</button>
             </div>
 
-            {{-- Inner White Box --}}
-            <div class="bg-white rounded-t-3xl md:rounded-2xl shadow-xl flex flex-col overflow-hidden w-full max-h-[85vh]">
-                
-                {{-- Header --}}
-                <div class="flex justify-between items-center p-5 border-b border-gray-100">
-                    <h3 class="text-[18px] font-bold text-dark">Filter menu</h3>
-                    <button id="tt-close-modal" class="hidden md:flex w-8 h-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+            {{-- Header: Count info only --}}
+            <div class="flex items-center mb-4">
+                <p id="tt-count-info" class="text-[13px] text-muted hidden">
+                    Menampilkan <span id="tt-count-num" class="font-bold text-dark"></span> tempat makan
+                </p>
+            </div>
 
-                {{-- Body --}}
-                <div class="flex-1 overflow-y-auto p-5 space-y-6">
-                    
-                    {{-- Sort By --}}
-                    <div>
-                        <h4 class="text-[14px] font-bold text-dark mb-3">Sort by</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="populer">Populer</button>
-                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="termurah">Cheapest</button>
+            {{-- Cards Container — filled by JS --}}
+            <div id="tt-cards-container">
+                {{-- Skeleton loading --}}
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4" id="tt-skeleton">
+                    @for($i = 0; $i < 6; $i++)
+                        <div class="bg-white rounded-xl overflow-hidden border border-black/[0.05] animate-pulse">
+                            <div class="w-full h-[180px] bg-gray-200"></div>
+                            <div class="p-4 space-y-2">
+                                <div class="h-3 bg-gray-200 rounded w-3/4"></div>
+                                <div class="h-2 bg-gray-200 rounded w-1/2"></div>
+                                <div class="h-2 bg-gray-200 rounded w-1/3"></div>
+                            </div>
                         </div>
-                    </div>
-
-                    {{-- All-in price --}}
-                    <div>
-                        <h4 class="text-[14px] font-bold text-dark mb-3">All-in price</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="bawah10k">30k incl. fees</button>
-                        </div>
-                    </div>
-
-                    {{-- Ratings --}}
-                    <div>
-                        <h4 class="text-[14px] font-bold text-dark mb-3">Dish ratings</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="penilaian">Dish rating 4.5+</button>
-                        </div>
-                    </div>
-
+                    @endfor
                 </div>
+            </div>
 
-                {{-- Footer --}}
-                <div class="flex items-center gap-3 p-4 border-t border-gray-100 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-                    <button id="tt-modal-clear" class="flex-1 py-3 px-4 rounded-full border border-red-500 text-red-500 font-bold text-[14px] hover:bg-red-50 transition-colors">
-                        Bersihkan
-                    </button>
-                    <button id="tt-modal-apply" class="flex-1 py-3 px-4 rounded-full bg-emerald-500 text-white font-bold text-[14px] hover:bg-emerald-600 transition-colors">
-                        Simpan
-                    </button>
+        </div>{{-- end right --}}
+    </div>{{-- end flex row --}}
+</div>
+
+{{-- ═══════════════════════════════════════════════════════════ --}}
+{{-- MOBILE FILTER MODAL (bottom sheet)                         --}}
+{{-- ═══════════════════════════════════════════════════════════ --}}
+<div id="tt-filter-modal" class="fixed inset-0 z-[100] hidden md:hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0 duration-300" id="tt-filter-backdrop"></div>
+
+    <div id="tt-filter-modal-wrapper" class="absolute bottom-0 left-0 w-full transition-transform duration-300 transform translate-y-full">
+
+        <div class="flex justify-end px-4 mb-3">
+            <button id="tt-close-modal-mobile" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-gray-100 transition-colors shadow-lg">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <div class="bg-white rounded-t-3xl shadow-xl flex flex-col overflow-hidden w-full max-h-[85vh]">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100">
+                <h3 class="text-[18px] font-bold text-dark">Filter</h3>
+            </div>
+            <div class="flex-1 overflow-y-auto p-5 space-y-6">
+                {{-- Sort By --}}
+                <div>
+                    <h4 class="text-[14px] font-bold text-dark mb-3">Urutkan</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="populer">Populer</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="terdekat">Terdekat</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="penilaian">Rating 4.5+</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="termurah">Termurah</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="bawah10k">Dibawah 10k</button>
+                    </div>
                 </div>
+            </div>
+            <div class="flex items-center gap-3 p-4 border-t border-gray-100 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+                <button id="tt-modal-clear" class="flex-1 py-3 px-4 rounded-full border border-red-400 text-red-500 font-bold text-[14px] hover:bg-red-50 transition-colors">Bersihkan</button>
+                <button id="tt-modal-apply" class="flex-1 py-3 px-4 rounded-full bg-[#F5A623] text-white font-bold text-[14px] hover:bg-[#D4891E] transition-colors">Terapkan</button>
             </div>
         </div>
     </div>
-
-</section>
+</div>
 
 @push('scripts')
 <script>
@@ -124,18 +211,17 @@
     // STATE
     // ─────────────────────────────────────────────────────────────────
     const State = {
-        activeCampusId : null,   // null = semua kampus
-        sortBy         : null,   // null | 'populer' | 'penilaian' | 'termurah' | 'bawah10k'
-        activeCategory : null,   // null = semua | 'makanan' | 'minuman' | 'jajanan' | 'snack'
+        activeCampusId : null,
+        sortBy         : null,    // null | 'populer' | 'penilaian' | 'termurah' | 'bawah10k'
+        activeCategory : null,    // null = semua
+        priceRange     : null,    // null | 'dibawah15k' | '15k-20k'
         allRestaurants : window.TT_RESTAURANTS || [],
     };
 
-    // Expose state agar bisa diakses dari hero.blade.php
     window.TT_State = State;
 
     // ─────────────────────────────────────────────────────────────────
-    // PARSE HARGA dari price_range string → angka
-    // e.g. "Rp 5.000 - Rp 10.000" → min: 5000, max: 10000
+    // PARSE HARGA
     // ─────────────────────────────────────────────────────────────────
     function parseMinPrice(priceRange) {
         if (!priceRange) return Infinity;
@@ -162,33 +248,48 @@
             list = list.filter(r => r.campus_id === State.activeCampusId);
         }
 
-        // 2. Filter kategori makanan
+        // 2. Filter kategori makanan (dari sidebar checkboxes atau category circles)
         if (State.activeCategory) {
             list = list.filter(r => {
-                const cat  = (r.category   || '').toLowerCase();
-                const type = (r.food_type  || '').toLowerCase();
+                const cat  = (r.category  || '').toLowerCase();
                 switch (State.activeCategory) {
-                    case 'makanan_berat':
-                        return cat === 'makanan_berat' || cat.includes('makanan');
-                    case 'jajanan':
-                        return cat === 'jajanan' || cat.includes('jajanan') || cat.includes('snack');
-                    case 'minuman':
-                        return cat === 'minuman' || cat.includes('minuman') || cat.includes('kopi') || cat.includes('es');
-                    default:
-                        return true;
+                    case 'makanan_berat': return cat === 'makanan_berat' || cat.includes('makanan');
+                    case 'jajanan':      return cat === 'jajanan' || cat.includes('jajanan') || cat.includes('snack');
+                    case 'minuman':      return cat === 'minuman' || cat.includes('minuman') || cat.includes('kopi') || cat.includes('es');
+                    default:             return true;
                 }
             });
         }
 
-        // 3. Filter sort "Dibawah 10k"
+        // 3. Filter range harga
+        if (State.priceRange === 'dibawah15k') {
+            list = list.filter(r => parseMaxPrice(r.price_range) <= 15000);
+        } else if (State.priceRange === '15k-20k') {
+            list = list.filter(r => {
+                const min = parseMinPrice(r.price_range);
+                const max = parseMaxPrice(r.price_range);
+                return min >= 15000 && max <= 20000;
+            });
+        }
+
+        // 4. Filter "dibawah 10k"
         if (State.sortBy === 'bawah10k') {
             list = list.filter(r => parseMaxPrice(r.price_range) <= 10000);
         }
 
-        // 4. Sort
+        // 5. Filter penilaian >= 4.5
+        if (State.sortBy === 'penilaian') {
+            list = list.filter(r => r.rating >= 4.5);
+        }
+
+        // 6. Sort
         switch (State.sortBy) {
             case 'populer':
                 list.sort((a, b) => b.reviews_count - a.reviews_count || b.rating - a.rating);
+                break;
+            case 'terdekat':
+                // Simulasi sorting terdekat sementara (menggunakan ID sebagai patokan dummy)
+                list.sort((a, b) => b.id - a.id);
                 break;
             case 'penilaian':
                 list.sort((a, b) => b.rating - a.rating || b.reviews_count - a.reviews_count);
@@ -213,7 +314,7 @@
 
         if (!list.length) {
             container.innerHTML = `
-                <div class="text-center py-14">
+                <div class="text-center py-20 col-span-2">
                     <i class="fas fa-utensils text-[#F5A623]/30 text-5xl mb-4 block"></i>
                     <p class="text-dark font-bold text-[15px] mb-1">Tidak ada restoran ditemukan</p>
                     <p class="text-muted text-[12px]">Coba ubah filter atau pilih lokasi lain</p>
@@ -223,18 +324,17 @@
         }
 
         container.innerHTML = `
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
                 ${list.map(r => cardHTML(r)).join('')}
             </div>`;
 
-        // Attach click listeners
         container.querySelectorAll('.tt-card').forEach(card => {
             card.addEventListener('click', () => {
                 window.location.href = card.dataset.url;
             });
         });
 
-        countNum.textContent  = list.length;
+        countNum.textContent = list.length;
         countInfo.classList.remove('hidden');
     }
 
@@ -287,11 +387,102 @@
     }
 
     // ─────────────────────────────────────────────────────────────────
-    // FILTER CHIPS (sort) & MODAL
+    // SIDEBAR FILTER LISTENERS
     // ─────────────────────────────────────────────────────────────────
     
+    // ── Custom radio: Price range (sidebar desktop) ──────────────────
+    function applyPriceUI() {
+        document.querySelectorAll('.tt-price-btn').forEach(btn => {
+            const isActive = btn.dataset.value === State.priceRange;
+            const dot   = btn.querySelector('.tt-radio-dot');
+            const inner = btn.querySelector('.tt-radio-inner');
+            const label = btn.querySelector('.tt-radio-label');
+            dot.classList.toggle('border-[#F5A623]', isActive);
+            dot.classList.toggle('border-gray-400', !isActive);
+            inner.classList.toggle('opacity-100', isActive);
+            inner.classList.toggle('opacity-0', !isActive);
+            label.classList.toggle('text-[#F5A623]', isActive);
+            label.classList.toggle('font-semibold', isActive);
+            label.classList.toggle('text-dark', !isActive);
+            label.classList.toggle('font-normal', !isActive);
+        });
+    }
+
+    document.querySelectorAll('.tt-price-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (State.priceRange === this.dataset.value) {
+                State.priceRange = null;  // toggle off
+            } else {
+                State.priceRange = this.dataset.value;  // switch
+            }
+            applyPriceUI();
+            renderCards();
+        });
+    });
+
+    // ── Custom radio: Sort (sidebar desktop) ─────────────────────────
+    function applySortRadioUI() {
+        document.querySelectorAll('.tt-sort-btn').forEach(btn => {
+            const isActive = btn.dataset.value === State.sortBy;
+            const dot   = btn.querySelector('.tt-radio-dot');
+            const inner = btn.querySelector('.tt-radio-inner');
+            const label = btn.querySelector('.tt-radio-label');
+            dot.classList.toggle('border-[#F5A623]', isActive);
+            dot.classList.toggle('border-gray-400', !isActive);
+            inner.classList.toggle('opacity-100', isActive);
+            inner.classList.toggle('opacity-0', !isActive);
+            label.classList.toggle('text-[#F5A623]', isActive);
+            label.classList.toggle('font-semibold', isActive);
+            label.classList.toggle('text-dark', !isActive);
+            label.classList.toggle('font-normal', !isActive);
+        });
+    }
+
+    document.querySelectorAll('.tt-sort-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (State.sortBy === this.dataset.value) {
+                State.sortBy = null;  // toggle off
+            } else {
+                State.sortBy = this.dataset.value;  // switch
+            }
+            applySortRadioUI();
+            updateFilterUI();
+            renderCards();
+        });
+    });
+
+    // ── Custom radio: Category (sidebar desktop) ─────────────────────
+    document.querySelectorAll('.tt-cat-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (State.activeCategory === this.dataset.value) {
+                State.activeCategory = null; // toggle off
+            } else {
+                State.activeCategory = this.dataset.value; // switch
+            }
+            updateCategoryUI();
+            renderCards();
+        });
+    });
+
+
+
+    // Sidebar Reset
+    document.getElementById('tt-sidebar-reset')?.addEventListener('click', () => {
+        State.sortBy = null;
+        State.activeCategory = null;
+        State.priceRange = null;
+        applyPriceUI();
+        applySortRadioUI();
+        updateCategoryUI();
+        updateFilterUI();
+        updateCategoryUI();
+        renderCards();
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // MOBILE CHIP FILTER & MODAL
+    // ─────────────────────────────────────────────────────────────────
     function updateFilterUI() {
-        // 1. Update Chips di Halaman Utama & Modal
         document.querySelectorAll('.tt-sort-chip, .tt-modal-chip').forEach(b => {
             const isActive = b.dataset.sort === State.sortBy;
             b.classList.toggle('bg-[#F5A623]', isActive);
@@ -300,14 +491,12 @@
             b.classList.toggle('bg-white', !isActive);
             b.classList.toggle('text-dark', !isActive);
             b.classList.toggle('border-gray-300', !isActive);
-            b.classList.toggle('hover:bg-gray-50', !isActive);
         });
 
-        // 2. Update Tombol Sliders (Icon Filter)
         const btnFilter = document.getElementById('tt-btn-filter-modal');
         const iconFilter = btnFilter ? btnFilter.querySelector('.tt-btn-filter-icon') : null;
         if (btnFilter && iconFilter) {
-            const isFilterActive = State.sortBy !== null; // Jika ada filter
+            const isFilterActive = State.sortBy !== null;
             btnFilter.classList.toggle('bg-[#F5A623]', isFilterActive);
             btnFilter.classList.toggle('border-[#F5A623]', isFilterActive);
             iconFilter.classList.toggle('text-white', isFilterActive);
@@ -317,50 +506,39 @@
         }
     }
 
-    // Klik Chip (baik di halaman maupun di dalam modal)
     document.querySelectorAll('.tt-sort-chip, .tt-modal-chip').forEach(btn => {
         btn.addEventListener('click', () => {
             const val = btn.dataset.sort;
-            if (State.sortBy === val) {
-                State.sortBy = null; // Toggle off jika diklik 2x
-            } else {
-                State.sortBy = val;
-            }
+            State.sortBy = State.sortBy === val ? null : val;
             updateFilterUI();
             renderCards();
         });
     });
 
-    // Modal Logic
-    const filterModal = document.getElementById('tt-filter-modal');
+    // Modal open/close
+    const filterModal   = document.getElementById('tt-filter-modal');
     const filterBackdrop = document.getElementById('tt-filter-backdrop');
-    const filterModalWrapper = document.getElementById('tt-filter-modal-wrapper');
-    
+    const filterWrapper  = document.getElementById('tt-filter-modal-wrapper');
+
     function openFilterModal() {
-        if(!filterModal) return;
+        if (!filterModal) return;
         filterModal.classList.remove('hidden');
-        // trigger reflow
         void filterModal.offsetWidth;
         filterBackdrop.classList.remove('opacity-0');
-        filterModalWrapper.classList.remove('translate-y-full', 'md:scale-95', 'md:opacity-0');
-        filterModalWrapper.classList.add('translate-y-0', 'md:scale-100', 'md:opacity-100');
+        filterWrapper.classList.remove('translate-y-full');
     }
-    
+
     function closeFilterModal() {
-        if(!filterModal) return;
+        if (!filterModal) return;
         filterBackdrop.classList.add('opacity-0');
-        filterModalWrapper.classList.add('translate-y-full', 'md:scale-95', 'md:opacity-0');
-        filterModalWrapper.classList.remove('translate-y-0', 'md:scale-100', 'md:opacity-100');
-        setTimeout(() => {
-            filterModal.classList.add('hidden');
-        }, 300);
+        filterWrapper.classList.add('translate-y-full');
+        setTimeout(() => filterModal.classList.add('hidden'), 300);
     }
 
     document.getElementById('tt-btn-filter-modal')?.addEventListener('click', openFilterModal);
-    document.getElementById('tt-close-modal')?.addEventListener('click', closeFilterModal);
     document.getElementById('tt-close-modal-mobile')?.addEventListener('click', closeFilterModal);
     filterBackdrop?.addEventListener('click', closeFilterModal);
-    
+
     document.getElementById('tt-modal-apply')?.addEventListener('click', () => {
         renderCards();
         closeFilterModal();
@@ -369,44 +547,63 @@
     document.getElementById('tt-modal-clear')?.addEventListener('click', () => {
         State.sortBy = null;
         State.activeCategory = null;
+        State.priceRange = null;
         updateFilterUI();
         updateCategoryUI();
         renderCards();
         closeFilterModal();
     });
 
-    // Panggil sekali saat inisialisasi agar tampilannya pas
     updateFilterUI();
 
     // ─────────────────────────────────────────────────────────────────
-    // CATEGORY CIRCLES (GoFood Style)
+    // CATEGORY CIRCLES UI (from category.blade.php icons)
     // ─────────────────────────────────────────────────────────────────
     function updateCategoryUI() {
         document.querySelectorAll('.tt-cat-item').forEach(i => {
             const isCat = i.dataset.category;
             const isActive = (isCat === State.activeCategory) || (!State.activeCategory && isCat === 'semua');
-            
-            const label = i.querySelector('.cat-label');
+            const iconWrap = i.querySelector('.tt-cat-icon');
+            const icon     = iconWrap?.querySelector('i');
+            const label    = i.querySelector('.cat-label');
 
             if (isActive) {
-                i.classList.remove('border-transparent', 'hover:border-gray-300');
-                i.classList.add('border-[#F5A623]');
-                label.classList.remove('text-muted', 'font-medium');
-                label.classList.add('text-dark', 'font-bold');
+                iconWrap?.classList.remove('bg-[#F3F4F6]', 'border-transparent');
+                iconWrap?.classList.add('bg-[#FFF3E0]', 'border-[#F5A623]');
+                icon?.classList.remove('text-[#374151]');
+                icon?.classList.add('text-[#F5A623]');
+                label?.classList.remove('text-muted', 'font-medium');
+                label?.classList.add('text-dark', 'font-bold');
             } else {
-                i.classList.remove('border-[#F5A623]');
-                i.classList.add('border-transparent', 'hover:border-gray-300');
-                label.classList.remove('text-dark', 'font-bold');
-                label.classList.add('text-muted', 'font-medium');
+                iconWrap?.classList.add('bg-[#F3F4F6]', 'border-transparent');
+                iconWrap?.classList.remove('bg-[#FFF3E0]', 'border-[#F5A623]');
+                icon?.classList.add('text-[#374151]');
+                icon?.classList.remove('text-[#F5A623]');
+                label?.classList.remove('text-dark', 'font-bold');
+                label?.classList.add('text-muted', 'font-medium');
             }
+        });
+
+        // Sync custom category radio in sidebar
+        document.querySelectorAll('.tt-cat-btn').forEach(btn => {
+            const isActive = btn.dataset.value === State.activeCategory;
+            const dot   = btn.querySelector('.tt-radio-dot');
+            const inner = btn.querySelector('.tt-radio-inner');
+            const label = btn.querySelector('.tt-radio-label');
+            dot.classList.toggle('border-[#F5A623]', isActive);
+            dot.classList.toggle('border-gray-400', !isActive);
+            inner.classList.toggle('opacity-100', isActive);
+            inner.classList.toggle('opacity-0', !isActive);
+            label.classList.toggle('text-[#F5A623]', isActive);
+            label.classList.toggle('font-semibold', isActive);
+            label.classList.toggle('text-dark', !isActive);
+            label.classList.toggle('font-normal', !isActive);
         });
     }
 
     document.querySelectorAll('.tt-cat-item').forEach(item => {
         item.addEventListener('click', () => {
             const cat = item.dataset.category;
-
-            // Toggle logic
             if (cat === 'semua') {
                 State.activeCategory = null;
             } else if (State.activeCategory === cat) {
@@ -414,7 +611,6 @@
             } else {
                 State.activeCategory = cat;
             }
-
             updateCategoryUI();
             renderCards();
         });
@@ -434,7 +630,7 @@
     };
 
     // ─────────────────────────────────────────────────────────────────
-    // INIT — render semua setelah DOM siap
+    // INIT
     // ─────────────────────────────────────────────────────────────────
     renderCards();
 })();

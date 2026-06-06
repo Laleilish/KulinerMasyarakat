@@ -1,40 +1,43 @@
-<section class="px-5 mt-6 mb-4 w-full md:px-10">
-
-    <h1 class="text-center text-[18px] md:text-2xl font-extrabold text-dark mb-4 tracking-tight">
-        Duit Habis Diakhir Bulan?
-    </h1>
+<section class="px-5 mt-6 mb-4 w-full md:px-10 max-w-[1400px] mx-auto relative z-10">
 
     {{-- Banner Card --}}
-    <div class="relative w-full bg-[#F5A623] rounded-[24px] md:rounded-[36px] shadow-md flex items-end md:items-stretch overflow-hidden mb-5 md:mb-8"
-         style="min-height: 220px;">
+    <div class="relative w-full rounded-[24px] md:rounded-[36px] shadow-sm flex items-end md:items-stretch overflow-hidden mb-5 md:mb-8 bg-gradient-to-r from-[#FFB84D] to-[#FFA011] text-dark"
+         style="min-height: 240px;">
 
-        {{-- Left Image --}}
+        {{-- Background Texture / Image (Using original image as bg layer) --}}
         <img
             src="{{ asset('assets/img/Tanggal Tua/tanggal-tua-banner.png') }}"
-            alt="Tanggal Tua"
-            class="relative z-10 self-end h-[160px] w-auto max-w-[45%] md:h-[280px] md:max-w-[320px] object-contain drop-shadow-md ml-0 md:ml-8 flex-shrink-0">
+            alt="Tanggal Tua Background"
+            class="absolute inset-0 w-full h-full object-cover object-[center_20%] mix-blend-overlay opacity-60">
 
-        {{-- Right Content --}}
-        <div class="flex-1 flex flex-col justify-center px-4 md:px-10 py-5 md:py-8 text-right text-white z-20">
-            <h2 class="font-extrabold text-[14px] md:text-3xl leading-tight mb-1 md:mb-2 text-dark">
-                Fitur Tanggal Tua Hadir<br>Untuk Menyelamatkanmu!
+        {{-- Left Content --}}
+        <div class="relative z-20 flex-1 flex flex-col justify-center px-6 md:px-16 pt-5 pb-14 md:py-12">
+            
+            <div class="mb-3">
+                <span class="inline-block bg-white text-dark text-[11px] md:text-[13px] font-bold px-4 py-1.5 rounded-full shadow-sm">
+                    Fitur Spesial
+                </span>
+            </div>
+
+            <h2 class="font-extrabold text-[16px] md:text-[22px] leading-snug mb-4 text-[#4A2E05] max-w-sm">
+                Fitur Tanggal Tua Hadir Untuk Menyelamatkanmu!
             </h2>
-            <p class="text-[10px] md:text-base font-semibold text-white mb-2 md:mb-4">
-                Makan Enak Tanpa Biaya Lebih
-            </p>
-            <h3 class="text-[42px] md:text-8xl font-black leading-none text-[#5A3805] tracking-tighter mb-1 md:mb-3">
-                &lt;15k
-            </h3>
-            <p class="text-[9px] md:text-sm font-semibold text-white leading-tight">
-                Harga Terendah,<br>Makan Termewah
-            </p>
+            
+            <div class="flex items-center gap-3">
+                <span class="text-[14px] md:text-[16px] font-extrabold text-[#5A3805]">
+                    Makan Enak Tanpa Biaya Lebih
+                </span>
+                <span class="bg-[#50E3C2] text-[#00604A] font-black text-[14px] md:text-[18px] px-4 py-1 rounded-full shadow-sm">
+                    15k
+                </span>
+            </div>
+            
         </div>
-
     </div>
 
     {{-- Location Bar — identik dengan Hidden Gem --}}
     <div id="location-bar-wrap" class="relative bg-white rounded-3xl md:rounded-full shadow-lg
-                border border-black/[0.06] transition-all duration-300 max-w-4xl w-full mx-auto md:-mt-14 z-30">
+                border border-black/[0.06] transition-all duration-300 max-w-4xl w-full mx-auto -mt-10 md:-mt-14 z-30">
 
         {{-- Main bar --}}
         <div class="flex items-center gap-3 px-4 h-[54px]">
