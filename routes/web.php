@@ -120,7 +120,9 @@ Route::get('/hidden-gem/restaurants/{campusId}', [HiddenGemController::class, 'g
     ->middleware('auth')
     ->name('hidden-gem.restaurants');
 Route::get('/semua-resto', [RestaurantController::class, 'index'])->name('semua-resto');
-Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])->name('tanggal-tua.index');
+Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])
+    ->middleware('auth')
+    ->name('tanggal-tua.index');
 Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');
 Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
 Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.index');

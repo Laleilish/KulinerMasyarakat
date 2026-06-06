@@ -4,7 +4,7 @@
         Semua Makanan Hanya Dibawah 15rb
     </h2>
 
-    {{-- Filter Chips (Sort) - GoFood Style --}}
+    {{-- Filter Chips (Sort) --}}
     <div class="flex gap-2 overflow-x-auto md:justify-start mb-6 px-1 py-1 pb-2">
         <button id="tt-btn-filter-modal" class="flex items-center justify-center px-4 py-2 rounded-full border border-gray-300 text-dark flex-shrink-0 bg-white hover:bg-gray-50 transition-colors shadow-sm">
             <i class="fas fa-sliders-h text-[13px] text-gray-500 tt-btn-filter-icon"></i>
@@ -23,7 +23,7 @@
         </button>
     </div>
 
-    {{-- Category Circles - GoFood Style --}}
+    {{-- Category Circles --}}
     <div class="flex gap-4 md:gap-8 overflow-x-auto md:justify-start border-b border-gray-200 pb-2">
 
         {{-- Semua --}}

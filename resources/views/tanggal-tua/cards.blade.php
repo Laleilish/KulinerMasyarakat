@@ -105,10 +105,10 @@
                 {{-- Footer --}}
                 <div class="flex items-center gap-3 p-4 border-t border-gray-100 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
                     <button id="tt-modal-clear" class="flex-1 py-3 px-4 rounded-full border border-red-500 text-red-500 font-bold text-[14px] hover:bg-red-50 transition-colors">
-                        Clear filter
+                        Bersihkan
                     </button>
-                    <button id="tt-modal-apply" class="flex-1 py-3 px-4 rounded-full bg-[#00880D] text-white font-bold text-[14px] hover:bg-[#00700A] transition-colors">
-                        Apply
+                    <button id="tt-modal-apply" class="flex-1 py-3 px-4 rounded-full bg-emerald-500 text-white font-bold text-[14px] hover:bg-emerald-600 transition-colors">
+                        Simpan
                     </button>
                 </div>
             </div>

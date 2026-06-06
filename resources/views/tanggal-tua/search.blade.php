@@ -1,7 +1,6 @@
 <section class="px-4 pt-4">
 
-    <div
-        class="flex items-center gap-3 h-11 px-4 rounded-full bg-cream-dark shadow-card">
+    <div class="flex items-center gap-3 h-11 px-4 rounded-full bg-cream-dark shadow-card">
 
         <i class="fa-solid fa-magnifying-glass text-muted"></i>
 

@@ -4,8 +4,6 @@
 
 <div class="bg-[#FCF5E9] min-h-screen pb-8 font-sans text-dark">
 
-    
-
     @include('tanggal-tua.hero')
 
     @include('tanggal-tua.category')
