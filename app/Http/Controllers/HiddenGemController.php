@@ -39,9 +39,9 @@ class HiddenGemController extends Controller
         return [
             'id'          => $r->id,
             'name'        => $r->name,
-            'image'       => asset('assets/img/resto/' . $r->image),
+            'image'       => \Illuminate\Support\Facades\Storage::url($r->image),
             'description' => $r->description ?? '',
-            'rating'      => $r->rating,
+            'rating'      => $r->average_rating,
             'distance'    => $distance,
             'price_range' => $r->price_range,
             'category'    => $r->category,
