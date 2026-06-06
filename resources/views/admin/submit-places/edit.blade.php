@@ -128,18 +128,46 @@
 
                         {{-- Rentang Harga --}}
                         <div>
-                            <label for="price_range" class="block text-sm font-semibold text-gray-700 mb-1">Rentang Harga <span class="text-rose-500">*</span></label>
-                            <input type="text" name="price_range" id="price_range" x-model="price_range" required
-                                class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors"
-                                placeholder="Contoh: Rp 15.000 - 30.000">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Rentang Harga <span class="text-rose-500">*</span></label>
+                            <div class="flex items-center gap-2">
+                                <div class="flex-1 relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">Rp</span>
+                                    <input type="number" x-model="price_min" min="0" step="1000" class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors" placeholder="10000">
+                                </div>
+                                <span class="text-gray-400 font-bold">—</span>
+                                <div class="flex-1 relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">Rp</span>
+                                    <input type="number" x-model="price_max" min="0" step="1000" class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors" placeholder="30000">
+                                </div>
+                            </div>
+                            <input type="hidden" name="price_range" :value="price_range">
                         </div>
 
                         {{-- Jam Buka --}}
                         <div>
-                            <label for="open_hours" class="block text-sm font-semibold text-gray-700 mb-1">Jam Buka <span class="text-rose-500">*</span></label>
-                            <input type="text" name="open_hours" id="open_hours" x-model="open_hours" required
-                                class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors"
-                                placeholder="Contoh: 08:00 - 22:00">
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Jam Buka <span class="text-rose-500">*</span></label>
+                            <div class="flex items-center gap-1 sm:gap-2">
+                                <div class="flex-1">
+                                    <input type="time" x-model="open_time" class="hidden sm:block min-w-0 w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors text-sm sm:text-base">
+                                    <select x-model="open_time" class="block sm:hidden min-w-0 w-full px-2 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors text-sm">
+                                        <option value="">Jam Buka</option>
+                                        <template x-for="time in timeOptions" :key="time">
+                                            <option :value="time" x-text="time"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <span class="text-gray-400 font-bold text-sm sm:text-base">—</span>
+                                <div class="flex-1">
+                                    <input type="time" x-model="close_time" class="hidden sm:block min-w-0 w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors text-sm sm:text-base">
+                                    <select x-model="close_time" class="block sm:hidden min-w-0 w-full px-2 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange/20 focus:border-orange transition-colors text-sm">
+                                        <option value="">Jam Tutup</option>
+                                        <template x-for="time in timeOptions" :key="time">
+                                            <option :value="time" x-text="time"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" name="open_hours" :value="open_hours">
                         </div>
 
                         {{-- Patokan (Landmark) --}}
@@ -232,14 +260,48 @@
 
 <script>
 function editForm() {
+    const initOpenHours = @js(old('open_hours', $submitPlace->open_hours));
+    let openTime = '';
+    let closeTime = '';
+    if (initOpenHours && initOpenHours.includes('-')) {
+        const parts = initOpenHours.split('-');
+        openTime = parts[0] ? parts[0].trim() : '';
+        closeTime = parts[1] ? parts[1].trim() : '';
+    }
+
+    const initPriceRange = @js(old('price_range', $submitPlace->price_range));
+    let priceMin = '';
+    let priceMax = '';
+    if (initPriceRange && initPriceRange.includes('-')) {
+        const parts = initPriceRange.split('-');
+        priceMin = parts[0] ? parts[0].replace(/[^0-9]/g, '') : '';
+        priceMax = parts[1] ? parts[1].replace(/[^0-9]/g, '') : '';
+    }
+
+    const times = [];
+    for (let i = 0; i < 24; i++) {
+        for (let j = 0; j < 60; j += 30) {
+            times.push(`${i.toString().padStart(2, '0')}:${j.toString().padStart(2, '0')}`);
+        }
+    }
+
     return {
         name: @js(old('name', $submitPlace->name)),
         category: @js(old('category', $submitPlace->category)),
         food_type: @js(old('food_type', $submitPlace->food_type)),
         description: @js(old('description', $submitPlace->description)),
         address: @js(old('address', $submitPlace->address)),
-        open_hours: @js(old('open_hours', $submitPlace->open_hours)),
-        price_range: @js(old('price_range', $submitPlace->price_range)),
+        open_time: openTime,
+        close_time: closeTime,
+        price_min: priceMin,
+        price_max: priceMax,
+        timeOptions: times,
+        get open_hours() {
+            return this.open_time && this.close_time ? this.open_time + ' - ' + this.close_time : '';
+        },
+        get price_range() {
+            return this.price_min && this.price_max ? 'Rp ' + Number(this.price_min).toLocaleString('id-ID') + ' - Rp ' + Number(this.price_max).toLocaleString('id-ID') : '';
+        },
         landmark: @js(old('landmark', $submitPlace->landmark)),
         previewPhoto: @js($submitPlace->photo ? Storage::url($submitPlace->photo) : null),
         originalPhoto: @js($submitPlace->photo ? Storage::url($submitPlace->photo) : null),
