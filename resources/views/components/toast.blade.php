@@ -8,10 +8,16 @@
             
             // Trigger push notification if enabled
             if (Alpine.store('notif') && Alpine.store('notif').canSend()) {
-                new Notification('KUMAR', {
-                    body: toast.title + ': ' + toast.message,
-                    icon: '/assets/img/icon-kumar.png',
-                });
+                const msg = toast.message.toLowerCase();
+                // Skip push notification for login events
+                const skipPush = msg.includes('logged in') || msg.includes('berhasil masuk');
+                
+                if (!skipPush) {
+                    new Notification('KUMAR', {
+                        body: toast.title + ': ' + toast.message,
+                        icon: '/assets/img/icon-kumar.png',
+                    });
+                }
             }
         },
         remove(id) {
