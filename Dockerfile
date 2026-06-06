@@ -57,6 +57,9 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts
 # Copy all project files
 COPY . /var/www/html
 
+# Remove the Vite hot file if it was copied over accidentally
+RUN rm -f /var/www/html/public/hot
+
 # Run composer scripts (post-autoload-dump etc.)
 RUN composer dump-autoload --optimize
 
