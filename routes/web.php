@@ -110,6 +110,9 @@ Route::middleware(["auth", "role:admin"])
         Route::get("/users", [AdminUserController::class, "index"])->name("users.index");
         Route::patch("/users/{user}/toggle-role", [AdminUserController::class, "toggleRole"])->name("users.toggle-role");
         Route::delete("/users/{user}", [AdminUserController::class, "destroy"])->name("users.destroy");
+
+        // Restaurants
+        Route::resource("/restaurants", \App\Http\Controllers\Admin\RestaurantController::class);
     });
 
 Route::get("/", [\App\Http\Controllers\HomeController::class, 'index'])->name("home");

@@ -30,6 +30,16 @@
             <span>Usulan Tempat</span>
         </a>
 
+        {{-- Kelola Restoran --}}
+        <a href="{{ route('admin.restaurants.index') }}"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold no-underline transition-colors {{ request()->routeIs('admin.restaurants.*') ? 'bg-[#F2E0BE] text-gray-900 shadow-sm' : 'text-gray-500 hover:bg-[#F2E0BE]/50 hover:text-gray-900' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>Kelola Restoran</span>
+        </a>
+
         {{-- Manajemen User --}}
         <a href="{{ route('admin.users.index') }}"
            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold no-underline transition-colors {{ request()->routeIs('admin.users.*') ? 'bg-[#F2E0BE] text-gray-900 shadow-sm' : 'text-gray-500 hover:bg-[#F2E0BE]/50 hover:text-gray-900' }}">
