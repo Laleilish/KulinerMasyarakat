@@ -254,18 +254,6 @@
         </div>
 
     </div>
-
-    {{-- Lihat Semua --}}
-    <div class="text-center mt-8 px-4">
-        <button id="btn-lihat-semua"
-                class="bg-secondary text-white font-extrabold text-[14px]
-                       px-10 py-3 rounded-full
-                       shadow-[0_4px_16px_rgba(2,177,118,0.35)]
-                       transition-all duration-200
-                       hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]">
-            Lihat Semua Resto
-        </button>
-    </div>
 </section>
 
 {{-- MODAL DETAIL RESTORAN (Bottom Sheet) --}}
