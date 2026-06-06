@@ -20,7 +20,7 @@
          style="padding-top:env(safe-area-inset-top)">
 
         {{-- Map + Side Panel container --}}
-        <div class="flex-1 relative overflow-hidden flex flex-row w-full h-full">
+        <div class="flex-1 relative flex flex-row w-full h-full" style="overflow: clip;">
 
             {{-- ── PETA ── --}}
             <div id="fs-leaflet-map" class="flex-1 h-full z-0"></div>
@@ -78,13 +78,13 @@
                         absolute bottom-0 left-0 right-0
                         rounded-t-[28px]
                         shadow-[0_-8px_40px_rgba(0,0,0,0.18)]
-                        {{-- Desktop: relative left panel, full height --}}
-                        md:static md:bottom-auto md:left-auto md:right-auto
+                        {{-- Desktop: absolute left panel, full height --}}
+                        md:bottom-auto md:left-0 md:right-auto md:top-0
                         md:rounded-none
                         md:shadow-[4px_0_32px_rgba(0,0,0,0.12)]
-                        md:w-[360px] md:flex-shrink-0 md:h-full
-                        md:order-first md:border-r md:border-black/[0.06]"
-                 style="max-height:72vh;">
+                        md:w-[380px] md:h-full
+                        md:border-r md:border-black/[0.06]"
+                 style="">
 
                 {{-- Mobile drag handle --}}
                 <div class="flex justify-center pt-3 pb-1 flex-shrink-0 md:hidden">
@@ -212,8 +212,15 @@
     @media (min-width: 768px) {
         #fs-bottom-sheet {
             max-height: 100% !important;
+            overflow-y: auto !important;
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 380px;
+            z-index: 500;
         }
         #fs-bottom-sheet.fs-panel-open {
             transform: translateX(0);
@@ -223,6 +230,7 @@
     /* ── Bottom sheet mobile ── */
     @media (max-width: 767px) {
         #fs-bottom-sheet {
+            max-height: 72vh;
             transform: translateY(100%);
             transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
         }

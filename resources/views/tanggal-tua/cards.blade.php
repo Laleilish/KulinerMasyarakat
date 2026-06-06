@@ -22,7 +22,7 @@
     window.TT_RESTAURANTS = @json($ttRestaurantsData);
 </script>
 
-<section class="px-5 pb-6">
+<section class="px-5 md:px-10 pb-6 max-w-[1400px] mx-auto w-full">
 
     {{-- Kontainer cards —  diisi oleh JS --}}
     <div id="tt-cards-container">
@@ -46,6 +46,75 @@
         Menampilkan <span id="tt-count-num" class="font-bold text-dark"></span> restoran
     </p>
 
+    {{-- Filter Modal Overlay --}}
+    <div id="tt-filter-modal" class="fixed inset-0 z-[100] hidden">
+        {{-- Backdrop --}}
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0 duration-300" id="tt-filter-backdrop"></div>
+        
+        {{-- Modal Wrapper (Bottom on mobile, Center on desktop) --}}
+        <div id="tt-filter-modal-wrapper" class="absolute bottom-0 left-0 w-full md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[90%] md:max-w-[500px] transition-all duration-300 transform translate-y-full md:scale-95 md:opacity-0">
+            
+            {{-- Floating Close Button (Mobile Only) --}}
+            <div class="flex justify-end px-4 mb-3 md:hidden">
+                <button id="tt-close-modal-mobile" class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-[#00880D] hover:bg-gray-100 transition-colors shadow-lg">
+                    <i class="fas fa-times text-lg font-bold"></i>
+                </button>
+            </div>
+
+            {{-- Inner White Box --}}
+            <div class="bg-white rounded-t-3xl md:rounded-2xl shadow-xl flex flex-col overflow-hidden w-full max-h-[85vh]">
+                
+                {{-- Header --}}
+                <div class="flex justify-between items-center p-5 border-b border-gray-100">
+                    <h3 class="text-[18px] font-bold text-dark">Filter menu</h3>
+                    <button id="tt-close-modal" class="hidden md:flex w-8 h-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                {{-- Body --}}
+                <div class="flex-1 overflow-y-auto p-5 space-y-6">
+                    
+                    {{-- Sort By --}}
+                    <div>
+                        <h4 class="text-[14px] font-bold text-dark mb-3">Sort by</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="populer">Populer</button>
+                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="termurah">Cheapest</button>
+                        </div>
+                    </div>
+
+                    {{-- All-in price --}}
+                    <div>
+                        <h4 class="text-[14px] font-bold text-dark mb-3">All-in price</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="bawah10k">30k incl. fees</button>
+                        </div>
+                    </div>
+
+                    {{-- Ratings --}}
+                    <div>
+                        <h4 class="text-[14px] font-bold text-dark mb-3">Dish ratings</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="penilaian">Dish rating 4.5+</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                {{-- Footer --}}
+                <div class="flex items-center gap-3 p-4 border-t border-gray-100 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+                    <button id="tt-modal-clear" class="flex-1 py-3 px-4 rounded-full border border-red-500 text-red-500 font-bold text-[14px] hover:bg-red-50 transition-colors">
+                        Clear filter
+                    </button>
+                    <button id="tt-modal-apply" class="flex-1 py-3 px-4 rounded-full bg-[#00880D] text-white font-bold text-[14px] hover:bg-[#00700A] transition-colors">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </section>
 
 @push('scripts')
@@ -56,7 +125,7 @@
     // ─────────────────────────────────────────────────────────────────
     const State = {
         activeCampusId : null,   // null = semua kampus
-        sortBy         : 'populer', // 'populer' | 'penilaian' | 'termurah' | 'bawah10k'
+        sortBy         : null,   // null | 'populer' | 'penilaian' | 'termurah' | 'bawah10k'
         activeCategory : null,   // null = semua | 'makanan' | 'minuman' | 'jajanan' | 'snack'
         allRestaurants : window.TT_RESTAURANTS || [],
     };
@@ -99,22 +168,12 @@
                 const cat  = (r.category   || '').toLowerCase();
                 const type = (r.food_type  || '').toLowerCase();
                 switch (State.activeCategory) {
-                    case 'makanan':
-                        return cat.includes('makanan') || cat.includes('nasi') || cat.includes('mie')
-                            || cat.includes('ayam') || cat.includes('seafood') || cat.includes('soto')
-                            || type.includes('makanan') || type.includes('nasi');
-                    case 'minuman':
-                        return cat.includes('minuman') || cat.includes('kopi') || cat.includes('es')
-                            || cat.includes('juice') || cat.includes('cafe') || cat.includes('kafe')
-                            || type.includes('minuman') || type.includes('kopi') || type.includes('es');
+                    case 'makanan_berat':
+                        return cat === 'makanan_berat' || cat.includes('makanan');
                     case 'jajanan':
-                        return cat.includes('jajanan') || cat.includes('snack') || cat.includes('cemilan')
-                            || cat.includes('gorengan') || cat.includes('bakso') || cat.includes('sate')
-                            || type.includes('jajanan') || type.includes('snack');
-                    case 'manis':
-                        return cat.includes('manis') || cat.includes('dessert') || cat.includes('kue')
-                            || cat.includes('bakery') || cat.includes('roti') || cat.includes('es krim')
-                            || type.includes('manis') || type.includes('dessert') || type.includes('kue');
+                        return cat === 'jajanan' || cat.includes('jajanan') || cat.includes('snack');
+                    case 'minuman':
+                        return cat === 'minuman' || cat.includes('minuman') || cat.includes('kopi') || cat.includes('es');
                     default:
                         return true;
                 }
@@ -228,38 +287,121 @@
     }
 
     // ─────────────────────────────────────────────────────────────────
-    // FILTER CHIPS (sort)
+    // FILTER CHIPS (sort) & MODAL
     // ─────────────────────────────────────────────────────────────────
-    document.querySelectorAll('.tt-sort-chip').forEach(btn => {
+    
+    function updateFilterUI() {
+        // 1. Update Chips di Halaman Utama & Modal
+        document.querySelectorAll('.tt-sort-chip, .tt-modal-chip').forEach(b => {
+            const isActive = b.dataset.sort === State.sortBy;
+            b.classList.toggle('bg-[#F5A623]', isActive);
+            b.classList.toggle('text-white', isActive);
+            b.classList.toggle('border-[#F5A623]', isActive);
+            b.classList.toggle('bg-white', !isActive);
+            b.classList.toggle('text-dark', !isActive);
+            b.classList.toggle('border-gray-300', !isActive);
+            b.classList.toggle('hover:bg-gray-50', !isActive);
+        });
+
+        // 2. Update Tombol Sliders (Icon Filter)
+        const btnFilter = document.getElementById('tt-btn-filter-modal');
+        const iconFilter = btnFilter ? btnFilter.querySelector('.tt-btn-filter-icon') : null;
+        if (btnFilter && iconFilter) {
+            const isFilterActive = State.sortBy !== null; // Jika ada filter
+            btnFilter.classList.toggle('bg-[#F5A623]', isFilterActive);
+            btnFilter.classList.toggle('border-[#F5A623]', isFilterActive);
+            iconFilter.classList.toggle('text-white', isFilterActive);
+            btnFilter.classList.toggle('bg-white', !isFilterActive);
+            btnFilter.classList.toggle('border-gray-300', !isFilterActive);
+            iconFilter.classList.toggle('text-gray-500', !isFilterActive);
+        }
+    }
+
+    // Klik Chip (baik di halaman maupun di dalam modal)
+    document.querySelectorAll('.tt-sort-chip, .tt-modal-chip').forEach(btn => {
         btn.addEventListener('click', () => {
             const val = btn.dataset.sort;
-
-            // Toggle: jika aktif diklik lagi → reset ke populer
-            if (State.sortBy === val && val !== 'populer') {
-                State.sortBy = 'populer';
+            if (State.sortBy === val) {
+                State.sortBy = null; // Toggle off jika diklik 2x
             } else {
                 State.sortBy = val;
             }
-
-            // Update visual
-            document.querySelectorAll('.tt-sort-chip').forEach(b => {
-                const isActive = b.dataset.sort === State.sortBy;
-                b.classList.toggle('bg-[#F5A623]', isActive);
-                b.classList.toggle('text-white', isActive);
-                b.classList.toggle('border-[#F5A623]', isActive);
-                b.classList.toggle('bg-white', !isActive);
-                b.classList.toggle('text-dark', !isActive);
-                b.classList.toggle('border-gray-300', !isActive);
-                b.classList.toggle('hover:bg-gray-50', !isActive);
-            });
-
+            updateFilterUI();
             renderCards();
         });
     });
 
+    // Modal Logic
+    const filterModal = document.getElementById('tt-filter-modal');
+    const filterBackdrop = document.getElementById('tt-filter-backdrop');
+    const filterModalWrapper = document.getElementById('tt-filter-modal-wrapper');
+    
+    function openFilterModal() {
+        if(!filterModal) return;
+        filterModal.classList.remove('hidden');
+        // trigger reflow
+        void filterModal.offsetWidth;
+        filterBackdrop.classList.remove('opacity-0');
+        filterModalWrapper.classList.remove('translate-y-full', 'md:scale-95', 'md:opacity-0');
+        filterModalWrapper.classList.add('translate-y-0', 'md:scale-100', 'md:opacity-100');
+    }
+    
+    function closeFilterModal() {
+        if(!filterModal) return;
+        filterBackdrop.classList.add('opacity-0');
+        filterModalWrapper.classList.add('translate-y-full', 'md:scale-95', 'md:opacity-0');
+        filterModalWrapper.classList.remove('translate-y-0', 'md:scale-100', 'md:opacity-100');
+        setTimeout(() => {
+            filterModal.classList.add('hidden');
+        }, 300);
+    }
+
+    document.getElementById('tt-btn-filter-modal')?.addEventListener('click', openFilterModal);
+    document.getElementById('tt-close-modal')?.addEventListener('click', closeFilterModal);
+    document.getElementById('tt-close-modal-mobile')?.addEventListener('click', closeFilterModal);
+    filterBackdrop?.addEventListener('click', closeFilterModal);
+    
+    document.getElementById('tt-modal-apply')?.addEventListener('click', () => {
+        renderCards();
+        closeFilterModal();
+    });
+
+    document.getElementById('tt-modal-clear')?.addEventListener('click', () => {
+        State.sortBy = null;
+        State.activeCategory = null;
+        updateFilterUI();
+        updateCategoryUI();
+        renderCards();
+        closeFilterModal();
+    });
+
+    // Panggil sekali saat inisialisasi agar tampilannya pas
+    updateFilterUI();
+
     // ─────────────────────────────────────────────────────────────────
     // CATEGORY CIRCLES (GoFood Style)
     // ─────────────────────────────────────────────────────────────────
+    function updateCategoryUI() {
+        document.querySelectorAll('.tt-cat-item').forEach(i => {
+            const isCat = i.dataset.category;
+            const isActive = (isCat === State.activeCategory) || (!State.activeCategory && isCat === 'semua');
+            
+            const label = i.querySelector('.cat-label');
+
+            if (isActive) {
+                i.classList.remove('border-transparent', 'hover:border-gray-300');
+                i.classList.add('border-[#F5A623]');
+                label.classList.remove('text-muted', 'font-medium');
+                label.classList.add('text-dark', 'font-bold');
+            } else {
+                i.classList.remove('border-[#F5A623]');
+                i.classList.add('border-transparent', 'hover:border-gray-300');
+                label.classList.remove('text-dark', 'font-bold');
+                label.classList.add('text-muted', 'font-medium');
+            }
+        });
+    }
+
     document.querySelectorAll('.tt-cat-item').forEach(item => {
         item.addEventListener('click', () => {
             const cat = item.dataset.category;
@@ -273,26 +415,7 @@
                 State.activeCategory = cat;
             }
 
-            // Update visual
-            document.querySelectorAll('.tt-cat-item').forEach(i => {
-                const isCat = i.dataset.category;
-                const isActive = (isCat === State.activeCategory) || (!State.activeCategory && isCat === 'semua');
-                
-                const label = i.querySelector('.cat-label');
-
-                if (isActive) {
-                    i.classList.remove('border-transparent', 'hover:border-gray-300');
-                    i.classList.add('border-[#F5A623]');
-                    label.classList.remove('text-muted', 'font-medium');
-                    label.classList.add('text-dark', 'font-bold');
-                } else {
-                    i.classList.remove('border-[#F5A623]');
-                    i.classList.add('border-transparent', 'hover:border-gray-300');
-                    label.classList.remove('text-dark', 'font-bold');
-                    label.classList.add('text-muted', 'font-medium');
-                }
-            });
-
+            updateCategoryUI();
             renderCards();
         });
     });
