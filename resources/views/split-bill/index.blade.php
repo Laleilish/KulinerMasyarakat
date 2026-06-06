@@ -1,47 +1,21 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.app')
+@section('title', 'Split Bill - ' . config('app.name', 'KUMAR'))
 
-    <title>Split Bill — {{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <style>
-        [x-cloak] { display: none !important; }
-        
-        .back-header-border::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: -1rem;
-            right: -1rem;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #E8D5B0 20%, #E8D5B0 80%, transparent);
-        }
-    </style>
-</head>
-<body class="m-0 font-sans bg-cream-bg antialiased min-h-screen">
-    <div class="w-full max-w-[960px] mx-auto px-4 min-h-screen flex flex-col" x-data="splitBill()" x-cloak>
+@section('content')
+    <div class="w-full max-w-[960px] mx-auto px-4 flex flex-col" x-data="splitBill()" x-cloak>
 
         {{-- ═══ Back Header ═══ --}}
-        <header class="flex items-center gap-3 py-4 md:py-5 sticky top-0 z-50 bg-cream-bg back-header-border relative">
-            <a href="{{ url()->previous() }}" class="flex items-center justify-center w-[36px] h-[36px] md:w-[40px] md:h-[40px] rounded-[10px] md:rounded-xl bg-transparent hover:bg-black/5 text-dark text-lg md:text-xl transition-colors shrink-0 no-underline" aria-label="Kembali">
-                <i class="fas fa-arrow-left"></i>
+        <div class="flex items-center gap-3 mb-2 pt-4 pb-2">
+            <a href="{{ route('home') }}" class="text-dark hover:text-muted transition-colors no-underline">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
             </a>
-            <h1 class="text-lg md:text-xl font-bold text-dark m-0">Split Bill</h1>
-        </header>
+            <h1 class="text-xl font-bold text-dark">Split Bill</h1>
+        </div>
 
         {{-- ═══ Main Content ═══ --}}
-        <div class="bg-cream-dark rounded-[20px] p-6 md:p-7 shadow-card my-8">
+        <div class="bg-cream-dark rounded-[20px] p-6 md:p-7 shadow-card mb-8">
             <div class="flex flex-col md:flex-row gap-5 md:gap-6 flex-1">
 
                 {{-- ─── Left Panel: Form ─── --}}
@@ -165,7 +139,7 @@
         </div>
 
     </div>
-
+@endsection
+@push('scripts')
     @include('split-bill.partials.script')
-</body>
-</html>
+@endpush
