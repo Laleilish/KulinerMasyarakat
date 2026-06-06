@@ -21,8 +21,8 @@
             </label>
             <div class="flex flex-col md:flex-row gap-2 md:gap-3 md:items-center">
                 <div class="flex items-center gap-2 border border-gray-300 rounded-xl flex-1 px-3 py-2 bg-white">
-                    <div id="home-loc-spinner" class="hidden w-4 h-4 rounded-full border-2 border-secondary border-t-transparent animate-spin"></div>
-                    <i id="home-loc-icon" class="fa-solid fa-location-dot text-secondary shrink-0"></i>
+                    <div id="home-loc-spinner" class="hidden w-4 h-4 rounded-full border-2 border-[#F5A623] border-t-transparent animate-spin"></div>
+                    <i id="home-loc-icon" class="fa-solid fa-location-dot text-[#F5A623] shrink-0"></i>
                     <input
                         id="home-loc-input"
                         type="text"
@@ -36,7 +36,7 @@
                 </div>
                 
                 {{-- GPS button --}}
-                <button id="home-loc-gps-btn" title="Gunakan lokasi saya" class="bg-secondary/10 hover:bg-secondary/20 text-secondary border-none rounded-xl flex items-center justify-center shrink-0 w-10 h-10 transition-colors">
+                <button id="home-loc-gps-btn" title="Gunakan lokasi saya" class="bg-[#F5A623]/10 hover:bg-[#F5A623]/20 text-[#F5A623] border-none rounded-xl flex items-center justify-center shrink-0 w-10 h-10 transition-colors">
                     <i class="fas fa-crosshairs text-lg"></i>
                 </button>
             </div>
@@ -52,7 +52,7 @@
                     <div id="home-dropdown-search-list"></div>
                 </div>
                 <div id="home-dropdown-loading" class="hidden flex items-center gap-3 px-4 py-3">
-                    <div class="w-4 h-4 rounded-full border-2 border-secondary border-t-transparent animate-spin flex-shrink-0"></div>
+                    <div class="w-4 h-4 rounded-full border-2 border-[#F5A623] border-t-transparent animate-spin flex-shrink-0"></div>
                     <span class="text-[12px] text-muted">Mencari lokasi...</span>
                 </div>
                 <div id="home-dropdown-empty" class="hidden px-4 py-4 text-center">
@@ -120,10 +120,10 @@
         
         // Colors mapping
         if (error) {
-            icon.classList.remove('text-secondary');
+            icon.classList.remove('text-[#F5A623]');
             icon.classList.add('text-red-400');
         } else {
-            icon.classList.add('text-secondary');
+            icon.classList.add('text-[#F5A623]');
             icon.classList.remove('text-red-400');
         }
     }
@@ -197,7 +197,7 @@
         section.classList.remove('hidden');
         list.innerHTML = filtered.map(c => `
             <div class="home-dropdown-item flex items-center gap-3 px-4 py-3 hover:bg-black/[0.03] cursor-pointer transition-colors duration-100" data-type="campus" data-id="${c.id}" data-name="${c.name}">
-                <div class="w-8 h-8 rounded-[10px] bg-secondary flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <div class="w-8 h-8 rounded-[10px] bg-[#F5A623] flex items-center justify-center flex-shrink-0 overflow-hidden">
                     <img src="${c.logo}" alt="${c.name}" class="w-6 h-6 object-contain" onerror="this.style.display='none'">
                 </div>
                 <div>
@@ -217,8 +217,8 @@
             const nameParts  = r.display_name.split(',');
             return `
             <div class="home-dropdown-item flex items-center gap-3 px-4 py-3 hover:bg-black/[0.03] cursor-pointer transition-colors duration-100" data-type="location" data-name="${nameParts.slice(0,2).join(',')}">
-                <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-map-pin text-secondary text-[13px]"></i>
+                <div class="w-8 h-8 rounded-full bg-[#F5A623]/10 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-map-pin text-[#F5A623] text-[13px]"></i>
                 </div>
                 <div class="min-w-0">
                     <p class="text-[12px] font-bold text-dark truncate">${nameParts[0]}</p>

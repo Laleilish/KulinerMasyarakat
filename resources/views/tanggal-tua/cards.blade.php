@@ -251,11 +251,11 @@
     });
 
     // ─────────────────────────────────────────────────────────────────
-    // CATEGORY CIRCLES
+    // CATEGORY CHIPS
     // ─────────────────────────────────────────────────────────────────
-    document.querySelectorAll('.tt-cat-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const cat = item.dataset.category;
+    document.querySelectorAll('.tt-cat-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const cat = btn.dataset.category;
 
             // Toggle
             if (State.activeCategory === cat) {
@@ -265,17 +265,12 @@
             }
 
             // Update visual
-            document.querySelectorAll('.tt-cat-item').forEach(i => {
-                const isActive = i.dataset.category === State.activeCategory;
-                const ring  = i.querySelector('.cat-ring');
-                const label = i.querySelector('.cat-label');
-                ring.classList.toggle('border-[#F5A623]', true);
-                ring.classList.toggle('bg-[#FFF7ED]', isActive);
-                ring.classList.toggle('scale-110', isActive);
-                ring.classList.toggle('shadow-md', isActive);
-                label.classList.toggle('text-[#C07A2A]', isActive);
-                label.classList.toggle('font-extrabold', isActive);
-                label.classList.toggle('text-dark', !isActive);
+            document.querySelectorAll('.tt-cat-chip').forEach(b => {
+                const isActive = b.dataset.category === State.activeCategory;
+                b.classList.toggle('bg-[#F5A623]', isActive);
+                b.classList.toggle('text-white', isActive);
+                b.classList.toggle('bg-transparent', !isActive);
+                b.classList.toggle('text-[#F5A623]', !isActive);
             });
 
             renderCards();

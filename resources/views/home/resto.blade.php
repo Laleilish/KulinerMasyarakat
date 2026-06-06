@@ -114,7 +114,7 @@
             State.activeCampusId = campusId;
             const badge = document.getElementById('home-campus-badge');
             if (campusName) {
-                badge.textContent = '📍 ' + campusName;
+                badge.textContent = campusName;
                 badge.classList.remove('hidden');
                 badge.classList.add('inline-block');
             }

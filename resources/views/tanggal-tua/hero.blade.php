@@ -1,16 +1,16 @@
-<section class="px-5 mt-6 mb-4 w-full max-w-5xl mx-auto">
+<section class="px-5 mt-6 mb-4 w-full md:px-10">
 
     <h1 class="text-center text-[18px] md:text-2xl font-extrabold text-dark mb-4 tracking-tight">
         Duit Habis Diakhir Bulan?
     </h1>
 
     {{-- Banner Card --}}
-    <div class="relative w-full bg-[#F5A623] rounded-[24px] md:rounded-[36px] shadow-md flex items-end md:items-stretch overflow-hidden mb-5"
-         style="min-height: 190px;">
+    <div class="relative w-full bg-[#F5A623] rounded-[24px] md:rounded-[36px] shadow-md flex items-end md:items-stretch overflow-hidden mb-5 md:mb-8"
+         style="min-height: 220px;">
 
         {{-- Left Image --}}
         <img
-            src="{{ asset('storage/banner/tanggal-tua.png') }}"
+            src="{{ asset('storage/banner/tanggal-tua-banner.png') }}"
             alt="Tanggal Tua"
             class="relative z-10 self-end h-[160px] w-auto max-w-[45%] md:h-[280px] md:max-w-[320px] object-contain drop-shadow-md ml-0 md:ml-8 flex-shrink-0">
 
@@ -34,7 +34,7 @@
 
     {{-- Location Bar — identik dengan Hidden Gem --}}
     <div id="location-bar-wrap" class="relative bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.08)]
-                border border-black/[0.06] transition-all duration-300 max-w-2xl mx-auto">
+                border border-black/[0.06] transition-all duration-300 max-w-4xl w-full mx-auto md:-mt-14 z-30">
 
         {{-- Main bar --}}
         <div class="flex items-center gap-3 px-4 h-[54px]">
