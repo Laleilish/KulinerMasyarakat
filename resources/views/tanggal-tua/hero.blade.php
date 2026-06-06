@@ -33,7 +33,7 @@
     </div>
 
     {{-- Location Bar — identik dengan Hidden Gem --}}
-    <div id="location-bar-wrap" class="relative bg-white rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.08)]
+    <div id="location-bar-wrap" class="relative bg-white rounded-3xl md:rounded-full shadow-lg
                 border border-black/[0.06] transition-all duration-300 max-w-4xl w-full mx-auto md:-mt-14 z-30">
 
         {{-- Main bar --}}
