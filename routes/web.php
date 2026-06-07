@@ -130,7 +130,6 @@ Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])
 Route::get('/terserah', [TerserahController::class, 'index'])->name('terserah.index');
 Route::get('/terserah/random/{category}', [TerserahController::class, 'random'])->name('terserah.random');
 Route::get('/terserah/loading-images/{category}', [TerserahController::class, 'loadingImages'])->name('terserah.loading-images');
-Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
 Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.index');
 
 Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");

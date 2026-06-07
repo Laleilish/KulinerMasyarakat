@@ -2,6 +2,12 @@
 @section('title', 'Kelola Usulan Tempat')
 
 @section('content')
+
+@if(request()->hasAny(['status', 'campus', 'category', 'page']))
+    <style>
+        #global-loader { display: none !important; }
+    </style>
+@endif
 <div class="max-w-6xl space-y-8">
     <!-- Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
