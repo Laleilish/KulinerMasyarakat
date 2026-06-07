@@ -1,6 +1,4 @@
-{{-- ═════════════════════════════════════
-     FULLSCREEN MAP MODAL
-══════════════════════════════════════════ --}}
+{{-- FULLSCREEN MAP MODAL--}}
 <div id="fs-map-modal"
      class="hidden fixed inset-0 z-[3000] bg-white flex flex-col"
      style="padding-top:env(safe-area-inset-top)">
@@ -14,24 +12,79 @@
         {{-- ── FLOATING UI ELEMENTS (Absolute on top of map) ── --}}
         <div class="absolute top-4 left-0 right-0 z-[1000] pointer-events-none flex flex-col items-center">
             
-            {{-- Header (Floating Search-like Bar) --}}
-            <div class="w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] pointer-events-auto bg-white rounded-full shadow-[0_4px_24px_rgba(0,0,0,0.12)] flex items-center px-4 py-3 gap-3">
-                <button onclick="closeFullscreenMap()"
-                        class="w-8 h-8 rounded-full bg-transparent flex items-center
-                               justify-center hover:bg-black/5 active:scale-90 transition-all duration-150 flex-shrink-0">
-                    <i class="fas fa-arrow-left text-[15px] text-dark"></i>
-                </button>
-                
-                <div class="flex-1 min-w-0 flex items-center justify-center">
-                    <h3 id="fs-campus-name" class="text-[14px] font-bold text-dark truncate">
-                        Pilih kampus terlebih dahulu
-                    </h3>
+            {{-- Wrapper relative --}}
+            <div class="relative w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] pointer-events-auto">
+                {{-- Header (Floating Search-like Bar) --}}
+                <div class="bg-white rounded-full shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/[0.06] flex items-center px-3 py-2 gap-2">
+                    <button onclick="closeFullscreenMap()"
+                            class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center hover:bg-black/5 active:scale-90 transition-all duration-150 flex-shrink-0">
+                        <i class="fas fa-arrow-left text-[15px] text-dark"></i>
+                    </button>
+                    
+                    {{-- Input --}}
+                    <div class="flex-1 flex flex-col justify-center min-w-0">
+                        <label id="fs-loc-label" class="text-[9px] text-muted font-semibold tracking-wider leading-none mb-[3px] transition-all duration-200">
+                            Lokasi / Kampus
+                        </label>
+                        <input id="fs-loc-input" type="text" placeholder="Cari lokasi atau kampus..." autocomplete="off"
+                               class="w-full border-none outline-none bg-transparent p-0 h-4
+                                      text-[13px] font-semibold text-dark
+                                      placeholder:text-muted/50 placeholder:font-normal focus:ring-0
+                                      transition-all duration-200">
+                    </div>
+
+                    {{-- Tombol clear --}}
+                    <button id="fs-loc-clear" class="hidden flex-shrink-0 w-7 h-7 rounded-full
+                                   bg-black/[0.06] flex items-center justify-center
+                                   hover:bg-black/10 transition-colors duration-150">
+                        <i class="fas fa-xmark text-[12px] text-muted"></i>
+                    </button>
+
+                    {{-- GPS button --}}
+                    <button id="fs-loc-gps-btn" title="Gunakan lokasi saya" class="flex-shrink-0 w-8 h-8 rounded-full
+                                   bg-[#F5A623]/10 flex items-center justify-center
+                                   hover:bg-[#F5A623]/20 transition-colors duration-150">
+                        <i class="fas fa-crosshairs text-[#F5A623] text-[14px]"></i>
+                    </button>
                 </div>
 
-                <button class="w-8 h-8 rounded-full bg-transparent flex items-center
-                               justify-center hover:bg-black/5 active:scale-90 transition-all duration-150 flex-shrink-0 text-dark">
-                    <i class="fas fa--h text-[14px]"></i>
-                </button>
+                {{-- Dropdown autocomplete --}}
+                <div id="fs-loc-dropdown" class="hidden absolute top-[calc(100%+6px)] left-0 right-0
+                            bg-white border border-black/[0.08] rounded-2xl
+                            shadow-[0_8px_32px_rgba(0,0,0,0.12)] z-[1500]
+                            overflow-hidden">
+
+                    {{-- Section: Kampus --}}
+                    <div id="fs-dropdown-campus-section">
+                        <div class="px-4 py-2 text-[10px] font-bold text-muted uppercase tracking-wider
+                                    bg-black/[0.02] border-b border-black/[0.04]">
+                            Kampus
+                        </div>
+                        <div id="fs-dropdown-campus-list"></div>
+                    </div>
+
+                    {{-- Section: Hasil pencarian --}}
+                    <div id="fs-dropdown-search-section" class="hidden">
+                        <div class="px-4 py-2 text-[10px] font-bold text-muted uppercase tracking-wider
+                                    bg-black/[0.02] border-b border-black/[0.04]">
+                            Hasil Pencarian
+                        </div>
+                        <div id="fs-dropdown-search-list"></div>
+                    </div>
+
+                    {{-- Loading state --}}
+                    <div id="fs-dropdown-loading" class="hidden flex items-center gap-3 px-4 py-3">
+                        <div class="w-4 h-4 rounded-full border-2 border-[#F5A623]
+                                    border-t-transparent animate-spin flex-shrink-0"></div>
+                        <span class="text-[12px] text-muted">Mencari lokasi...</span>
+                    </div>
+
+                    {{-- Empty state --}}
+                    <div id="fs-dropdown-empty" class="hidden px-4 py-4 text-center">
+                        <i class="fas fa-map-pin text-muted/40 text-[20px] mb-2 block"></i>
+                        <p class="text-[12px] text-muted">Lokasi tidak ditemukan</p>
+                    </div>
+                </div>
             </div>
 
             {{-- Category filter chips (Floating below Header) --}}
@@ -53,7 +106,7 @@
             <i class="fas fa-crosshairs text-white text-[18px]"></i>
 
         </button>
-        {        <div id="fs-bottom-sheet"
+            <div id="fs-bottom-sheet"
              class="hidden z-[500] bg-[#FDF8F0] overflow-y-auto
                     [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
                     {{-- Mobile: absolute bottom sheet --}}

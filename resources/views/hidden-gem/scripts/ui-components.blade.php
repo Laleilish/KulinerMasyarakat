@@ -268,18 +268,21 @@
         }
 
         // AUTOCOMPLETE DROPDOWN
-        function renderDropdownCampus(query = '') {
-            const list = document.getElementById('dropdown-campus-list');
+        function renderDropdownCampus(query = '', prefix = '') {
+            const list = document.getElementById(prefix + 'dropdown-campus-list');
+            const section = document.getElementById(prefix + 'dropdown-campus-section');
+            if (!list || !section) return;
+
             const filtered = query
                 ? CAMPUSES.filter(c => c.name.toLowerCase().includes(query.toLowerCase()))
                 : CAMPUSES;
 
             if (!filtered.length) {
-                document.getElementById('dropdown-campus-section').classList.add('hidden');
+                section.classList.add('hidden');
                 return;
             }
 
-            document.getElementById('dropdown-campus-section').classList.remove('hidden');
+            section.classList.remove('hidden');
             list.innerHTML = filtered.map(c => `
                                             <div class="dropdown-item flex items-center gap-3 px-4 py-3
                                                         hover:bg-black/[0.03] cursor-pointer transition-colors duration-100"
@@ -298,9 +301,10 @@
                                             </div>`).join('');
         }
 
-        function renderDropdownSearch(results) {
-            const section = document.getElementById('dropdown-search-section');
-            const list = document.getElementById('dropdown-search-list');
+        function renderDropdownSearch(results, prefix = '') {
+            const section = document.getElementById(prefix + 'dropdown-search-section');
+            const list = document.getElementById(prefix + 'dropdown-search-list');
+            if (!section || !list) return;
 
             if (!results.length) {
                 section.classList.add('hidden');
@@ -328,53 +332,61 @@
                                             </div>`).join('');
         }
 
-        function openDropdown() {
-            const dd = document.getElementById('loc-dropdown');
-            dd.classList.remove('hidden');
+        function openDropdown(prefix = '') {
+            const dd = document.getElementById(prefix + 'loc-dropdown');
+            if (dd) dd.classList.remove('hidden');
             State.isDropdownOpen = true;
-            renderDropdownCampus();
-            document.getElementById('dropdown-empty').classList.add('hidden');
+            renderDropdownCampus('', prefix);
+            const emptyEl = document.getElementById(prefix + 'dropdown-empty');
+            if (emptyEl) emptyEl.classList.add('hidden');
         }
 
-        function closeDropdown() {
-            document.getElementById('loc-dropdown').classList.add('hidden');
+        function closeDropdown(prefix = '') {
+            const dd = document.getElementById(prefix + 'loc-dropdown');
+            if (dd) dd.classList.add('hidden');
             State.isDropdownOpen = false;
         }
 
-        async function handleSearchInput(query) {
-            const clearBtn = document.getElementById('loc-clear');
-            clearBtn.classList.toggle('hidden', !query);
+        async function handleSearchInput(query, prefix = '') {
+            const clearBtn = document.getElementById(prefix + 'loc-clear');
+            if (clearBtn) clearBtn.classList.toggle('hidden', !query);
 
             if (!query) {
-                renderDropdownCampus();
-                document.getElementById('dropdown-search-section').classList.add('hidden');
-                document.getElementById('dropdown-empty').classList.add('hidden');
-                document.getElementById('dropdown-loading').classList.add('hidden');
+                renderDropdownCampus('', prefix);
+                const searchSec = document.getElementById(prefix + 'dropdown-search-section');
+                const emptySec = document.getElementById(prefix + 'dropdown-empty');
+                const loadSec = document.getElementById(prefix + 'dropdown-loading');
+                if(searchSec) searchSec.classList.add('hidden');
+                if(emptySec) emptySec.classList.add('hidden');
+                if(loadSec) loadSec.classList.add('hidden');
                 return;
             }
 
             // Filter kampus dulu
-            renderDropdownCampus(query);
+            renderDropdownCampus(query, prefix);
 
             // Debounce search Nominatim
             clearTimeout(State.searchTimer);
             State.searchTimer = setTimeout(async () => {
-                document.getElementById('dropdown-loading').classList.remove('hidden');
-                document.getElementById('dropdown-empty').classList.add('hidden');
+                const loadSec = document.getElementById(prefix + 'dropdown-loading');
+                const emptySec = document.getElementById(prefix + 'dropdown-empty');
+                
+                if (loadSec) loadSec.classList.remove('hidden');
+                if (emptySec) emptySec.classList.add('hidden');
 
                 const results = await searchLocation(query);
 
-                document.getElementById('dropdown-loading').classList.add('hidden');
+                if (loadSec) loadSec.classList.add('hidden');
 
                 if (!results.length) {
-                    const campusSection = document.getElementById('dropdown-campus-section');
-                    if (campusSection.classList.contains('hidden')) {
-                        document.getElementById('dropdown-empty').classList.remove('hidden');
+                    const campusSection = document.getElementById(prefix + 'dropdown-campus-section');
+                    if (campusSection && campusSection.classList.contains('hidden')) {
+                        if (emptySec) emptySec.classList.remove('hidden');
                     }
                 } else {
-                    renderDropdownSearch(results);
+                    renderDropdownSearch(results, prefix);
                 }
-            }, 500);
+            }, 600);
         }
 
         // MODAL

@@ -57,7 +57,14 @@
 
         // Sync fullscreen map dengan data kampus
         function fsOpenWithData(campus, restaurants) {
-            document.getElementById('fs-campus-name').textContent = campus.name;
+            const fsLocInput = document.getElementById('fs-loc-input');
+            const fsLocLabel = document.getElementById('fs-loc-label');
+            
+            if (fsLocInput) fsLocInput.value = campus.name;
+            if (fsLocLabel) {
+                const mainLabel = document.getElementById('loc-label');
+                fsLocLabel.textContent = mainLabel ? mainLabel.textContent : 'Lokasi Terpilih';
+            }
 
             fsBuildFilterChips(restaurants);
             fsRenderMarkers(restaurants, FsState.activeFilter);
@@ -82,14 +89,14 @@
                                font-bold transition-all duration-150 border
                                ${FsState.activeFilter === 'all'
                                    ? 'bg-[#F5A623] text-white border-transparent shadow-[0_2px_8px_rgba(245,166,35,0.4)]'
-                                   : 'bg-white text-dark border-black/[0.1] shadow-sm hover:bg-black/[0.02]'}"
+                                   : 'bg-white text-dark border-black/[0.1] shadow-sm hover:bg-orange hover:text-white'}"
                         data-filter="all">All</button>
                 ${categories.map(cat => `
                     <button class="fs-chip flex-shrink-0 px-4 py-[6px] rounded-full text-[12px]
                                    font-bold transition-all duration-150 border
                                    ${FsState.activeFilter === cat
                                        ? 'bg-[#F5A623] text-white border-transparent shadow-[0_2px_8px_rgba(245,166,35,0.4)]'
-                                       : 'bg-white text-dark border-black/[0.1] shadow-sm hover:bg-black/[0.02]'}"
+                                       : 'bg-white text-dark border-black/[0.1] shadow-sm hover:bg-orange hover:text-white '}"
                             data-filter="${cat}">${formatCategory(cat)}</button>
                 `).join('')}
             `;
