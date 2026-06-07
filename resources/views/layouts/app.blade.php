@@ -22,8 +22,23 @@
         <style>
             [x-cloak] { display: none !important; }
         </style>
+        
+        <!-- Lottie Player for Loading Animation -->
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </head>
     <body class="font-sans antialiased">
+        <!-- Global Preloader -->
+        <div id="global-loader" class="fixed inset-0 z-[9999] flex items-center justify-center bg-[#FDF8F0] transition-opacity duration-500">
+            <lottie-player 
+                src="{{ asset('assets/img/Loading/Loading.json') }}" 
+                background="transparent" 
+                speed="1" 
+                style="width: 150px; height: 150px;" 
+                loop 
+                autoplay>
+            </lottie-player>
+        </div>
+
         <div class="min-h-screen bg-cream-bg">
             {{-- Include Navbar  --}}
             @include('components.navbar')
@@ -42,5 +57,18 @@
         {{-- Global Confirmation Modal --}}
         <x-confirm-modal />
         @stack('scripts')
+
+        <script>
+            // Hide preloader when page is fully loaded
+            window.addEventListener('load', function() {
+                const loader = document.getElementById('global-loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 500); // match transition duration
+                }
+            });
+        </script>
     </body>
 </html>
