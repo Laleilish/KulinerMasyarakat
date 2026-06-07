@@ -74,7 +74,9 @@
             const grid = document.getElementById('resto-cards');
             const skeleton = document.getElementById('cards-loading');
 
-            if (!restaurants.length) {
+            const limitedRestaurants = restaurants.slice(0, 8);
+
+            if (!limitedRestaurants.length) {
                 grid.innerHTML = `
                                     <div class="col-span-2 md:col-span-3 lg:col-span-4
                                                 text-center py-8 text-muted text-[13px]">
@@ -146,7 +148,7 @@
 
             grid.innerHTML = `
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                                    ${restaurants.map(r => cardHTML(r)).join('')}
+                                    ${limitedRestaurants.map(r => cardHTML(r)).join('')}
                                 </div>`;
 
             // Attach click listeners — langsung ke halaman detail

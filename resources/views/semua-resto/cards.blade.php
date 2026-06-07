@@ -22,8 +22,8 @@
     window.TT_RESTAURANTS = @json($ttRestaurantsData);
 </script>
 
-{{-- MAIN CONTENT AREA: 2-Column Layout on Desktop (Sidebar + Cards) --}}
-<div class="px-5 md:px-10 pb-10 max-w-[1400px] mx-auto w-full">
+{{-- MAIN CONTENT --}}
+<div class="px-5 md:px-10 pb-10 pt-8 max-w-[1400px] mx-auto w-full">
     <div class="flex gap-6 items-start">
 
         {{-- LEFT SIDEBAR FILTER --}}
@@ -130,6 +130,30 @@
 
         {{-- RIGHT CONTENT: Header Info + Cards Grid --}}
         <div class="flex-1 min-w-0">
+
+            {{-- Search Bar --}}
+            <div id="search-bar-wrap" class="relative bg-white rounded-3xl md:rounded-full shadow-sm
+                        border border-black/[0.06] transition-all duration-300 w-full mb-6 z-30 mt-4 md:mt-0">
+                <div class="flex items-center gap-3 px-4 h-[50px]">
+                    <div id="search-icon-wrap" class="flex-shrink-0 w-5 flex items-center justify-center">
+                        <i id="search-icon" class="fas fa-search text-[#F5A623] text-[16px]"></i>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center min-w-0">
+                        <input id="search-input" type="text" placeholder="Masukkan nama restoran atau menu..." autocomplete="off"
+                               class="w-full border-none outline-none bg-transparent
+                                      text-[13px] font-semibold text-dark
+                                      placeholder:text-muted/50 placeholder:font-normal
+                                      transition-all duration-200">
+                    </div>
+                    <button id="search-clear" class="hidden flex-shrink-0 w-7 h-7 rounded-full
+                                   bg-black/[0.06] flex items-center justify-center
+                                   hover:bg-black/10 transition-colors duration-150">
+                        <i class="fas fa-xmark text-[12px] text-muted"></i>
+                    </button>
+                </div>
+            </div>
+
+
 
             {{-- Mobile Filter Button (only on mobile) --}}
             <div class="flex items-center gap-2 mb-4 md:hidden overflow-x-auto no-scrollbar pb-2">
@@ -240,9 +264,7 @@
         return parseInt(nums[nums.length - 1].replace(/\./g, ''), 10) || Infinity;
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // FILTER & SORT
-    // ─────────────────────────────────────────────────────────────────
     function getFiltered() {
         let list = [...State.allRestaurants];
 
@@ -719,6 +741,23 @@
         renderCards();
         document.getElementById('tt-cards-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+
+    // SEARCH BAR LOGIC
+    const searchInput = document.getElementById('search-input');
+    const searchClearBtn = document.getElementById('search-clear');
+    if (searchInput && searchClearBtn) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            searchClearBtn.classList.toggle('hidden', !query);
+            window.TT_searchQuery(query);
+        });
+        searchClearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            searchClearBtn.classList.add('hidden');
+            searchInput.focus();
+            window.TT_searchQuery('');
+        });
+    }
 
     // INIT
     renderCards();

@@ -176,7 +176,7 @@
         {{-- Grid static dari server (fallback sebelum JS) --}}
         <div id="resto-cards" class="transition-opacity duration-300">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                @forelse ($topRestaurants as $r)
+                @forelse ($topRestaurants->take(8) as $r)
                 <div class="top-resto-card bg-white rounded-[16px] overflow-hidden
                             border border-black/[0.05]
                             shadow-[var(--shadow-card)]
@@ -236,6 +236,12 @@
                 </div>
                 @endforelse
             </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="{{ route('semua-resto') }}" class="inline-block px-6 py-2.5 bg-transparent border-2 border-[#EF950F] text-[#EF950F] font-bold rounded-full hover:bg-[#EF950F] hover:text-white transition-colors duration-200">
+                Lihat Semua Restoran
+            </a>
         </div>
 
     </div>
