@@ -1,9 +1,9 @@
 @extends('layouts.auth')
 
 @section('title', 'Daftar')
-    <body class="font-sans antialiased">
-            @section('content')
-                <div class="w-full max-w-md">
+
+@section('content')
+    <div class="w-full max-w-md">
                     
                     <div class="mb-4">
                         <h1 class="text-2xl md:text-3xl font-bold text-dark mb-2">Buat Akun Secara Gratis</h1>
@@ -101,7 +101,5 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            @endsection
         </div>
-    </body>
+@endsection

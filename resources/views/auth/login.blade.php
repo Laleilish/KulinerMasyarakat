@@ -1,9 +1,9 @@
 @extends('layouts.auth')
 
 @section('title', 'Masuk')
-    <body class=" font-brand antialiased">
-        @section('content')
-            <div class="w-full max-w-md">
+
+@section('content')
+    <div class="w-full max-w-md">
                 
                 <div class="mb-4">
                     <h1 class="text-2xl md:text-3xl font-sans font-bold text-dark mb-2">Masuk Dengan Aman</h1>
@@ -113,8 +113,6 @@
                     </div>
                 
                     </div>
-                </div>
             </div>
-        @endsection
-    </body>
-
+        </div>
+@endsection
