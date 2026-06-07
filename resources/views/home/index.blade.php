@@ -3,6 +3,7 @@
 
 @section('content')
 
+<div class="max-w-[1400px] mx-auto w-full">
     {{-- HERO --}}
     @include('home.hero')
 
@@ -11,5 +12,6 @@
 
     {{-- RESTO --}}
     @include('home.resto')
+</div>
 
 @endsection

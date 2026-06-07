@@ -22,15 +22,14 @@
     window.TT_RESTAURANTS = @json($ttRestaurantsData);
 </script>
 
-{{-- ───────────────────────────────────────────────────────────────────── --}}
-{{-- MAIN CONTENT AREA: 2-Column Layout on Desktop (Sidebar + Cards)      --}}
-{{-- ───────────────────────────────────────────────────────────────────── --}}
+
+
 <div class="px-5 md:px-10 pb-10 max-w-[1400px] mx-auto w-full">
     <div class="flex gap-6 items-start">
 
-        {{-- ══════════════════════════════════════════════════════════ --}}
-        {{-- LEFT SIDEBAR FILTER (Hidden on mobile, visible on desktop) --}}
-        {{-- ══════════════════════════════════════════════════════════ --}}
+        
+        {{-- LEFT SIDEBAR FILTER --}}
+        
         <aside class="hidden md:flex flex-col w-[200px] flex-shrink-0 bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.07)] border border-gray-100 p-5 sticky top-4 self-start">
 
             {{-- Header --}}
@@ -120,9 +119,9 @@
 
         </aside>
 
-        {{-- ══════════════════════════════════════════════════════════ --}}
-        {{-- RIGHT CONTENT: Header Info + Cards Grid                    --}}
-        {{-- ══════════════════════════════════════════════════════════ --}}
+        
+        {{-- RIGHT CONTENT--}}
+       
         <div class="flex-1 min-w-0">
 
             {{-- Mobile Filter Button (only on mobile) --}}
@@ -162,13 +161,12 @@
                 </div>
             </div>
 
-        </div>{{-- end right --}}
-    </div>{{-- end flex row --}}
+        </div>
+    </div>
 </div>
 
-{{-- ═══════════════════════════════════════════════════════════ --}}
-{{-- MOBILE FILTER MODAL (bottom sheet)                         --}}
-{{-- ═══════════════════════════════════════════════════════════ --}}
+{{-- MOBILE FILTER MODAL --}}
+
 <div id="tt-filter-modal" class="fixed inset-0 z-[100] hidden md:hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0 duration-300" id="tt-filter-backdrop"></div>
 
@@ -208,14 +206,12 @@
 @push('scripts')
 <script>
 (function() {
-    // ─────────────────────────────────────────────────────────────────
     // STATE
-    // ─────────────────────────────────────────────────────────────────
     const State = {
         activeCampusId : null,
-        sortBy         : null,    // null | 'populer' | 'penilaian' | 'termurah' | 'bawah10k'
-        activeCategory : null,    // null = semua
-        priceRange     : null,    // null | 'dibawah15k' | '15k-20k'
+        sortBy         : null,   
+        activeCategory : null,
+        priceRange     : null,
         currentPage    : 1,
         itemsPerPage   : 15,
         allRestaurants : window.TT_RESTAURANTS || [],
@@ -223,9 +219,7 @@
 
     window.TT_State = State;
 
-    // ─────────────────────────────────────────────────────────────────
     // PARSE HARGA
-    // ─────────────────────────────────────────────────────────────────
     function parseMinPrice(priceRange) {
         if (!priceRange) return Infinity;
         const nums = priceRange.replace(/[^0-9.]/g, ' ').trim().split(/\s+/).filter(Boolean);
@@ -240,9 +234,7 @@
         return parseInt(nums[nums.length - 1].replace(/\./g, ''), 10) || Infinity;
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // FILTER & SORT
-    // ─────────────────────────────────────────────────────────────────
     function getFiltered() {
         let list = [...State.allRestaurants];
 
@@ -306,9 +298,7 @@
         return list;
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // RENDER CARDS
-    // ─────────────────────────────────────────────────────────────────
     function renderCards() {
         const container = document.getElementById('tt-cards-container');
         const countInfo = document.getElementById('tt-count-info');
@@ -435,11 +425,7 @@
             </div>`;
     }
 
-    // ─────────────────────────────────────────────────────────────────
-    // SIDEBAR FILTER LISTENERS
-    // ─────────────────────────────────────────────────────────────────
-    
-    // ── Custom radio: Price range (sidebar desktop) ──────────────────
+    // Custom radio: Price range (sidebar desktop)
     function applyPriceUI() {
         document.querySelectorAll('.tt-price-btn').forEach(btn => {
             const isActive = btn.dataset.value === State.priceRange;
@@ -532,9 +518,7 @@
         renderCards();
     });
 
-    // ─────────────────────────────────────────────────────────────────
     // MOBILE CHIP FILTER & MODAL
-    // ─────────────────────────────────────────────────────────────────
     function updateFilterUI() {
         document.querySelectorAll('.tt-sort-chip, .tt-modal-chip').forEach(b => {
             const isActive = b.dataset.sort === State.sortBy;
@@ -622,9 +606,6 @@
 
     updateFilterUI();
 
-    // ─────────────────────────────────────────────────────────────────
-    // CATEGORY CIRCLES UI (from category.blade.php icons)
-    // ─────────────────────────────────────────────────────────────────
     function updateCategoryUI() {
         document.querySelectorAll('.tt-cat-item').forEach(i => {
             const isCat = i.dataset.category;
@@ -683,9 +664,6 @@
         });
     });
 
-    // ─────────────────────────────────────────────────────────────────
-    // EXPOSE global functions
-    // ─────────────────────────────────────────────────────────────────
     window.TT_goToPage = function(page) {
         State.currentPage = page;
         renderCards();
@@ -704,9 +682,6 @@
         renderCards();
     };
 
-    // ─────────────────────────────────────────────────────────────────
-    // INIT
-    // ─────────────────────────────────────────────────────────────────
     renderCards();
 })();
 </script>
