@@ -36,11 +36,11 @@
 
         {{-- Carousel track --}}
         <div id="featured-carousel"
-             class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth
+             class="flex items-stretch gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth
                     [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1">
 
             @foreach ($featuredRestaurants as $r)
-            <div class="featured-slide flex-shrink-0 snap-start w-[calc(100vw-32px)] md:w-[680px] lg:w-[760px] group cursor-pointer"
+            <div class="featured-slide flex-shrink-0 snap-start w-[calc(100vw-32px)] md:w-[480px] lg:w-[420px] group cursor-pointer"
                  data-resto="{{ json_encode($r) }}">
 
                 {{-- Card --}}
@@ -49,7 +49,8 @@
                             transition-all duration-300
                             group-hover:-translate-y-[4px]
                             group-hover:shadow-[0_16px_40px_rgba(208,135,0,0.4)]
-                            shadow-[0_4px_16px_rgba(208,135,0,0.25)]">
+                            shadow-[0_4px_16px_rgba(208,135,0,0.25)]
+                            h-full flex flex-col">
 
                     {{-- Image section --}}
                     <div class="relative w-full h-[160px] md:h-[180px] overflow-hidden">
@@ -90,13 +91,13 @@
                     </div>
 
                     {{-- Info section --}}
-                    <div class="p-4">
+                    <div class="p-4 flex flex-col flex-1">
                         <h3 class="text-[15px] font-extrabold text-white
                                    leading-[1.3] mb-1 line-clamp-1">
                             {{ $r['name'] }}
                         </h3>
                         <p class="text-[11px] text-white/80 leading-[1.6]
-                                  line-clamp-2 mb-3">
+                                  line-clamp-2 mb-3 flex-1">
                             {{ $r['description'] }}
                         </p>
 
@@ -239,7 +240,7 @@
         </div>
 
         <div class="mt-8 text-center">
-            <a href="{{ route('semua-resto') }}" class="inline-block px-6 py-2.5 bg-transparent border-2 border-[#EF950F] text-[#EF950F] font-bold rounded-full hover:bg-[#EF950F] hover:text-white transition-colors duration-200">
+            <a href="{{ route('semua-resto') }}" class="inline-block px-4 py-1.5 md:px-6 md:py-2.5 bg-transparent border-2 border-[#EF950F] text-[#EF950F] text-[12px] md:text-[14px] lg:text-base font-bold rounded-full hover:bg-[#EF950F] hover:text-white transition-colors duration-200">
                 Lihat Semua Restoran
             </a>
         </div>

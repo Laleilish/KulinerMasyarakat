@@ -148,7 +148,7 @@
 
             grid.innerHTML = `
                                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                                    ${limitedRestaurants.map(r => cardHTML(r)).join('')}
+                                    ${restaurants.map(r => cardHTML(r)).join('')}
                                 </div>`;
 
             // Attach click listeners — langsung ke halaman detail
@@ -192,12 +192,11 @@
                 const distStr = calcRestoDistance(r.latitude, r.longitude, r.distance);
                 const descStr = r.description || '';
                 return `
-                    <div class="featured-slide flex-shrink-0 snap-start
-                    w-[calc(100vw-48px)] md:w-[760px] max-w-none">
+                    <div class="featured-slide flex-shrink-0 snap-start w-[calc(100vw-48px)] md:w-[480px] lg:w-[420px] max-w-none">
 
                     <div onclick='window.location.href="/restoran/${r.id}"'
                         class="bg-gradient-to-br from-[#D08700] to-[#EFB100]
-                            rounded-[22px] overflow-hidden cursor-pointer">
+                            rounded-[22px] overflow-hidden cursor-pointer h-full flex flex-col">
 
                     <div class="relative w-full h-[160px] md:h-[220px] overflow-hidden">
                         <img src="${r.image}"
@@ -227,14 +226,14 @@
                                 </div>
                             </div>
 
-                            <div class="p-4">
+                            <div class="p-4 flex flex-col flex-1">
                                 <h3 class="text-white text-[16px]
                                            font-extrabold mb-1">
                                     ${r.name}
                                 </h3>
 
                                 <p class="text-white/80 text-[12px]
-                                          line-clamp-2 mb-3">
+                                          line-clamp-2 mb-3 flex-1">
                                     ${descStr}
                                 </p>
 
@@ -268,21 +267,18 @@
         }
 
         // AUTOCOMPLETE DROPDOWN
-        function renderDropdownCampus(query = '', prefix = '') {
-            const list = document.getElementById(prefix + 'dropdown-campus-list');
-            const section = document.getElementById(prefix + 'dropdown-campus-section');
-            if (!list || !section) return;
-
+        function renderDropdownCampus(query = '') {
+            const list = document.getElementById('dropdown-campus-list');
             const filtered = query
                 ? CAMPUSES.filter(c => c.name.toLowerCase().includes(query.toLowerCase()))
                 : CAMPUSES;
 
             if (!filtered.length) {
-                section.classList.add('hidden');
+                document.getElementById('dropdown-campus-section').classList.add('hidden');
                 return;
             }
 
-            section.classList.remove('hidden');
+            document.getElementById('dropdown-campus-section').classList.remove('hidden');
             list.innerHTML = filtered.map(c => `
                                             <div class="dropdown-item flex items-center gap-3 px-4 py-3
                                                         hover:bg-black/[0.03] cursor-pointer transition-colors duration-100"
@@ -301,10 +297,9 @@
                                             </div>`).join('');
         }
 
-        function renderDropdownSearch(results, prefix = '') {
-            const section = document.getElementById(prefix + 'dropdown-search-section');
-            const list = document.getElementById(prefix + 'dropdown-search-list');
-            if (!section || !list) return;
+        function renderDropdownSearch(results) {
+            const section = document.getElementById('dropdown-search-section');
+            const list = document.getElementById('dropdown-search-list');
 
             if (!results.length) {
                 section.classList.add('hidden');
@@ -332,61 +327,53 @@
                                             </div>`).join('');
         }
 
-        function openDropdown(prefix = '') {
-            const dd = document.getElementById(prefix + 'loc-dropdown');
-            if (dd) dd.classList.remove('hidden');
+        function openDropdown() {
+            const dd = document.getElementById('loc-dropdown');
+            dd.classList.remove('hidden');
             State.isDropdownOpen = true;
-            renderDropdownCampus('', prefix);
-            const emptyEl = document.getElementById(prefix + 'dropdown-empty');
-            if (emptyEl) emptyEl.classList.add('hidden');
+            renderDropdownCampus();
+            document.getElementById('dropdown-empty').classList.add('hidden');
         }
 
-        function closeDropdown(prefix = '') {
-            const dd = document.getElementById(prefix + 'loc-dropdown');
-            if (dd) dd.classList.add('hidden');
+        function closeDropdown() {
+            document.getElementById('loc-dropdown').classList.add('hidden');
             State.isDropdownOpen = false;
         }
 
-        async function handleSearchInput(query, prefix = '') {
-            const clearBtn = document.getElementById(prefix + 'loc-clear');
-            if (clearBtn) clearBtn.classList.toggle('hidden', !query);
+        async function handleSearchInput(query) {
+            const clearBtn = document.getElementById('loc-clear');
+            clearBtn.classList.toggle('hidden', !query);
 
             if (!query) {
-                renderDropdownCampus('', prefix);
-                const searchSec = document.getElementById(prefix + 'dropdown-search-section');
-                const emptySec = document.getElementById(prefix + 'dropdown-empty');
-                const loadSec = document.getElementById(prefix + 'dropdown-loading');
-                if(searchSec) searchSec.classList.add('hidden');
-                if(emptySec) emptySec.classList.add('hidden');
-                if(loadSec) loadSec.classList.add('hidden');
+                renderDropdownCampus();
+                document.getElementById('dropdown-search-section').classList.add('hidden');
+                document.getElementById('dropdown-empty').classList.add('hidden');
+                document.getElementById('dropdown-loading').classList.add('hidden');
                 return;
             }
 
             // Filter kampus dulu
-            renderDropdownCampus(query, prefix);
+            renderDropdownCampus(query);
 
             // Debounce search Nominatim
             clearTimeout(State.searchTimer);
             State.searchTimer = setTimeout(async () => {
-                const loadSec = document.getElementById(prefix + 'dropdown-loading');
-                const emptySec = document.getElementById(prefix + 'dropdown-empty');
-                
-                if (loadSec) loadSec.classList.remove('hidden');
-                if (emptySec) emptySec.classList.add('hidden');
+                document.getElementById('dropdown-loading').classList.remove('hidden');
+                document.getElementById('dropdown-empty').classList.add('hidden');
 
                 const results = await searchLocation(query);
 
-                if (loadSec) loadSec.classList.add('hidden');
+                document.getElementById('dropdown-loading').classList.add('hidden');
 
                 if (!results.length) {
-                    const campusSection = document.getElementById(prefix + 'dropdown-campus-section');
-                    if (campusSection && campusSection.classList.contains('hidden')) {
-                        if (emptySec) emptySec.classList.remove('hidden');
+                    const campusSection = document.getElementById('dropdown-campus-section');
+                    if (campusSection.classList.contains('hidden')) {
+                        document.getElementById('dropdown-empty').classList.remove('hidden');
                     }
                 } else {
-                    renderDropdownSearch(results, prefix);
+                    renderDropdownSearch(results);
                 }
-            }, 600);
+            }, 500);
         }
 
         // MODAL

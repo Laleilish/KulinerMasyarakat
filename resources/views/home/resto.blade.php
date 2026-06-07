@@ -40,7 +40,7 @@
     </div>
 
     <div class="mt-8 text-center">
-        <a href="{{ route('semua-resto') }}" class="inline-block px-6 py-2.5 bg-transparent border-2 border-[#EF950F] text-[#EF950F] font-bold rounded-full hover:bg-[#EF950F] hover:text-white transition-colors duration-200">
+        <a href="{{ route('semua-resto') }}" class="inline-block px-4 py-1.5 md:px-6 md:py-2.5 bg-transparent border-2 border-[#EF950F] text-[#EF950F] text-[12px] md:text-[14px] lg:text-base font-bold rounded-full hover:bg-[#EF950F] hover:text-white transition-colors duration-200">
             Lihat Semua Restoran
         </a>
     </div>
