@@ -22,6 +22,7 @@
         </style>
     </head>
     <body class="font-sans antialiased text-gray-800 bg-cream-light" x-data="{ sidebarOpen: false }">
+        <x-loader />
         <div class="min-h-screen flex overflow-hidden">
             
             <!-- Sidebar Overlay -->

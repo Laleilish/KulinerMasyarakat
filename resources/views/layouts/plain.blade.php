@@ -9,7 +9,8 @@
         <link rel="icon" type="image/png" href="{{ asset('assets/img/icon-kumar-logo.png') }}">
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
@@ -20,6 +21,7 @@
         </style>
     </head>
     <body class="font-sans antialiased">
+        <x-loader />
         <div class="min-h-screen bg-cream-bg">
             <main class="py-12">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
