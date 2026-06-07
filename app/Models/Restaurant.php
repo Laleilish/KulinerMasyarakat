@@ -76,16 +76,6 @@ class Restaurant extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getAverageRatingAttribute(): float
-    {
-        return round($this->reviews()->avg('rating') ?? 0, 1);
-    }
-
-    public function getReviewsCountAttribute(): int
-    {
-        return $this->reviews()->count();
-    }
-
     public function scopeTanggalTua($query)
     {
         // Tampilkan restoran yang harga MAKSIMUM-nya tidak melebihi 15.000

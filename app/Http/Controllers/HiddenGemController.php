@@ -39,9 +39,9 @@ class HiddenGemController extends Controller
         return [
             'id'          => $r->id,
             'name'        => $r->name,
-            'image'       => \Illuminate\Support\Facades\Storage::url($r->image),
+            'image'       => str_starts_with($r->image, 'http') ? $r->image : \Illuminate\Support\Facades\Storage::url($r->image),
             'description' => $r->description ?? '',
-            'rating'      => $r->average_rating,
+            'rating'      => round($r->reviews_avg_rating ?? 0, 1),
             'distance'    => $distance,
             'price_range' => $r->price_range,
             'category'    => $r->category,
@@ -71,15 +71,21 @@ class HiddenGemController extends Controller
         $selectedCampus = $campuses->first();
 
         // Hanya restoran featured, max 3, rating tertinggi
-        $featuredRestaurants = Restaurant::where('campus_id', $selectedCampus->id)
+        $featuredRestaurants = Restaurant::approved()
+            ->where('campus_id', $selectedCampus->id)
             ->where('is_featured', true)
-            ->orderByDesc('rating')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->orderByDesc('reviews_avg_rating')
             ->take(3)
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $selectedCampus));
 
         // Semua restoran, rating tertinggi
-        $topRestaurants = Restaurant::orderByDesc('rating')
+        $topRestaurants = Restaurant::approved()
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->orderByDesc('reviews_avg_rating')
             ->orderByDesc('created_at')
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $selectedCampus));
@@ -97,14 +103,20 @@ class HiddenGemController extends Controller
     {
         $campus = Campus::findOrFail($campusId);
 
-        $restaurants = Restaurant::where('campus_id', $campusId)
-            ->orderByDesc('rating')
+        $restaurants = Restaurant::approved()
+            ->where('campus_id', $campusId)
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->orderByDesc('reviews_avg_rating')
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $campus));
 
-        $featuredRestaurants = Restaurant::where('campus_id', $campusId)
+        $featuredRestaurants = Restaurant::approved()
+            ->where('campus_id', $campusId)
             ->where('is_featured', true)
-            ->orderByDesc('rating')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->orderByDesc('reviews_avg_rating')
             ->take(3)
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $campus));

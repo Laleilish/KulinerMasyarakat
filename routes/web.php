@@ -129,12 +129,6 @@ Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])
 Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');
 Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
 Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.index');
-Route::get("/terserah", fn() => view("terserah.index"))->name(
-    "terserah.index"
-);
-Route::get("/split-bill", fn() => view("split-bill.index"))->name(
-    "split-bill.index",
-);
 
 Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");
 Route::get("/kebijakan-privasi", fn() => view("pages.privacy"))->name("privacy");

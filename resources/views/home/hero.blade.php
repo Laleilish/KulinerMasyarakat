@@ -68,26 +68,31 @@
             class="hidden md:block absolute rounded-full object-cover w-[20%] aspect-square top-[-20%] left-[-2%]"
             src="{{ asset('assets/img/Header/image1.png') }}"
             alt="food"
+            loading="lazy"
         >
         <img
             class="hidden md:block absolute rounded-full object-cover w-[20%] aspect-square top-[-10%] right-[16%]"
             src="{{ asset('assets/img/Header/image2.png') }}"
             alt="food"
+            loading="lazy"
         >
         <img
             class="hidden md:block absolute rounded-full object-cover w-[22%] aspect-square top-[10%] right-[-5%]"
             src="{{ asset('assets/img/Header/image3.png') }}"
             alt="food"
+            loading="lazy"
         >
         <img
             class="hidden md:block absolute rounded-full object-cover w-[25%] aspect-square bottom-[8%] right-[20%]"
             src="{{ asset('assets/img/Header/image4.png') }}"
             alt="food"
+            loading="lazy"
         >
         <img
             class="hidden md:block absolute rounded-full object-cover w-[20%] aspect-square bottom-[-13%] right-[-2%]"
             src="{{ asset('assets/img/Header/image6.png') }}"
             alt="food"
+            loading="lazy"
         >
     </div>
 
