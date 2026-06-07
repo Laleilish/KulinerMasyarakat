@@ -59,7 +59,7 @@ class TerserahController extends Controller
                     'name'    => $restaurant->name,
                     'address' => $restaurant->address,
                     'image'   => $restaurant->image
-                        ? asset('storage/' . $restaurant->image) // usually it's in storage, or asset directly? Let's check how it's stored.
+                        ? (str_starts_with($restaurant->image, 'http') ? $restaurant->image : asset('storage/' . $restaurant->image))
                         : asset('assets/img/terserah/makanan.png'),
                     'url'     => route('restoran.show', $restaurant->id),
                 ];
@@ -78,7 +78,7 @@ class TerserahController extends Controller
             'category'       => $category,
             'category_label' => $categoryLabels[$category] ?? $category,
             'image'          => $randomRestaurant->image
-                ? asset('storage/' . $randomRestaurant->image)
+                ? (str_starts_with($randomRestaurant->image, 'http') ? $randomRestaurant->image : asset('storage/' . $randomRestaurant->image))
                 : asset('assets/img/terserah/' . ($category === 'jajanan' ? 'dessert' : $category) . '.png'),
             'restaurants'    => $restaurants,
         ]);
@@ -101,7 +101,7 @@ class TerserahController extends Controller
             ->inRandomOrder()
             ->limit(6)
             ->pluck('image')
-            ->map(fn($img) => asset('storage/' . $img))
+            ->map(fn($img) => str_starts_with($img, 'http') ? $img : asset('storage/' . $img))
             ->values();
 
         return response()->json(['images' => $images]);
