@@ -18,8 +18,24 @@ class RestaurantController extends Controller
 
     public function index()
     {
-        $restaurants = Restaurant::latest()->paginate(12);
-        return view('restaurants.index', compact('restaurants'));
+        $restaurants = Restaurant::approved()
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->orderBy('reviews_avg_rating', 'desc')
+            ->orderBy('reviews_count', 'desc')
+            ->get();
+
+        $campuses = Campus::all();
+
+        $campusesData = $campuses->map(fn($c) => [
+            'id'        => $c->id,
+            'name'      => $c->name,
+            'logo'      => asset('assets/img/Kampus/' . $c->logo),
+            'latitude'  => (float) $c->latitude,
+            'longitude' => (float) $c->longitude,
+        ])->values();
+
+        return view('semua-resto.index', compact('restaurants', 'campuses', 'campusesData'));
     }
 
     public function show(Restaurant $restaurant)

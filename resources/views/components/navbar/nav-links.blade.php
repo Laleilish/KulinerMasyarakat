@@ -30,6 +30,12 @@
             <span data-i18n="Tanggal Tua">Tanggal Tua</span>
         </a>
     </li>
+    <li class="w-full py-3 border-b border-black/5 md:w-auto md:py-0 md:border-none">
+        <a href="{{ route('semua-resto') }}"
+           class="no-underline font-semibold text-base {{ request()->routeIs('semua-resto') ? 'text-dark border-b-2 border-red-logo pb-1' : 'text-muted' }}">
+            <span data-i18n="Semua Restoran">Semua Restoran</span>
+        </a>
+    </li>
 
     {{-- Mobile only: Login --}}
     @guest
