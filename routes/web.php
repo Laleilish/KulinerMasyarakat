@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\HiddenGemController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\TerserahController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/dashboard", function () {
@@ -126,13 +127,13 @@ Route::get('/semua-resto', [RestaurantController::class, 'index'])->name('semua-
 Route::get('/tanggal-tua', [RestaurantController::class, 'tanggalTua'])
     ->middleware('auth')
     ->name('tanggal-tua.index');
-Route::get('/terserah', fn() => view('terserah.index'))->name('terserah.index');
+Route::get('/terserah', [TerserahController::class, 'index'])->name('terserah.index');
+Route::get('/terserah/random/{category}', [TerserahController::class, 'random'])->name('terserah.random');
+Route::get('/terserah/loading-images/{category}', [TerserahController::class, 'loadingImages'])->name('terserah.loading-images');
 Route::get('/proposal', fn() => view('submit-place.create'))->name('submit-place.create');
 Route::get('/split-bill', fn() => view('split-bill.index'))->name('split-bill.index');
 
 Route::get("/syarat-ketentuan", fn() => view("pages.terms"))->name("terms");
 Route::get("/kebijakan-privasi", fn() => view("pages.privacy"))->name("privacy");
-
-
 
 require __DIR__ . "/auth.php";
