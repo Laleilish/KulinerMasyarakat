@@ -32,7 +32,7 @@
     <h3 class="font-bold text-gray-800 text-[15px] mb-3">Patokan</h3>
     @if($restaurant->landmark_photo)
         <div class="relative rounded-2xl overflow-hidden shadow-sm">
-            <img src="{{ Storage::url($restaurant->landmark_photo) }}" alt="Patokan" class="w-full h-[180px] object-cover">
+            <img src="{{ str_starts_with($restaurant->landmark_photo, 'http') ? $restaurant->landmark_photo : Storage::url($restaurant->landmark_photo) }}" alt="Patokan" class="w-full h-[180px] object-cover">
             <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
                 <p class="text-sm text-white font-medium drop-shadow">{{ $restaurant->landmark }}</p>
             </div>

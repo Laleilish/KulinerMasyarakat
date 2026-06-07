@@ -17,7 +17,7 @@
                         <div class="flex items-center gap-4 max-w-[250px]">
                             <div class="w-14 h-14 rounded-lg bg-gray-100 overflow-hidden shrink-0">
                                 @if($place->photo)
-                                    <img src="{{ Storage::url($place->photo) }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ str_starts_with($place->photo, 'http') ? $place->photo : Storage::url($place->photo) }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold bg-gray-50">
                                         KMR

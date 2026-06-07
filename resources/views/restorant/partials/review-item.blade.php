@@ -45,9 +45,9 @@
     @if($review->photos && count($review->photos) > 0)
         <div class="flex gap-2 mt-3 flex-wrap">
             @foreach($review->photos as $photo)
-                <img src="{{ Storage::url($photo) }}"
+                <img src="{{ str_starts_with($photo, 'http') ? $photo : Storage::url($photo) }}"
                      alt="Foto ulasan"
-                     @click="previewImage = '{{ Storage::url($photo) }}'"
+                     @click="previewImage = '{{ str_starts_with($photo, 'http') ? $photo : Storage::url($photo) }}'"
                      class="w-24 h-24 object-cover rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:opacity-80 transition-opacity">
             @endforeach
         </div>

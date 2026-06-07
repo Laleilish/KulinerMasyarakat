@@ -1,7 +1,7 @@
 {{-- Photo Header --}}
 <div class="relative h-64 sm:h-80 bg-gray-150">
     @if($submitPlace->photo)
-        <img src="{{ Storage::url($submitPlace->photo) }}" alt="{{ $submitPlace->name }}" class="w-full h-full object-cover">
+        <img src="{{ str_starts_with($submitPlace->photo, 'http') ? $submitPlace->photo : Storage::url($submitPlace->photo) }}" alt="{{ $submitPlace->name }}" class="w-full h-full object-cover">
     @else
         <div class="w-full h-full bg-emerald-50 flex items-center justify-center text-emerald-300 text-3xl font-extrabold">
             KUMAR

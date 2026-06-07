@@ -76,7 +76,7 @@
         @endif
         @if ($submitPlace->landmark_photo)
             <div class="max-w-sm rounded-xl overflow-hidden border border-gray-100 shadow-sm">
-                <img src="{{ Storage::url($submitPlace->landmark_photo) }}" alt="Foto Patokan" class="w-full object-cover">
+                <img src="{{ str_starts_with($submitPlace->landmark_photo, 'http') ? $submitPlace->landmark_photo : Storage::url($submitPlace->landmark_photo) }}" alt="Foto Patokan" class="w-full object-cover">
             </div>
         @endif
     </div>
@@ -103,7 +103,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4">
             @foreach ($submitPlace->initial_review_photos as $photo)
                 <div class="aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50">
-                    <img src="{{ Storage::url($photo) }}" alt="Foto Ulasan" class="w-full h-full object-cover">
+                    <img src="{{ str_starts_with($photo, 'http') ? $photo : Storage::url($photo) }}" alt="Foto Ulasan" class="w-full h-full object-cover">
                 </div>
             @endforeach
         </div>
