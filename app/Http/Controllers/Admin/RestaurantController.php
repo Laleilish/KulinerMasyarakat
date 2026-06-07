@@ -26,6 +26,9 @@ class RestaurantController extends Controller
         }
 
         $restaurants = $query->paginate(10)->appends($request->query());
+        
+        session(['admin_restaurants_url' => request()->fullUrl()]);
+        
         $campuses = Campus::orderBy('name')->get();
         $categories = Restaurant::select('category')->distinct()->pluck('category');
 
@@ -78,7 +81,7 @@ class RestaurantController extends Controller
 
         Restaurant::create($validated);
 
-        return redirect()->route('admin.restaurants.index')
+        return redirect(session('admin_restaurants_url', route('admin.restaurants.index')))
             ->with('success', 'Restoran berhasil ditambahkan.');
     }
 
@@ -147,7 +150,7 @@ class RestaurantController extends Controller
         
         $restaurant->delete();
 
-        return redirect()->route('admin.restaurants.index')
+        return redirect(session('admin_restaurants_url', route('admin.restaurants.index')))
             ->with('success', 'Restoran berhasil dihapus.');
     }
 }

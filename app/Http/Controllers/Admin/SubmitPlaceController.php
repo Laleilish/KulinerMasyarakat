@@ -41,6 +41,9 @@ class SubmitPlaceController extends Controller
         $submitPlaces = $query->paginate(10)
             ->appends($request->query());
 
+        // Save URL to session so we can go back with filters applied
+        session(['admin_submit_places_url' => request()->fullUrl()]);
+
         // Stats cards — real data
         $totalRestoTerdaftar = Restaurant::count();
         $usulanTertunda = SubmitPlace::pending()->count();
@@ -216,7 +219,7 @@ class SubmitPlaceController extends Controller
         
         $submitPlace->delete();
 
-        return redirect()->route('admin.submit-places.index')
+        return redirect(session('admin_submit_places_url', route('admin.submit-places.index')))
             ->with('success', 'Usulan tempat berhasil dihapus sepenuhnya.');
     }
 

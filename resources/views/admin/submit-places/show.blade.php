@@ -5,7 +5,7 @@
 <div class="space-y-6">
     {{-- Back Link --}}
     <div>
-        <a href="{{ route('admin.submit-places.index') }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-emerald-600 transition-colors no-underline">
+        <a href="{{ session('admin_submit_places_url', route('admin.submit-places.index')) }}" class="inline-flex items-center text-sm font-bold text-gray-500 hover:text-emerald-600 transition-colors no-underline">
             <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
             </svg>
