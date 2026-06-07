@@ -22,32 +22,16 @@
         }
     }
 
-    // Sembunyikan saat DOM siap
-    document.addEventListener('DOMContentLoaded', hideLoader);
+    const minimumLoadingTime = 500; // 0.5 detik
+    const startTime = Date.now();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, minimumLoadingTime - elapsedTime);
+        setTimeout(hideLoader, remainingTime);
+    });
     
     // Fallback darurat
     setTimeout(hideLoader, 3000);
 
-    // Tampilkan loader SECARA INSTAN saat user klik link pindah halaman
-    document.addEventListener('click', function(e) {
-        const link = e.target.closest('a');
-        
-        // Pastikan itu adalah link internal, bukan buka tab baru, dan bukan sekadar anchor link (#)
-        if (link && link.href && !link.hasAttribute('download') && link.target !== '_blank' && link.href.startsWith(window.location.origin)) {
-            
-            const currentUrl = window.location.href.split('#')[0];
-            const linkUrl = link.href.split('#')[0];
-            
-            // Jika pindah ke URL yang berbeda
-            if (currentUrl !== linkUrl) {
-                const loader = document.getElementById('global-loader');
-                if (loader) {
-                    loader.style.display = 'flex';
-                    // Paksa browser me-render perubahan style sebelum pindah halaman
-                    void loader.offsetWidth; 
-                    loader.style.opacity = '1';
-                }
-            }
-        }
-    });
 </script>
