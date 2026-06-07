@@ -70,9 +70,14 @@ class HiddenGemController extends Controller
 
         $selectedCampus = $campuses->first();
 
-        // Hanya restoran featured, max 3, rating tertinggi
+        // Hidden Gem: restoran paling banyak diulas dalam 7 hari terakhir (per kampus), max 3
         $featuredRestaurants = Restaurant::where('campus_id', $selectedCampus->id)
-            ->where('is_featured', true)
+            ->approved()
+            ->withCount(['reviews as recent_reviews_count' => function ($q) {
+                $q->where('created_at', '>=', now()->subDays(7));
+            }])
+            ->having('recent_reviews_count', '>', 0)
+            ->orderByDesc('recent_reviews_count')
             ->orderByDesc('rating')
             ->take(3)
             ->get()
@@ -102,8 +107,14 @@ class HiddenGemController extends Controller
             ->get()
             ->map(fn($r) => $this->mapRestaurant($r, $campus));
 
+        // Hidden Gem: restoran paling banyak diulas dalam 7 hari terakhir (per kampus), max 3
         $featuredRestaurants = Restaurant::where('campus_id', $campusId)
-            ->where('is_featured', true)
+            ->approved()
+            ->withCount(['reviews as recent_reviews_count' => function ($q) {
+                $q->where('created_at', '>=', now()->subDays(7));
+            }])
+            ->having('recent_reviews_count', '>', 0)
+            ->orderByDesc('recent_reviews_count')
             ->orderByDesc('rating')
             ->take(3)
             ->get()

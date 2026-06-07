@@ -3,6 +3,7 @@
     {{-- ════════════════════════════════════════
          HIDDEN GEM HARI INI — Featured Carousel
     ═════════════════════════════════════════ --}}
+    @if($featuredRestaurants->isNotEmpty())
     <div class="px-4 md:px-8 lg:px-0 mb-8">
 
         <div class="flex items-center justify-between mb-4">
@@ -11,7 +12,7 @@
                     Hidden Gem Hari Ini
                 </h2>
                 <p class="text-[12px] text-muted mt-[2px]">
-                    Rekomendasi terbaik pilihan pengguna
+                    Restoran paling banyak diulas 7 hari terakhir
                 </p>
             </div>
             {{-- Tombol scroll desktop --}}
@@ -32,13 +33,6 @@
                 </button>
             </div>
         </div>
-
-        @if($featuredRestaurants->isEmpty())
-        <div class="bg-white rounded-[20px] border border-black/[0.06] p-8 text-center">
-            <i class="fas fa-map-pin text-muted/30 text-[32px] mb-3 block"></i>
-            <p class="text-[13px] text-muted">Belum ada restoran unggulan.</p>
-        </div>
-        @else
 
         {{-- Carousel track --}}
         <div id="featured-carousel"
@@ -143,8 +137,8 @@
             @endforeach
         </div>
 
-        @endif
     </div>
+    @endif
 
     {{-- ════════════════════════════════════════
          RATING TERTINGGI — Grid semua restoran
