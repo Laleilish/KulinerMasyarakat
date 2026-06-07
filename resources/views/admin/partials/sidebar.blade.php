@@ -1,13 +1,14 @@
 <!-- Sidebar -->
-<aside class="fixed inset-y-0 left-0 w-64 bg-cream-light border-r border-gray-200/80 transform lg:transform-none lg:static transition-transform duration-300 z-50 flex flex-col"
+<aside class="fixed inset-y-0 left-0 w-full lg:w-64 bg-cream-light border-r border-gray-200/80 transform lg:transform-none lg:static transition-transform duration-300 z-50 flex flex-col"
        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
        x-cloak>
     
     <!-- Logo Area -->
-    <div class="h-24 flex items-center px-8 shrink-0">
+    <div class="h-24 flex items-center justify-between lg:justify-start px-8 shrink-0">
         <a href="{{ route('home') }}" class="flex items-center gap-3 no-underline">
             <img src="{{ asset('assets/img/icon-kumar.png') }}" alt="KUMAR" class="h-10">
         </a>
+        <button @click="sidebarOpen = false" class="lg:hidden text-2xl font-bold text-primary bg-transparent border-none cursor-pointer">✕</button>
     </div>
     
     <!-- Menu -->
