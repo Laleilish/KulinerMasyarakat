@@ -1,7 +1,7 @@
 <section class="px-5 mt-6 mb-4 w-full md:px-10 max-w-[1400px] mx-auto relative z-10">
 
     {{-- Banner Card --}}
-    <div class="relative w-full rounded-[24px] md:rounded-[36px] shadow-sm flex items-end md:items-stretch overflow-hidden mb-5 md:mb-8 bg-gradient-to-r from-[#FFB84D] to-[#FFA011] text-dark"
+    <div class="relative w-full rounded-[24px] md:rounded-[36px] shadow-sm flex items-end md:items-stretch overflow-hidden mb-5 md:mb-8 bg-[#EF950F] text-dark"
          style="min-height: 240px;">
 
         {{-- Background Texture / Image (Using original image as bg layer) --}}
