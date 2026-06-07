@@ -92,17 +92,16 @@
                 // Navigasi selalu aktif — startNavigation() sudah punya
                 // fallback ke kampus aktif jika GPS/lokasi belum dipilih
                 const popupHTML = `
-                    <div style="width:220px;font-family:'Plus Jakarta Sans',sans-serif;">
+                    <div style="width:220px;font-family:'Plus Jakarta Sans';">
                         <img src="${r.image}" alt="${r.name}"
-                            style="width:100%;height:90px;object-fit:cover;
-                                    border-radius:10px;margin-bottom:8px;display:block;"
-                            onerror="this.src='/assets/img/resto/default.png'">
+                            style="width:100%;height:110px;object-fit:cover;
+                                    border-radius:10px;margin-bottom:8px;display:block;">
 
                         <div style="font-weight:800;font-size:13px;color:#040818;margin-bottom:2px;
                                     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             ${r.name}
                         </div>
-                        <div style="font-size:11px;color:#5d6e86;margin-bottom:5px;">
+                        <div style="font-size:8px;color:#5d6e86;margin-bottom:5px;">
                             ${formatCategory(r.category)} &middot; ${distanceVal}
                         </div>
                         <div style="display:flex;align-items:center;justify-content:space-between;
@@ -125,12 +124,12 @@
                             </a>
                             <a href="javascript:void(0)"
                                onclick="startNavigation(${r.latitude}, ${r.longitude})"
-                               style="flex:2;display:flex;align-items:center;justify-content:center;
+                               style="flex:1;display:flex;align-items:center;justify-content:center;
                                       gap:4px;background:#02b176;color:#fff;
                                       padding:7px 4px;border-radius:99px;
                                       font-size:11px;font-weight:700;text-decoration:none;
                                       cursor:pointer;">
-                                <svg style="width:14px;height:14px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M516-120 402-402 120-516v-56l720-268-268 720h-56Zm26-148 162-436-436 162 196 78 78 196Zm-78-196Z"/></svg>
                                 Navigasi
                             </a>
                         </div>
@@ -138,7 +137,7 @@
 
                 L.marker([r.latitude, r.longitude], { icon: restoIcon })
                     .addTo(State.markerLayer)
-                    .bindPopup(popupHTML, { maxWidth: 240 });
+                    .bindPopup(popupHTML, { maxWidth: 240, closeButton: false });
             });
         }
 

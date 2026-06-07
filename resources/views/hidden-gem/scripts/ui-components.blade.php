@@ -104,8 +104,7 @@
                             <img src="${r.image}"
                                     alt="${r.name}"
                                     class="w-full h-full object-cover
-                                        transition-transform duration-300"
-                                    onerror="this.src='/assets/img/resto/default.png'">
+                                        transition-transform duration-300">
 
                             <div class="absolute top-2 right-2">
                                 <span style="
@@ -200,8 +199,7 @@
 
                     <div class="relative w-full h-[160px] md:h-[220px] overflow-hidden">
                         <img src="${r.image}"
-                         class="w-full h-full object-cover"
-                         onerror="this.src='/assets/img/resto/default.png'">
+                         class="w-full h-full object-cover">
 
                                 <div class="absolute inset-0
                                             bg-gradient-to-t

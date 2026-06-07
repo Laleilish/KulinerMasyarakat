@@ -8,6 +8,7 @@
             activeFilter: 'all',
             currentResto: null,
             initialized: false,
+            sheetState: 'closed',
         };
 
         // Buka fullscreen map
@@ -154,6 +155,21 @@
             const ratingStr = r.rating != null ? `${parseFloat(r.rating).toFixed(1)}` : '—';
             const distStr   = calcRestoDistance(r.latitude, r.longitude, r.distance);
 
+            // Populate peek content (mobile)
+            const peekName = document.getElementById('fs-peek-name');
+            if (peekName) peekName.textContent = r.name;
+            const peekImage = document.getElementById('fs-peek-image');
+            if (peekImage) { peekImage.src = r.image; peekImage.alt = r.name; }
+            const peekRating = document.getElementById('fs-peek-rating');
+            if (peekRating) peekRating.textContent = ratingStr;
+            const peekReviews = document.getElementById('fs-peek-reviews');
+            if (peekReviews) peekReviews.textContent = r.reviews_count ? `(${r.reviews_count} Ulasan)` : '';
+            const peekDesc = document.getElementById('fs-peek-desc');
+            if (peekDesc) peekDesc.textContent = r.description || '';
+            const peekNavBtn = document.getElementById('fs-peek-nav-btn');
+            if (peekNavBtn) peekNavBtn.onclick = () => fsStartNavigation(r.latitude, r.longitude);
+
+            // Populate full content
             document.getElementById('fs-bs-image').src           = r.image;
             document.getElementById('fs-bs-image').alt           = r.name;
             document.getElementById('fs-bs-name').textContent    = r.name;
@@ -166,33 +182,39 @@
             document.getElementById('fs-bs-price').textContent   = r.price_range || '—';
 
             const detailBtn = document.getElementById('fs-bs-detail-btn');
-            if (detailBtn) {
-                detailBtn.href = `/restoran/${r.id}`;
-            }
+            if (detailBtn) detailBtn.href = `/restoran/${r.id}`;
 
-            // Load ulasan
-            fsFetchAndRenderReviews(r.id);
-
-            // Navigasi button
             document.getElementById('fs-bs-nav-btn').onclick = () => {
                 fsStartNavigation(r.latitude, r.longitude);
             };
 
             const sheet = document.getElementById('fs-bottom-sheet');
-            sheet.classList.remove('hidden'); // In case it has hidden initially
-            // Pakai setTimeout supaya transisi CSS jalan
-            setTimeout(() => {
-                sheet.classList.add('fs-panel-open');
-            }, 10);
+            const fullContent = document.getElementById('fs-full-content');
 
-            // Geser peta sedikit ke atas (mobile) atau ke kanan (desktop) supaya marker tidak tertutup
+            sheet.classList.remove('hidden');
+
+            if (window.innerWidth < 768) {
+                // Mobile: show peek first
+                const peekContent = document.getElementById('fs-peek-content');
+                if (peekContent) peekContent.classList.remove('hidden');
+                if (fullContent) fullContent.classList.add('hidden');
+                sheet.classList.remove('fs-panel-open');
+                setTimeout(() => sheet.classList.add('fs-panel-peek'), 10);
+                FsState.sheetState = 'peek';
+            } else {
+                // Desktop: show full directly
+                if (fullContent) fullContent.classList.remove('hidden');
+                fsFetchAndRenderReviews(r.id);
+                setTimeout(() => sheet.classList.add('fs-panel-open'), 10);
+                FsState.sheetState = 'full';
+            }
+
+            // Pan map
             if (FsState.map) {
                 if (window.innerWidth >= 768) {
-                    // Desktop: pan ke kanan sedikit
                     FsState.map.panBy([-180, 0], { animate: true });
                 } else {
-                    // Mobile: pan ke bawah sedikit
-                    FsState.map.panBy([0, 150], { animate: true });
+                    FsState.map.panBy([0, 80], { animate: true });
                 }
             }
         }
@@ -249,17 +271,64 @@
             // fsCloseBottomSheet();
         }
 
+        // Expand bottom sheet ke full detail
+        function fsExpandBottomSheet() {
+            if (FsState.sheetState !== 'peek') return;
+            const sheet = document.getElementById('fs-bottom-sheet');
+            const fullContent = document.getElementById('fs-full-content');
+            const peekContent = document.getElementById('fs-peek-content');
+
+            if (peekContent) peekContent.classList.add('hidden');
+            if (fullContent) fullContent.classList.remove('hidden');
+            fsFetchAndRenderReviews(FsState.currentResto?.id);
+
+            sheet.classList.remove('fs-panel-peek');
+            sheet.classList.add('fs-panel-open');
+            FsState.sheetState = 'full';
+        }
+
+        // Collapse bottom sheet kembali ke peek
+        function fsCollapseBottomSheet() {
+            if (FsState.sheetState !== 'full') return;
+            const sheet = document.getElementById('fs-bottom-sheet');
+            const fullContent = document.getElementById('fs-full-content');
+            const peekContent = document.getElementById('fs-peek-content');
+
+            sheet.classList.remove('fs-panel-open');
+            sheet.classList.add('fs-panel-peek');
+            sheet.scrollTop = 0;
+            if (fullContent) fullContent.classList.add('hidden');
+            if (peekContent) peekContent.classList.remove('hidden');
+            FsState.sheetState = 'peek';
+        }
+
         function fsCloseBottomSheet() {
             const sheet = document.getElementById('fs-bottom-sheet');
-            sheet.classList.remove('fs-panel-open');
-            // Hide element setelah transisi selesai (opsional, tapi bagus untuk layout)
+            sheet.classList.remove('fs-panel-peek', 'fs-panel-open');
             setTimeout(() => {
-                if (!sheet.classList.contains('fs-panel-open')) {
+                if (!sheet.classList.contains('fs-panel-peek') && !sheet.classList.contains('fs-panel-open')) {
                     sheet.classList.add('hidden');
+                    const fullContent = document.getElementById('fs-full-content');
+                    if (fullContent) fullContent.classList.add('hidden');
+                    const peekContent = document.getElementById('fs-peek-content');
+                    if (peekContent) peekContent.classList.remove('hidden');
                 }
-            }, 350); 
+            }, 350);
+            FsState.sheetState = 'closed';
             FsState.currentResto = null;
         }
+
+        // Drag handle: navigate to detail page
+        (function setupDragHandle() {
+            const handle = document.getElementById('fs-drag-handle');
+            if (handle) {
+                handle.addEventListener('click', () => {
+                    if (FsState.currentResto) {
+                        window.location.href = `/restoran/${FsState.currentResto.id}`;
+                    }
+                });
+            }
+        })();
 
         async function fsFetchAndRenderReviews(restoId) {
             const listEl    = document.getElementById('fs-bs-reviews-list');

@@ -21,7 +21,7 @@
 
     <div class="flex items-center justify-between mb-6">
         <h2 id="home-resto-title" class="text-2xl md:text-3xl font-bold text-dark">Restoran Terfavorit</h2>
-        <span id="home-campus-badge" class="hidden text-[12px] font-bold text-[#C07A2A] bg-[#FFF7ED] px-3 py-1 rounded-full border border-[#F5A623]/40"></span>
+        <span id="home-campus-badge" class="text-[12px] font-bold text-dark px-3 py-1 rounded-full border border-gray-200"></span>
     </div>
 
     {{-- Kontainer cards —  diisi oleh JS --}}

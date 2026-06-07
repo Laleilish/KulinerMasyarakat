@@ -1,4 +1,4 @@
-@push('styles_extra')
+@push('styles')
 <style>
     /* ── Panel kiri desktop (Google Maps style) ── */
     @media (min-width: 768px) {
@@ -22,12 +22,21 @@
     /* ── Bottom sheet mobile ── */
     @media (max-width: 767px) {
         #fs-bottom-sheet {
-            max-height: 72vh;
             transform: translateY(100%);
-            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+                        max-height 0.32s ease;
         }
+        /* Peek: compact card */
+        #fs-bottom-sheet.fs-panel-peek {
+            transform: translateY(0);
+            max-height: none;
+            overflow: hidden;
+        }
+        /* Full: expanded detail */
         #fs-bottom-sheet.fs-panel-open {
             transform: translateY(0);
+            max-height: 85vh;
+            overflow-y: auto;
         }
         
         /* Hide leaflet zoom control on mobile */
