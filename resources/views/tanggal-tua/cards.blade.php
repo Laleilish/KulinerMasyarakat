@@ -216,6 +216,8 @@
         sortBy         : null,    // null | 'populer' | 'penilaian' | 'termurah' | 'bawah10k'
         activeCategory : null,    // null = semua
         priceRange     : null,    // null | 'dibawah15k' | '15k-20k'
+        currentPage    : 1,
+        itemsPerPage   : 15,
         allRestaurants : window.TT_RESTAURANTS || [],
     };
 
@@ -313,7 +315,15 @@
         const countNum  = document.getElementById('tt-count-num');
         const list      = getFiltered();
 
-        if (!list.length) {
+        const totalItems = list.length;
+        const totalPages = Math.ceil(totalItems / State.itemsPerPage);
+
+        if (State.currentPage > totalPages) State.currentPage = Math.max(1, totalPages);
+
+        const startIndex = (State.currentPage - 1) * State.itemsPerPage;
+        const pagedList = list.slice(startIndex, startIndex + State.itemsPerPage);
+
+        if (!pagedList.length) {
             container.innerHTML = `
                 <div class="text-center py-20 col-span-2">
                     <i class="fas fa-utensils text-[#F5A623]/30 text-5xl mb-4 block"></i>
@@ -326,8 +336,10 @@
 
         container.innerHTML = `
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                ${list.map(r => cardHTML(r)).join('')}
-            </div>`;
+                ${pagedList.map(r => cardHTML(r)).join('')}
+            </div>
+            ${renderPaginationHTML(totalPages)}
+        `;
 
         container.querySelectorAll('.tt-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -335,8 +347,44 @@
             });
         });
 
-        countNum.textContent = list.length;
+        countNum.textContent = totalItems;
         countInfo.classList.remove('hidden');
+    }
+
+    function renderPaginationHTML(totalPages) {
+        if (totalPages <= 1) return '';
+
+        let html = '<div class="mt-8 flex justify-center"><nav class="flex items-center gap-2">';
+
+        if (State.currentPage === 1) {
+            html += `<span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium bg-[#F2E0BE] text-gray-400 opacity-50 cursor-not-allowed">&lt;</span>`;
+        } else {
+            html += `<button onclick="window.TT_goToPage(${State.currentPage - 1})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium bg-[#F2E0BE] text-gray-700 hover:bg-[#D98A2C] hover:text-white transition-colors">&lt;</button>`;
+        }
+
+        let lastShown = 0;
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= State.currentPage - 1 && i <= State.currentPage + 1)) {
+                if (lastShown + 1 < i) {
+                    html += `<span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium text-gray-500">...</span>`;
+                }
+                if (i === State.currentPage) {
+                    html += `<span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold bg-[#D98A2C] text-white">${i}</span>`;
+                } else {
+                    html += `<button onclick="window.TT_goToPage(${i})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium bg-[#F2E0BE] text-gray-700 hover:bg-[#D98A2C] hover:text-white transition-colors">${i}</button>`;
+                }
+                lastShown = i;
+            }
+        }
+
+        if (State.currentPage === totalPages) {
+            html += `<span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium bg-[#F2E0BE] text-gray-400 opacity-50 cursor-not-allowed">&gt;</span>`;
+        } else {
+            html += `<button onclick="window.TT_goToPage(${State.currentPage + 1})" class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium bg-[#F2E0BE] text-gray-700 hover:bg-[#D98A2C] hover:text-white transition-colors">&gt;</button>`;
+        }
+
+        html += '</nav></div>';
+        return html;
     }
 
     function cardHTML(r) {
@@ -416,6 +464,7 @@
             } else {
                 State.priceRange = this.dataset.value;  // switch
             }
+            State.currentPage = 1;
             applyPriceUI();
             renderCards();
         });
@@ -446,6 +495,7 @@
             } else {
                 State.sortBy = this.dataset.value;  // switch
             }
+            State.currentPage = 1;
             applySortRadioUI();
             updateFilterUI();
             renderCards();
@@ -460,6 +510,7 @@
             } else {
                 State.activeCategory = this.dataset.value; // switch
             }
+            State.currentPage = 1;
             updateCategoryUI();
             renderCards();
         });
@@ -472,6 +523,7 @@
         State.sortBy = null;
         State.activeCategory = null;
         State.priceRange = null;
+        State.currentPage = 1;
         applyPriceUI();
         applySortRadioUI();
         updateCategoryUI();
@@ -521,6 +573,7 @@
         btn.addEventListener('click', () => {
             const val = btn.dataset.sort;
             State.sortBy = State.sortBy === val ? null : val;
+            State.currentPage = 1;
             updateFilterUI();
             renderCards();
         });
@@ -551,6 +604,7 @@
     filterBackdrop?.addEventListener('click', closeFilterModal);
 
     document.getElementById('tt-modal-apply')?.addEventListener('click', () => {
+        State.currentPage = 1;
         renderCards();
         closeFilterModal();
     });
@@ -559,6 +613,7 @@
         State.sortBy = null;
         State.activeCategory = null;
         State.priceRange = null;
+        State.currentPage = 1;
         updateFilterUI();
         updateCategoryUI();
         renderCards();
@@ -622,21 +677,30 @@
             } else {
                 State.activeCategory = cat;
             }
+            State.currentPage = 1;
             updateCategoryUI();
             renderCards();
         });
     });
 
     // ─────────────────────────────────────────────────────────────────
-    // EXPOSE selectCampus ke hero.blade.php
+    // EXPOSE global functions
     // ─────────────────────────────────────────────────────────────────
+    window.TT_goToPage = function(page) {
+        State.currentPage = page;
+        renderCards();
+        document.getElementById('tt-cards-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
     window.TT_selectCampus = function(campusId) {
         State.activeCampusId = campusId;
+        State.currentPage = 1;
         renderCards();
     };
 
     window.TT_clearCampus = function() {
         State.activeCampusId = null;
+        State.currentPage = 1;
         renderCards();
     };
 
