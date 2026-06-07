@@ -205,15 +205,6 @@
                             </span>
                         </div>
 
-                        {{-- Featured badge --}}
-                        @if($r['is_featured'])
-                        <div class="absolute top-2 left-2">
-                            <span class="bg-[#F5A623] text-white text-[9px] font-bold
-                                         px-[6px] py-[2px] rounded-full">
-                                Unggulan
-                            </span>
-                        </div>
-                        @endif
                     </div>
 
                     {{-- Body --}}
