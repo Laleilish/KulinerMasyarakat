@@ -12,13 +12,21 @@
 </div>
 
 <script>
-    window.addEventListener('load', function() {
+    function hideLoader() {
         const loader = document.getElementById('global-loader');
-        if (loader) {
+        if (loader && loader.style.display !== 'none') {
             loader.style.opacity = '0';
             setTimeout(() => {
                 loader.style.display = 'none';
             }, 500);
         }
-    });
+    }
+
+    // Sembunyikan saat DOM siap (lebih cepat dari load, cocok untuk halaman dengan map/gambar banyak)
+    document.addEventListener('DOMContentLoaded', hideLoader);
+    
+    // Fallback darurat: Sembunyikan paksa setelah 2 detik untuk jaga-jaga
+    setTimeout(hideLoader, 2000);
+    
+    window.addEventListener('load', hideLoader);
 </script>
