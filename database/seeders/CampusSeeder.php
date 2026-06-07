@@ -15,6 +15,7 @@ class CampusSeeder extends Seeder
             ['name' => 'Universitas Padjajaran',           'logo' => 'Unpad.png', 'latitude' => -6.9218269, 'longitude' => 107.7697928, 'map_zoom' => 15],
             ['name' => 'Telkom University',                'logo' => 'Tel-U.png', 'latitude' => -6.9732558, 'longitude' => 107.6301463, 'map_zoom' => 16],
             ['name' => 'Universitas Parahyangan',          'logo' => 'Unpar.png', 'latitude' => -6.8746802, 'longitude' => 107.6075437, 'map_zoom' => 16],
+            ['name' => 'UPI Cibiru',                       'logo' => 'Upi.png',   'latitude' => -6.9398533, 'longitude' => 107.7245773, 'map_zoom' => 16],
         ];
 
         foreach ($campuses as $campus) {

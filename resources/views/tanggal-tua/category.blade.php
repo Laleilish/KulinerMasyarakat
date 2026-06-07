@@ -5,8 +5,8 @@
 
         {{-- Semua --}}
         <div class="tt-cat-item flex flex-col items-center gap-3 cursor-pointer select-none group min-w-[60px] flex-shrink-0 transition-all" data-category="semua">
-            <div class="tt-cat-icon w-[64px] h-[64px] rounded-full flex items-center justify-center bg-[#FFF3E0] border-2 border-[#F5A623] transition-all">
-                <i class="fa-solid fa-utensils text-[#F5A623] text-xl"></i>
+            <div class="tt-cat-icon w-[64px] h-[64px] rounded-full overflow-hidden flex items-center justify-center bg-[#FFF3E0] border-2 border-[#F5A623] transition-all">
+                <img src="{{ asset('assets/img/Tanggal Tua/semua-makanan.png') }}" class="w-full h-full object-cover scale-[1.3]" alt="Semua Makanan">
             </div>
             <span class="cat-label font-bold text-[13px] text-dark">Semua</span>
         </div>

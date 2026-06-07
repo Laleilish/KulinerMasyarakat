@@ -3,6 +3,7 @@
     {{-- ════════════════════════════════════════
          HIDDEN GEM HARI INI — Featured Carousel
     ═════════════════════════════════════════ --}}
+    @if($featuredRestaurants->isNotEmpty())
     <div class="px-4 md:px-8 lg:px-0 mb-8">
 
         <div class="flex items-center justify-between mb-4">
@@ -11,7 +12,7 @@
                     Hidden Gem Hari Ini
                 </h2>
                 <p class="text-[12px] text-muted mt-[2px]">
-                    Rekomendasi terbaik pilihan pengguna
+                    Restoran paling banyak diulas 7 hari terakhir
                 </p>
             </div>
             {{-- Tombol scroll desktop --}}
@@ -32,13 +33,6 @@
                 </button>
             </div>
         </div>
-
-        @if($featuredRestaurants->isEmpty())
-        <div class="bg-white rounded-[20px] border border-black/[0.06] p-8 text-center">
-            <i class="fas fa-map-pin text-muted/30 text-[32px] mb-3 block"></i>
-            <p class="text-[13px] text-muted">Belum ada restoran unggulan.</p>
-        </div>
-        @else
 
         {{-- Carousel track --}}
         <div id="featured-carousel"
@@ -143,8 +137,8 @@
             @endforeach
         </div>
 
-        @endif
     </div>
+    @endif
 
     {{-- ════════════════════════════════════════
          RATING TERTINGGI — Grid semua restoran
@@ -211,15 +205,6 @@
                             </span>
                         </div>
 
-                        {{-- Featured badge --}}
-                        @if($r['is_featured'])
-                        <div class="absolute top-2 left-2">
-                            <span class="bg-[#F5A623] text-white text-[9px] font-bold
-                                         px-[6px] py-[2px] rounded-full">
-                                Unggulan
-                            </span>
-                        </div>
-                        @endif
                     </div>
 
                     {{-- Body --}}
@@ -231,13 +216,13 @@
                         <p class="text-[11px] text-muted mb-2 truncate">
                             {{ $r['category'] }}
                         </p>
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between gap-1 mt-1">
                             <span class="text-[11px] text-secondary font-bold
-                                         flex items-center gap-[3px]">
+                                         flex items-center gap-[3px] whitespace-nowrap flex-shrink-0">
                                 <i class="fas fa-location-dot text-[10px]"></i>
                                 {{ $r['distance'] ?? '—' }}
                             </span>
-                            <span class="text-[10px] text-muted">
+                            <span class="text-[10px] text-muted text-right leading-tight">
                                 {{ $r['price_range'] ?? '—' }}
                             </span>
                         </div>

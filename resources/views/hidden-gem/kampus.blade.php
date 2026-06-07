@@ -4,9 +4,9 @@
         Pilih Kampus Yang Kamu Inginkan
     </h1>
 
-    <div id="kampus-grid" class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-5 gap-x-3 md:gap-x-5 gap-y-4 md:gap-y-6 px-5 md:px-8 lg:px-10 max-w-[640px] md:max-w-[950px] lg:max-w-[980px] mx-auto w-full">
+    <div id="kampus-grid" class="flex flex-wrap justify-center gap-x-4 md:gap-x-10 lg:gap-x-12 gap-y-6 md:gap-y-8 px-5 md:px-8 lg:px-10 max-w-[640px] md:max-w-[850px] lg:max-w-[800px] mx-auto w-full">
         @foreach ($campuses as $campus)
-            <div class="kampus-item flex flex-col items-center gap-2 cursor-pointer group" data-id="{{ $campus->id }}"
+            <div class="kampus-item flex flex-col items-center gap-2 cursor-pointer group w-[90px] md:w-[110px] lg:w-[130px]" data-id="{{ $campus->id }}"
                 data-lat="{{ $campus->latitude }}" data-lng="{{ $campus->longitude }}" data-zoom="{{ $campus->map_zoom }}"
                 data-name="{{ $campus->name }}">
 

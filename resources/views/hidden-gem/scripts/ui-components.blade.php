@@ -117,14 +117,6 @@
                                 </span>
                             </div>
 
-                            ${r.is_featured ? `
-                            <div class="absolute top-2 left-2">
-                                <span style="
-                                    background:#F5A623;color:#fff;
-                                    font-size:9px;font-weight:700;
-                                    padding:2px 6px;border-radius:99px;
-                                ">Unggulan</span>
-                            </div>` : ''}
                         </div>
 
                         <div style="padding:10px 12px 12px;">
@@ -140,11 +132,11 @@
                                 ${formatCategory(r.category)}
                             </p>
 
-                            <div style="display:flex;align-items:center;justify-content:space-between;">
-                                <span style="font-size:11px;color:#02b176;font-weight:700;">
+                            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;margin-top:4px;">
+                                <span style="font-size:11px;color:#02b176;font-weight:700;white-space:nowrap;flex-shrink:0;">
                                     <i class="fas fa-location-dot text-[9px]"></i> ${distStr}
                                 </span>
-                                <span style="font-size:10px;color:#5d6e86;">
+                                <span style="font-size:10px;color:#5d6e86;text-align:right;line-height:1.2;">
                                     ${priceStr}
                                 </span>
                             </div>
@@ -246,9 +238,9 @@
 
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <span class="bg-white/20 text-white
-                                                 text-[10px] font-bold
+                                                 text-[10px] font-bold flex items-center gap-[4px]
                                                  px-2 py-1 rounded-full">
-                                        📍 ${distStr}
+                                        <i class="fas fa-location-dot text-[10px]"></i> ${distStr}
                                     </span>
 
                                     <span class="bg-white/20 text-white
@@ -399,8 +391,8 @@
                 : '★ —';
             const modalDist = calcRestoDistance(r.latitude, r.longitude, r.distance);
             document.getElementById('modal-rating').textContent   = modalRating;
-            document.getElementById('modal-distance').textContent = modalDist
-                ? `📍 ${modalDist}` : '';
+            document.getElementById('modal-distance').innerHTML = modalDist
+                ? `<i class="fas fa-location-dot text-[10px]"></i> ${modalDist}` : '';
             document.getElementById('modal-desc').textContent  = r.description || 'Tidak ada deskripsi.';
             document.getElementById('modal-price').textContent = r.price_range || '—';
             document.getElementById('modal-address').textContent = r.address || '—';
