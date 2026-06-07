@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', $restaurant->name)
 
 @section('content')
 <div class="min-h-screen bg-[#FDF8F0] pb-12">

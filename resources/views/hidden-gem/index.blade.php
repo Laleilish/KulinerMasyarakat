@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Hidden Gem - KUMAR')
+@section('title', 'Hidden Gem')
 
 @push('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />

@@ -1,4 +1,5 @@
 @extends('layouts.plain')
+@section('title', 'Privasi & Keamanan')
 
 @section('content')
 {{-- Judul di luar kotak --}}

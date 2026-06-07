@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'login - ' . config('app.name', 'KUMAR'))
+@section('title', 'Masuk')
     <body class=" font-brand antialiased">
         @section('content')
             <div class="w-full max-w-md">

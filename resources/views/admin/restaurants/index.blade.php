@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Kelola Restoran')
 
 @section('content')
 <div class="max-w-6xl space-y-8">

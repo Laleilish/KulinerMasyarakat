@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Split Bill - ' . config('app.name', 'KUMAR'))
+@section('title', 'Split Bill')
 
 @section('content')
     <div class="w-full max-w-[960px] mx-auto px-4 flex flex-col" x-data="splitBill()" x-cloak>

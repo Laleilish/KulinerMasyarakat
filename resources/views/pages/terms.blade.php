@@ -1,4 +1,5 @@
 @extends('layouts.plain')
+@section('title', 'Syarat & Ketentuan')
 
 @section('content')
 {{-- Judul di luar kotak --}}

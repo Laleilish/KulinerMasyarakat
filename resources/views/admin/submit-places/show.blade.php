@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Detail Usulan Tempat')
 
 @section('content')
 <div class="space-y-6">
