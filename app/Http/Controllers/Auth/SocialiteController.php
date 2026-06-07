@@ -57,12 +57,18 @@ class SocialiteController extends Controller
 
             if ($user) {
                 // Update existing user information
+                // Preserve custom avatar if user has uploaded one (Cloudinary URL)
+                $avatarValue = $user->avatar;
+                if (!$user->avatar || !str_contains($user->avatar, 'cloudinary')) {
+                    $avatarValue = $providerUser->getAvatar();
+                }
+
                 $user->update([
                     'name' => $providerUser->getName() ?? $user->name,
                     'email' => $providerUser->getEmail() ?? $user->email,
                     'provider' => $provider,
                     'provider_id' => $providerUser->getId(),
-                    'avatar' => $providerUser->getAvatar(),
+                    'avatar' => $avatarValue,
                     'email_verified_at' => $user->email_verified_at ?? now(),
                 ]);
             } else {
