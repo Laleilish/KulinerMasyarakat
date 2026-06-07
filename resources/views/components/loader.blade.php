@@ -1,11 +1,11 @@
 <!-- resources/views/components/loader.blade.php -->
-<div id="global-loader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-500">
+<div id="global-loader" class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 transition-opacity duration-500">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <lottie-player 
         src="/assets/img/Loading/Loading.json" 
         background="transparent" 
         speed="1" 
-        style="width: 150px; height: 150px;" 
+        style="width: 300px; height: 300px;" 
         loop 
         autoplay>
     </lottie-player>
