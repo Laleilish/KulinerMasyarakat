@@ -216,13 +216,13 @@
                         <p class="text-[11px] text-muted mb-2 truncate">
                             {{ $r['category'] }}
                         </p>
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-start justify-between gap-1 mt-1">
                             <span class="text-[11px] text-secondary font-bold
-                                         flex items-center gap-[3px]">
+                                         flex items-center gap-[3px] whitespace-nowrap flex-shrink-0">
                                 <i class="fas fa-location-dot text-[10px]"></i>
                                 {{ $r['distance'] ?? '—' }}
                             </span>
-                            <span class="text-[10px] text-muted">
+                            <span class="text-[10px] text-muted text-right leading-tight">
                                 {{ $r['price_range'] ?? '—' }}
                             </span>
                         </div>

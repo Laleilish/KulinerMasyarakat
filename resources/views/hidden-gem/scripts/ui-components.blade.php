@@ -132,11 +132,11 @@
                                 ${formatCategory(r.category)}
                             </p>
 
-                            <div style="display:flex;align-items:center;justify-content:space-between;">
-                                <span style="font-size:11px;color:#02b176;font-weight:700;">
+                            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;margin-top:4px;">
+                                <span style="font-size:11px;color:#02b176;font-weight:700;white-space:nowrap;flex-shrink:0;">
                                     <i class="fas fa-location-dot text-[9px]"></i> ${distStr}
                                 </span>
-                                <span style="font-size:10px;color:#5d6e86;">
+                                <span style="font-size:10px;color:#5d6e86;text-align:right;line-height:1.2;">
                                     ${priceStr}
                                 </span>
                             </div>
