@@ -11,7 +11,7 @@
                 data-name="{{ $campus->name }}">
 
                 <div class="kampus-icon-wrap w-[70px] h-[70px] md:w-[90px] md:h-[90px] lg:w-[105px] lg:h-[105px] rounded-[20px] bg-[#F5A623] flex items-center justify-center overflow-hidden shadow-[0_4px_12px_rgba(245,166,35,0.3)] transition-all duration-300 ease-out group-hover:scale-105 group-hover:shadow-[0_6px_20px_rgba(245,166,35,0.45)] opacity-60">
-                    <img src="{{ asset('assets/img/kampus/' . $campus->logo) }}" alt="{{ $campus->name }}" class="w-[46px] h-[46px] 
+                    <img src="{{ asset('assets/img/Kampus/' . $campus->logo) }}" alt="{{ $campus->name }}" class="w-[46px] h-[46px] 
                                         md:w-[58px] md:h-[58px] lg:w-[68px] lg:h-[68px] object-contain
                                         transition-transform duration-300 group-hover:scale-105">
                 </div>

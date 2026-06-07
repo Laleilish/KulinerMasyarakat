@@ -62,7 +62,7 @@ class HiddenGemController extends Controller
         $campusesData = $campuses->map(fn($c) => [
             'id' => $c->id,
             'name' => $c->name,
-            'logo' => asset('assets/img/kampus/' . $c->logo),
+            'logo' => asset('assets/img/Kampus/' . $c->logo),
             'latitude' => (float) $c->latitude,
             'longitude' => (float) $c->longitude,
             'zoom' => $c->map_zoom,

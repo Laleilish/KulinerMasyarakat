@@ -111,7 +111,7 @@
             // Campus marker
             if (State.currentCampus) {
                 const campusIcon = L.icon({
-                    iconUrl: '/assets/img/Icon-Pusat.png',
+                    iconUrl: '/assets/img/icon-Pusat.png',
                     iconSize: [40, 40],
                     iconAnchor: [20, 40],
                 });
