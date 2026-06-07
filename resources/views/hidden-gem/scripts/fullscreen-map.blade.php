@@ -37,6 +37,13 @@
                     FsState.markerLayer = L.layerGroup().addTo(FsState.map);
                     FsState.initialized = true;
 
+                    // Klik di area kosong map → tutup bottom sheet
+                    FsState.map.on('click', () => {
+                        if (FsState.sheetState !== 'closed') {
+                            fsCloseBottomSheet();
+                        }
+                    });
+
                     if (State.currentCampus && State.currentRestaurants.length) {
                         fsOpenWithData(State.currentCampus, State.currentRestaurants);
                     }
