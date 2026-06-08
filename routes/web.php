@@ -90,7 +90,10 @@ Route::middleware(["auth", "role:admin"])
         );
         Route::get("/submit-places/{submitPlace}", [AdminSubmitPlaceController::class, "show"])->name(
             "submit-places.show",
-        );
+        )->missing(function () {
+            return redirect()->route('admin.submit-places.index')
+                ->with('error', 'Usulan tempat sudah tidak ditemukan (mungkin sudah dihapus).');
+        });
         Route::get("/submit-places/{submitPlace}/edit", [AdminSubmitPlaceController::class, "edit"])->name(
             "submit-places.edit",
         );
