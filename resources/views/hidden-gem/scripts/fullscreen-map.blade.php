@@ -61,6 +61,11 @@
             document.getElementById('fs-map-modal').classList.add('hidden');
             document.body.style.overflow = '';
             fsCloseBottomSheet();
+
+            // Sync kembali ke peta utama jika ada navigasi yang sedang berjalan
+            if (State.activeNavDest) {
+                startNavigation(State.activeNavDest.lat, State.activeNavDest.lng, false);
+            }
         }
 
         // Sync fullscreen map dengan data kampus
@@ -84,6 +89,11 @@
             // Tampilkan user marker jika ada
             if (State.userLat && State.userLng) {
                 fsPlaceUserMarker(State.userLat, State.userLng);
+            }
+
+            // Pulihkan navigasi jika sedang aktif
+            if (State.activeNavDest) {
+                fsStartNavigation(State.activeNavDest.lat, State.activeNavDest.lng);
             }
         }
 
@@ -228,6 +238,7 @@
 
         // Navigasi khusus Fullscreen Map
         function fsStartNavigation(destLat, destLng) {
+            State.activeNavDest = { lat: destLat, lng: destLng };
             let fromLat = null;
             let fromLng = null;
             let fromLabel = '';

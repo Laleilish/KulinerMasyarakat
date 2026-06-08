@@ -142,7 +142,8 @@
         }
 
         // NAVIGATION (ROUTING)
-        function startNavigation(destLat, destLng) {
+        function startNavigation(destLat, destLng, scroll = true) {
+            State.activeNavDest = { lat: destLat, lng: destLng };
             let fromLat = null;
             let fromLng = null;
             let fromLabel = '';
@@ -197,8 +198,10 @@
             renderUserLocation(fromLat, fromLng, 30, fromLabel);
 
             // Scroll ke peta
-            document.getElementById('map-section')
-                .scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (scroll) {
+                document.getElementById('map-section')
+                    .scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         // UPDATE MAP

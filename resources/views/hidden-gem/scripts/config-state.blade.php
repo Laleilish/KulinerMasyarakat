@@ -20,6 +20,7 @@
             searchTimer: null,
             isDropdownOpen: false,
             routingControl: null,
+            activeNavDest: null,
             currentCampus: null,
             currentRestaurants: [],
         };
