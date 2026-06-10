@@ -40,9 +40,9 @@
     {{-- Label kampus aktif --}}
     <div id="tt-campus-badge" class="hidden mt-4 justify-center items-center gap-2">
         <span class="text-[12px] text-muted">Menampilkan promo di:</span>
-        <span id="tt-campus-name" class="text-[12px] font-bold text-dark bg-gray-100 px-3 py-1 rounded-full border border-gray-200"></span>
+        <span id="tt-campus-name" class="text-[12px] font-bold text-dark px-3 py-1 rounded-full border border-gray-200"></span>
         <button id="tt-campus-clear" class="text-[11px] text-muted hover:text-red-500 transition-colors ml-1">
-            <i class="fas fa-xmark"></i> hapus
+            <i class="fas fa-xmark"></i>
         </button>
     </div>
 

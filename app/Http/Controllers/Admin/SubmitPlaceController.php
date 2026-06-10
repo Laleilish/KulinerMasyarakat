@@ -217,6 +217,11 @@ class SubmitPlaceController extends Controller
             CloudinaryService::delete($submitPlace->landmark_photo);
         }
         
+        // Beri tahu user bahwa usulannya ditolak/dihapus agar tidak menunggu
+        if ($submitPlace->status === 'pending') {
+            $submitPlace->user->notify(new \App\Notifications\PlaceRejectedNotification($submitPlace));
+        }
+        
         $submitPlace->delete();
 
         return redirect(session('admin_submit_places_url', route('admin.submit-places.index')))

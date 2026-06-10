@@ -32,8 +32,7 @@
             {{-- ── HERO IMAGE ── --}}
             <div class="relative w-full h-[220px] md:h-[240px] flex-shrink-0 overflow-hidden">
                 <img id="modal-image" src="" alt=""
-                     class="w-full h-full object-cover"
-                     onerror="this.src='/assets/img/resto/default.png'">
+                     class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
 
                 {{-- Name + meta overlay --}}

@@ -121,10 +121,48 @@
                     md:border-r md:border-black/[0.06]"
              style="">
 
-            {{-- Mobile drag handle --}}
-            <div class="flex justify-center pt-3 pb-1 flex-shrink-0 md:hidden">
-                <div class="w-10 h-[4px] rounded-full bg-black/15"></div>
+            {{-- Mobile drag handle (tap to expand/collapse) --}}
+            <div id="fs-drag-handle" class="flex justify-center pt-3 pb-2 flex-shrink-0 md:hidden cursor-pointer select-none active:bg-black/[0.02] transition-colors">
+                <div class="w-10 h-[4px] rounded-full bg-black/20"></div>
             </div>
+
+            {{-- PEEK CONTENT (compact card on mobile) --}}
+            <div id="fs-peek-content" class="md:hidden">
+                {{-- Hero image with overlay --}}
+                <div class="px-4 pt-1">
+                <div class="relative w-full h-[180px] overflow-hidden rounded-2xl">
+                    <img id="fs-peek-image" src="" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                    {{-- Name + Rating + Nav button --}}
+                    <div class="absolute bottom-4 left-5 right-5">
+                        <h3 id="fs-peek-name" class="text-[20px] font-extrabold text-white mb-2 leading-tight drop-shadow-md"></h3>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1.5">
+                                <div class="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/10">
+                                    <svg class="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span id="fs-peek-rating" class="text-[12px] font-bold text-white"></span>
+                                    <span id="fs-peek-reviews" class="text-[11px] text-gray-300"></span>
+                                </div>
+                            </div>
+                            <button id="fs-peek-nav-btn"
+                                class="px-4 py-1.5 bg-[#00A896] text-white text-[12px] font-bold rounded-full flex items-center gap-1.5 shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M516-120 402-402 120-516v-56l720-268-268 720h-56Zm26-148 162-436-436 162 196 78 78 196Zm-78-196Z"/></svg>
+                                Navigasi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                {{-- Description snippet --}}
+                <div class="px-5 py-3">
+                    <p id="fs-peek-desc" class="text-[13px] text-gray-600 leading-relaxed line-clamp-1"></p>
+                </div>
+            </div>
+
+            {{-- FULL CONTENT (expanded on drag, always visible on desktop) --}}
+            <div id="fs-full-content" class="hidden md:block">
 
             {{-- Desktop top bar --}}
             <div class="hidden md:flex items-center justify-between
@@ -147,10 +185,9 @@
             </button>
 
             {{-- Hero image --}}
-            <div class="relative w-full h-[220px] md:h-[250px] overflow-hidden flex-shrink-0">
+            <div class="relative w-full h-[200px] md:h-[250px] overflow-hidden flex-shrink-0">
                 <img id="fs-bs-image" src="" alt=""
-                     class="w-full h-full object-cover"
-                     onerror="this.src='/assets/img/resto/default.png'">
+                     class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div class="absolute bottom-6 left-4 right-4">
                     <h2 id="fs-bs-name" class="text-3xl font-extrabold text-white mb-3 drop-shadow-md leading-tight"></h2>
@@ -179,7 +216,7 @@
                     </a>
                     <button id="fs-bs-nav-btn"
                         class="flex-1 py-2.5 bg-[#00A896] hover:bg-[#028c7d] text-white text-sm font-bold rounded-full flex items-center justify-center gap-2 transition shadow-sm">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 -960 960 960" fill="#e3e3e3"><path d="M516-120 402-402 120-516v-56l720-268-268 720h-56Zm26-148 162-436-436 162 196 78 78 196Zm-78-196Z"/></svg>
                         Navigasi
                     </button>
                 </div>
@@ -242,6 +279,7 @@
                     </div>
                 </div>
 
+            </div>
             </div>
         </div>
 

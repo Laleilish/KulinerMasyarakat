@@ -126,15 +126,16 @@
 
             {{-- Mobile Filter Button (only on mobile) --}}
             <div class="flex items-center gap-2 mb-4 md:hidden overflow-x-auto no-scrollbar pb-2">
-                <button id="tt-btn-filter-modal" class="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-[13px] font-semibold text-dark hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 transition-all shadow-sm flex-shrink-0">
-                    <i class="fas fa-sliders-h text-gray-500 tt-btn-filter-icon"></i>
-                    <span class="tt-filter-text">Filter</span>
+                <button id="tt-btn-filter-modal" class="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-all shadow-sm flex-shrink-0">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Filter</span>
                 </button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="populer">Populer</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="terdekat">Terdekat</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="penilaian">Rating 4.5+</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="termurah">Termurah</button>
-                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-[#F5A623]/10 hover:border-[#F5A623]/30 shadow-sm" data-sort="bawah10k">Dibawah 10k</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-orange hover:text-white shadow-sm" data-sort="populer">Populer</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-orange hover:text-white shadow-sm" data-sort="terdekat">Terdekat</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-orange hover:text-white shadow-sm" data-sort="penilaian">Rating 4.5+</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-orange hover:text-white shadow-sm" data-sort="termurah">Termurah</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-orange hover:text-white shadow-sm" data-sort="bawah10k">Dibawah 10k</button>
+                <button class="tt-sort-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark flex-shrink-0 transition-all bg-white hover:bg-orange hover:text-white shadow-sm" data-sort="10k-15k">10rb - 15rb</button>
             </div>
 
             {{-- Header: Count info only --}}
@@ -187,16 +188,17 @@
                 <div>
                     <h4 class="text-[14px] font-bold text-dark mb-3">Urutkan</h4>
                     <div class="flex flex-wrap gap-2">
-                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="populer">Populer</button>
-                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="terdekat">Terdekat</button>
-                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="penilaian">Rating 4.5+</button>
-                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="termurah">Termurah</button>
-                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-gray-50 transition-colors bg-white" data-sort="bawah10k">Dibawah 10k</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-colors bg-white" data-sort="populer">Populer</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-colors bg-white" data-sort="terdekat">Terdekat</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-colors bg-white" data-sort="penilaian">Rating 4.5+</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-colors bg-white" data-sort="termurah">Termurah</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-colors bg-white" data-sort="bawah10k">Dibawah 10k</button>
+                        <button class="tt-modal-chip px-4 py-2 rounded-full border border-gray-300 text-[13px] font-semibold text-dark hover:bg-orange hover:text-white transition-colors bg-white" data-sort="10k-15k">10rb - 15rb</button>
                     </div>
                 </div>
             </div>
             <div class="flex items-center gap-3 p-4 border-t border-gray-100 bg-white shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-                <button id="tt-modal-clear" class="flex-1 py-3 px-4 rounded-full border border-red-400 text-red-500 font-bold text-[14px] hover:bg-red-50 transition-colors">Bersihkan</button>
+                <button id="tt-modal-clear" class="flex-1 py-3 px-4 rounded-full border border-red-400 text-red-500 bg-red-white font-bold text-[14px] hover:bg-rose-500 hover:text-white transition-colors">Bersihkan</button>
                 <button id="tt-modal-apply" class="flex-1 py-3 px-4 rounded-full bg-[#F5A623] text-white font-bold text-[14px] hover:bg-[#D4891E] transition-colors">Terapkan</button>
             </div>
         </div>
@@ -267,9 +269,15 @@
             });
         }
 
-        // 4. Filter "dibawah 10k"
+        // 4. Filter mobile sort ranges
         if (State.sortBy === 'bawah10k') {
             list = list.filter(r => parseMaxPrice(r.price_range) <= 10000);
+        } else if (State.sortBy === '10k-15k') {
+            list = list.filter(r => {
+                const min = parseMinPrice(r.price_range);
+                const max = parseMaxPrice(r.price_range);
+                return min >= 10000 && max <= 15000;
+            });
         }
 
         // 5. Filter penilaian >= 4.5
@@ -291,6 +299,7 @@
                 break;
             case 'termurah':
             case 'bawah10k':
+            case '10k-15k':
                 list.sort((a, b) => parseMinPrice(a.price_range) - parseMinPrice(b.price_range));
                 break;
         }

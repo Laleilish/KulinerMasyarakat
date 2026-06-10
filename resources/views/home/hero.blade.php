@@ -150,9 +150,8 @@
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────
+    
     // NOMINATIM
-    // ─────────────────────────────────────────────────────────────────
     async function reverseGeocode(lat, lng) {
         try {
             const res  = await fetch(`${NOMINATIM}/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`);
@@ -169,9 +168,8 @@
         } catch { return []; }
     }
 
-    // ─────────────────────────────────────────────────────────────────
+    
     // HAVERSINE
-    // ─────────────────────────────────────────────────────────────────
     function haversine(lat1, lng1, lat2, lng2) {
         const R    = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -187,9 +185,8 @@
         }, { dist: Infinity });
     }
 
-    // ─────────────────────────────────────────────────────────────────
+    
     // DROPDOWN
-    // ─────────────────────────────────────────────────────────────────
     function renderDropdownCampus(query = '') {
         const list    = document.getElementById('home-dropdown-campus-list');
         const section = document.getElementById('home-dropdown-campus-section');
@@ -276,9 +273,7 @@
         }, 500);
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // GEOLOCATION
-    // ─────────────────────────────────────────────────────────────────
     function detectUserLocation() {
         updateLocationBar({ label: 'Mendeteksi lokasi...', value: '', loading: true });
         if (!navigator.geolocation) {
@@ -313,9 +308,7 @@
         );
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // EVENT LISTENERS
-    // ─────────────────────────────────────────────────────────────────
     const input   = document.getElementById('home-loc-input');
     const clearBtn = document.getElementById('home-loc-clear');
     const gpsBtn  = document.getElementById('home-loc-gps-btn');

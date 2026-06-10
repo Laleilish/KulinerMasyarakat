@@ -93,7 +93,14 @@
                                         <span class="text-xs font-bold text-gray-600">Mencari lokasi...</span>
                                     </div>
                                     
-                                    <div id="submit-map" class="w-full h-[250px] z-0"></div>
+                                    <div class="relative">
+                                        <div id="submit-map" class="w-full h-64 rounded-xl z-0"></div>
+                                        <img 
+                                            src="/assets/img/icon-loc.png" 
+                                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); width: 28px; z-index: 1000; pointer-events: none;"
+                                            alt="pin"
+                                        >
+                                    </div>
                                 </div>
 
                                 <div class="text-xs text-gray-500 mb-4 bg-gray-50 p-2.5 rounded-lg border border-gray-100 flex items-start gap-2">

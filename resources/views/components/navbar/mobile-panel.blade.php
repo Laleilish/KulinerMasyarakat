@@ -76,75 +76,63 @@
         </a>
 
         {{-- Pengaturan --}}
-        <button type="button" @click="settingsOpen = true"
-           class="w-full flex items-center justify-between px-3 py-4 rounded-xl hover:bg-black/5 transition-colors bg-transparent border-none cursor-pointer group">
-            <div class="flex items-center gap-4">
-                <svg class="w-5 h-5 text-dark/70" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <span class="font-semibold text-dark text-sm" data-i18n="Pengaturan">Pengaturan</span>
-            </div>
-            <svg class="w-4 h-4 text-muted group-hover:text-dark transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-            </svg>
-        </button>
-
-        {{-- Settings Modal --}}
-        <div x-show="settingsOpen" x-cloak
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 scale-95"
-             x-transition:enter-end="opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 scale-100"
-             x-transition:leave-end="opacity-0 scale-95"
-             class="absolute inset-4 bottom-auto bg-cream-bg rounded-2xl shadow-card border border-black/8 p-5 z-10">
-
-            {{-- Modal Header --}}
-            <div class="flex items-center justify-between mb-4">
-                <span class="font-bold text-dark text-base" data-i18n="Pengaturan">Pengaturan</span>
-                <button type="button" @click="settingsOpen = false"
-                        class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/8 transition-colors bg-transparent border-none cursor-pointer text-dark">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        <div class="relative w-full">
+            <button type="button" @click="settingsOpen = !settingsOpen"
+               class="w-full flex items-center justify-between px-3 py-4 rounded-xl hover:bg-black/5 transition-colors bg-transparent border-none cursor-pointer group">
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 text-dark/70" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                </button>
-            </div>
+                    <span class="font-semibold text-dark text-sm" data-i18n="Pengaturan">Pengaturan</span>
+                </div>
+                <svg class="w-4 h-4 text-muted transition-transform duration-200" :class="settingsOpen ? 'rotate-90' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
 
-            {{-- Divider --}}
-            <div class="h-px bg-black/8 mb-3"></div>
+            {{-- Settings Submenu --}}
+            <div x-show="settingsOpen" x-cloak
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
+                 class="px-4 py-2 mt-1 rounded-xl ml-8 ">
+            
 
-
-            {{-- Notifikasi Titik Merah --}}
-            <div class="flex items-center justify-between py-3">
-                <span class="text-sm font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</span>
-                <button type="button"
-                      @click="$store.notifDot.toggle()"
-                      :class="$store.notifDot.enabled ? 'text-secondary font-bold' : 'text-muted'"
-                      class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:opacity-80"
-                      x-text="$store.notifDot.enabled ? ($store.i18n.locale === 'EN' ? 'On' : 'Nyala') : ($store.i18n.locale === 'EN' ? 'Off' : 'Mati')">Nyala</button>
-            </div>
-
-            {{-- Divider --}}
-            <div class="h-px bg-black/8 mb-3"></div>
-
-            {{-- Language Row --}}
-            <div class="flex items-center justify-between py-3">
-                <span class="text-sm font-semibold text-dark" data-i18n="Bahasa">Bahasa</span>
-                <div class="flex items-center gap-2">
+                {{-- Notifikasi Titik Merah --}}
+                <div class="flex items-center justify-between py-2">
+                    <span class="text-sm font-semibold text-dark" data-i18n="Notifikasi">Notifikasi</span>
                     <button type="button"
-                            @click="$store.i18n.setLocale('ID')"
-                            :class="$store.i18n.locale === 'ID' ? 'font-bold text-dark' : 'text-muted'"
-                            class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:text-dark">
-                        ID
-                    </button>
-                    <span class="text-sm text-muted">|</span>
-                    <button type="button"
-                            @click="$store.i18n.setLocale('EN')"
-                            :class="$store.i18n.locale === 'EN' ? 'font-bold text-dark' : 'text-muted'"
-                            class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:text-dark">
-                        EN
-                    </button>
+                          @click="$store.notifDot.toggle()"
+                          :class="$store.notifDot.enabled ? 'text-secondary font-bold' : 'text-muted'"
+                          class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:opacity-80"
+                          x-text="$store.notifDot.enabled ? ($store.i18n.locale === 'EN' ? 'On' : 'Nyala') : ($store.i18n.locale === 'EN' ? 'Off' : 'Mati')">Nyala</button>
+                </div>
+
+                {{-- Divider --}}
+                
+
+                {{-- Language Row --}}
+                <div class="flex items-center justify-between py-2">
+                    <span class="text-sm font-semibold text-dark" data-i18n="Bahasa">Bahasa</span>
+                    <div class="flex items-center gap-2">
+                        <button type="button"
+                                @click="$store.i18n.setLocale('ID')"
+                                :class="$store.i18n.locale === 'ID' ? 'font-bold text-dark' : 'text-muted'"
+                                class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:text-dark">
+                            ID
+                        </button>
+                        <span class="text-sm text-muted">|</span>
+                        <button type="button"
+                                @click="$store.i18n.setLocale('EN')"
+                                :class="$store.i18n.locale === 'EN' ? 'font-bold text-dark' : 'text-muted'"
+                                class="text-sm bg-transparent border-none cursor-pointer transition-colors hover:text-dark">
+                            EN
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

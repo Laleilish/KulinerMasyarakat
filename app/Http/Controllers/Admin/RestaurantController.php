@@ -15,7 +15,7 @@ class RestaurantController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Restaurant::with(['user', 'campus'])->latest();
+        $query = Restaurant::with(['user', 'campus'])->withAvg('reviews', 'rating')->latest();
 
         if ($request->filled('campus')) {
             $query->where('campus_id', $request->campus);

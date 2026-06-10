@@ -149,9 +149,7 @@
         icon.style.color = error ? '#f87171' : '#F5A623';
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // UPDATE CAMPUS BADGE (di section category)
-    // ─────────────────────────────────────────────────────────────────
     function updateCampusBadge(name) {
         const badge     = document.getElementById('tt-campus-badge');
         const nameEl    = document.getElementById('tt-campus-name');
@@ -167,9 +165,7 @@
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // SELECT CAMPUS → trigger filter cards
-    // ─────────────────────────────────────────────────────────────────
     function selectCampus(campusId, campusName) {
         updateLocationBar({ label: 'Kampus dipilih', value: campusName });
         updateCampusBadge(campusName);
@@ -191,9 +187,7 @@
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // NOMINATIM
-    // ─────────────────────────────────────────────────────────────────
     async function reverseGeocode(lat, lng) {
         try {
             const res  = await fetch(`${NOMINATIM}/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`);
@@ -212,9 +206,7 @@
         } catch { return []; }
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // HAVERSINE
-    // ─────────────────────────────────────────────────────────────────
     function haversine(lat1, lng1, lat2, lng2) {
         const R    = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -230,9 +222,7 @@
         }, { dist: Infinity });
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // DROPDOWN
-    // ─────────────────────────────────────────────────────────────────
     function renderDropdownCampus(query = '') {
         const list    = document.getElementById('dropdown-campus-list');
         const section = document.getElementById('dropdown-campus-section');
@@ -330,9 +320,7 @@
         }, 500);
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // GEOLOCATION
-    // ─────────────────────────────────────────────────────────────────
     function detectUserLocation() {
         updateLocationBar({ label: 'Mendeteksi lokasi...', value: '', loading: true });
         if (!navigator.geolocation) {
@@ -370,9 +358,7 @@
         );
     }
 
-    // ─────────────────────────────────────────────────────────────────
     // EVENT LISTENERS
-    // ─────────────────────────────────────────────────────────────────
     const input   = document.getElementById('loc-input');
     const clearBtn = document.getElementById('loc-clear');
     const gpsBtn  = document.getElementById('loc-gps-btn');
@@ -423,9 +409,7 @@
         }
     });
 
-    // ─────────────────────────────────────────────────────────────────
     // CAMPUS BADGE CLEAR BUTTON (di category.blade.php)
-    // ─────────────────────────────────────────────────────────────────
     document.addEventListener('click', (e) => {
         if (e.target.closest('#tt-campus-clear')) {
             clearCampus();
