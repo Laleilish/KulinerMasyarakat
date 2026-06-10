@@ -55,6 +55,12 @@ function submitPlaceForm() {
                 return;
             }
 
+            if (e.dataTransfer) {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                document.getElementById('file-upload').files = dt.files;
+            }
+
             const reader = new FileReader();
             reader.onload = (ev) => this.photoPreview = ev.target.result;
             reader.readAsDataURL(file);
@@ -73,6 +79,12 @@ function submitPlaceForm() {
                 window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'File Terlalu Besar', message: 'Ukuran foto maksimal 2MB!' } }));
                 e.target.value = '';
                 return;
+            }
+
+            if (e.dataTransfer) {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                document.getElementById('landmark-upload').files = dt.files;
             }
 
             const reader = new FileReader();
@@ -95,7 +107,7 @@ function submitPlaceForm() {
             toAdd.forEach(file => {
                 if (file.size > 2 * 1024 * 1024) {
                     hasOversized = true;
-                    return; // Skip this file
+                    return; 
                 }
                 this.reviewFiles.push(file);
                 const reader = new FileReader();
@@ -133,26 +145,31 @@ function submitPlaceForm() {
                 maxZoom: 19
             }).addTo(this.map);
 
-            const restoIcon = L.icon({
-                iconUrl: '/assets/img/icon-loc.png',
-                iconSize: [28],
-                iconAnchor: [14, 28],
-            });
+            // const restoIcon = L.icon({
+            //     iconUrl: '/assets/img/icon-loc.png',
+            //     iconSize: [28],
+            //     iconAnchor: [14, 28],
+            // });
 
-            this.marker = L.marker([initialLat, initialLng], { 
-                icon: restoIcon, 
-                draggable: true 
-            }).addTo(this.map);
+            // this.marker = L.marker([initialLat, initialLng], { 
+            //     icon: restoIcon, 
+            //     draggable: true 
+            // }).addTo(this.map);
 
-            this.marker.on('dragend', (e) => {
-                const position = e.target.getLatLng();
-                this.updateLocation(position.lat, position.lng, true);
-            });
+            // this.marker.on('dragend', (e) => {
+            //     const position = e.target.getLatLng();
+            //     this.updateLocation(position.lat, position.lng, true);
+            // });
             
-            // Allow clicking map to place marker
-            this.map.on('click', (e) => {
-                this.marker.setLatLng(e.latlng);
-                this.updateLocation(e.latlng.lat, e.latlng.lng, true);
+            // // Allow clicking map to place marker
+            // this.map.on('click', (e) => {
+            //     this.marker.setLatLng(e.latlng);
+            //     this.updateLocation(e.latlng.lat, e.latlng.lng, true);
+            // });
+
+            this.map.on('moveend', () => {
+                const center = this.map.getCenter();
+                this.updateLocation(center.lat, center.lng, true);
             });
         },
 

@@ -6,6 +6,7 @@
             'name'        => $r->name,
             'image'       => $r->image ? (str_starts_with($r->image, 'http') ? $r->image : asset('storage/' . $r->image)) : asset('assets/img/Restoran Favorit/Nasi Goreng Kambing.png'),
             'category'    => $r->category,
+            'formatted_category' => $r->formatted_category,
             'food_type'   => $r->food_type,
             'address'     => $r->address,
             'landmark'    => $r->landmark,
@@ -464,7 +465,7 @@
                         ${r.name}${r.landmark ? ', ' + r.landmark : ''}
                     </h3>
                     <p class="text-[10px] text-muted mb-1 truncate">
-                        ${r.category || ''}${r.food_type ? ', ' + r.food_type : ''}
+                        ${r.formatted_category || ''}${r.food_type ? ', ' + r.food_type : ''}
                     </p>
                     <span class="mt-auto text-[10px] text-[#5d6e86] font-semibold flex items-center gap-1">
                         <i class="fa-solid fa-star text-yellow-500 text-[9px]"></i>

@@ -84,4 +84,18 @@ class Restaurant extends Model
             "CAST(REPLACE(REPLACE(SUBSTRING_INDEX(price_range, 'Rp ', -1), '.', ''), ' ', '') AS UNSIGNED) <= 15000"
         );
     }
+
+    public function getAverageRatingAttribute()
+    {
+        if (array_key_exists('reviews_avg_rating', $this->attributes)) {
+            return (float) $this->attributes['reviews_avg_rating'];
+        }
+        
+        return (float) $this->reviews()->avg('rating');
+    }
+
+    public function getFormattedCategoryAttribute()
+    {
+        return ucwords(str_replace('_', ' ', $this->category));
+    }
 }

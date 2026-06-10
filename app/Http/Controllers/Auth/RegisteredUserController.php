@@ -58,7 +58,7 @@ class RegisteredUserController extends Controller
             "username" => $request->username,
             "email" => $request->email,
             "password" => Hash::make($request->password),
-            "email_verified_at" => null, // Belum verified
+            "email_verified_at" => null, 
         ]);
 
         // Generate OTP (4 digit)
@@ -69,7 +69,7 @@ class RegisteredUserController extends Controller
             ->where("is_used", false)
             ->delete();
 
-        // Simpan OTP baru (expire 10 menit untuk register)
+        // Simpan OTP baru 
         OtpVerification::create([
             "user_id" => $user->id,
             "otp" => Hash::make($otp),
