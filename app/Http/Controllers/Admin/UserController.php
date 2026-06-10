@@ -26,9 +26,21 @@ class UserController extends Controller
             });
         }
 
+        // Role filter
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        // Sort by username
+        if ($request->filled('sort_username')) {
+            $direction = strtolower($request->sort_username) === 'asc' ? 'asc' : 'desc';
+            $query->orderBy('username', $direction);
+        } else {
+            $query->latest();
+        }
+
         // Paginate users
-        $users = $query->latest()
-            ->paginate(10)
+        $users = $query->paginate(10)
             ->appends($request->query());
 
         return view('admin.users.index', compact('users'));
@@ -42,6 +54,11 @@ class UserController extends Controller
         // Prevent self-toggle
         if ($user->id === auth()->id()) {
             return redirect()->back()->with('error', 'Anda tidak dapat mengubah peran Anda sendiri.');
+        }
+
+        // Admin tidak bisa mengubah peran sesama admin
+        if (in_array($user->role, ['admin']) && auth()->user()->role === 'admin') {
+            return back()->with('error', 'Admin tidak dapat mengubah peran admin lain.');
         }
 
         // Toggle admin status
@@ -62,6 +79,11 @@ class UserController extends Controller
         // Prevent self-deletion
         if ($user->id === auth()->id()) {
             return redirect()->back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
+
+        // Admin tidak bisa hapus sesama admin
+        if ($user->role === 'admin' && auth()->user()->role === 'admin') {
+            return back()->with('error', 'Admin tidak dapat menghapus admin lain.');
         }
 
         // Delete user 

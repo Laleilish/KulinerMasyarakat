@@ -28,6 +28,7 @@ class SubmitPlace extends Model
         'initial_review',
         'initial_review_photos',
         'status',
+        'rejection_reason',
     ];
 
     protected $casts = [

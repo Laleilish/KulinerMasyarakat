@@ -274,9 +274,19 @@ class SubmitPlaceController extends Controller
     /**
      * Reject a submitted place.
      */
-    public function reject(SubmitPlace $submitPlace)
+    public function reject(Request $request, SubmitPlace $submitPlace)
     {
-        $submitPlace->update(['status' => 'rejected']);
+        $request->validate([
+            'rejection_reason' => 'required|string|max:1000',
+        ], [
+            'rejection_reason.required' => 'Alasan penolakan wajib diisi.',
+            'rejection_reason.max' => 'Alasan penolakan maksimal 1000 karakter.',
+        ]);
+
+        $submitPlace->update([
+            'status' => 'rejected',
+            'rejection_reason' => $request->rejection_reason,
+        ]);
 
         // Notify the user
         $submitPlace->user->notify(new PlaceRejectedNotification($submitPlace));

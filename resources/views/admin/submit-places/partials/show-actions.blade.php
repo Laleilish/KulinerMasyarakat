@@ -16,21 +16,14 @@
                     Setujui
                 </button>
             </form>
-            <form action="{{ route('admin.submit-places.reject', $submitPlace) }}" method="POST" class="inline" id="reject-place-{{ $submitPlace->id }}">
-                @csrf
-                @method('PATCH')
-                <button type="button"
-                        @click="$dispatch('confirm-modal', {
-                            title: 'Tolak Usulan?',
-                            message: 'Apakah Anda yakin ingin menolak usulan tempat ini?',
-                            variant: 'danger',
-                            confirmText: 'Ya, Tolak',
-                            formId: 'reject-place-{{ $submitPlace->id }}'
-                        })"
-                        class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
-                    Tolak
-                </button>
-            </form>
+        @endif
+
+        @if($submitPlace->status !== 'rejected')
+            <button type="button"
+                    @click="$dispatch('open-reject-modal', { placeId: {{ $submitPlace->id }}, placeName: '{{ addslashes($submitPlace->name) }}' })"
+                    class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow shrink-0 cursor-pointer border-none">
+                Tolak
+            </button>
         @endif
 
         <a href="{{ route('admin.submit-places.edit', $submitPlace) }}"

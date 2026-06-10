@@ -1,4 +1,3 @@
-@if ($paginator->hasPages())
     <nav class="flex items-center gap-2">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
@@ -33,4 +32,3 @@
             <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-medium bg-[#F2E0BE] text-gray-400 opacity-50 cursor-not-allowed">&gt;</span>
         @endif
     </nav>
-@endif

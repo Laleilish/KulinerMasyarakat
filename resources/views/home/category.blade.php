@@ -12,7 +12,7 @@
                 <img src="{{ asset('assets/img/Menu/Hidden Gem.png') }}" alt="Hidden Gem"
                      class="w-[70px] h-[70px] object-contain border border-[#EF950F] rounded-xl">
             </div>
-            <span class="text-[10px] font-semibold text-dark text-center">Hidden Gem</span>
+            <span class="text-[10px] font-amsemibold text-dark text-center">Hidden Gem</span>
         </div>
 
         {{-- Tanggal Tua --}}

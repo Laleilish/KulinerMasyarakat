@@ -38,7 +38,8 @@ class PlaceRejectedNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-            'message' => 'Maaf, usulan tempat Anda (' . $this->submitPlace->name . ') belum dapat kami setujui saat ini.',
+            'message' => 'Maaf, usulan tempat Anda (' . $this->submitPlace->name . ') belum dapat kami setujui saat ini.'
+                . ($this->submitPlace->rejection_reason ? ' Alasan: ' . $this->submitPlace->rejection_reason : ''),
             'submit_place_id' => $this->submitPlace->id,
             'url' => url('/'),
         ];
