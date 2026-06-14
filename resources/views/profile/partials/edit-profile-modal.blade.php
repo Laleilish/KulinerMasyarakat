@@ -15,17 +15,21 @@
             @method('patch')
             <input type="hidden" name="email" value="{{ $user->email }}">
 
-            <div>
+            <div x-data="{ name: '{{ old('name', $user->name) }}' }">
                 <label class="block text-xs font-bold text-dark tracking-wider mb-2">Nama Lengkap</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}" required
+                <input type="text" name="name" x-model="name" required maxlength="50" minlength="2"
                        class="w-full px-4 py-3 rounded-xl border-2 border-muted-light focus:border-secondary focus:ring-0 text-dark transition-all @error('name') border-red-400 @enderror"/>
+                <p x-show="name.length > 0 && name.length < 2" class="text-amber-500 text-xs mt-1">Minimal 2 karakter</p>
+                <p x-show="name.length >= 50" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                 @error('name')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
             </div>
 
-            <div>
+            <div x-data="{ username: '{{ old('username', $user->username) }}' }">
                 <label class="block text-xs font-bold text-dark tracking-wider mb-2">Username</label>
-                <input type="text" name="username" value="{{ old('username', $user->username) }}" required
+                <input type="text" name="username" x-model="username" required maxlength="30" minlength="3"
                        class="w-full px-4 py-3 rounded-xl border-2 border-muted-light focus:border-secondary focus:ring-0 text-dark transition-all @error('username') border-red-400 @enderror"/>
+                <p x-show="username.length > 0 && username.length < 3" class="text-amber-500 text-xs mt-1">Minimal 3 karakter</p>
+                <p x-show="username.length >= 30" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                 @error('username')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
             </div>
 

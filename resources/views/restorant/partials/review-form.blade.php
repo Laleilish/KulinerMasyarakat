@@ -3,17 +3,38 @@
           class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6"
           x-data="{
               rating: {{ old('rating', 0) }},
+              comment: '{{ old("comment", "") }}',
               reviewPreviews: [],
+              errors: {},
               handleReviewPhotos(e) {
                   const files = e.target.files;
                   this.reviewPreviews = [];
+                  let hasOversized = false;
+                  const dt = new DataTransfer();
                   for (let i = 0; i < files.length && i < 5; i++) {
+                      if (files[i].size > 5 * 1024 * 1024) {
+                          hasOversized = true;
+                          continue;
+                      }
+                      dt.items.add(files[i]);
                       const reader = new FileReader();
                       reader.onload = (ev) => this.reviewPreviews.push(ev.target.result);
                       reader.readAsDataURL(files[i]);
                   }
+                  e.target.files = dt.files;
+                  if (hasOversized) {
+                      window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', title: 'File Terlalu Besar', message: 'Foto yang lebih dari 5MB tidak dimasukkan.' } }));
+                  }
+              },
+              validateAndSubmit(e) {
+                  this.errors = {};
+                  let valid = true;
+                  if (this.rating < 1) { this.errors.rating = 'Rating wajib dipilih'; valid = false; }
+                  if (this.comment && this.comment.trim().length > 0 && this.comment.trim().length < 3) { this.errors.comment = 'Komentar minimal 3 karakter'; valid = false; }
+                  if (!valid) { e.preventDefault(); }
               }
-          }">
+          }"
+          @submit="validateAndSubmit($event)">
         @csrf
 
         {{-- Rating --}}
@@ -29,14 +50,18 @@
                     </button>
                 </template>
             </div>
+            <p x-show="errors.rating" x-text="errors.rating" class="text-red-500 text-xs mt-1 text-center"></p>
         </div>
 
         {{-- Komentar --}}
         <div class="mb-4">
             <label class="block text-sm font-bold text-gray-800 mb-2">Komentar</label>
-            <textarea name="comment" rows="3"
+            <textarea name="comment" rows="3" x-model="comment" maxlength="1000" minlength="3"
                       class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#00A896] text-sm resize-none"
                       placeholder="Ceritain pengalamanmu makan di sini... ">{{ old('comment') }}</textarea>
+            <p x-show="errors.comment" x-text="errors.comment" class="text-red-500 text-xs mt-1"></p>
+            <p x-show="!errors.comment && comment.length > 0 && comment.length < 3" class="text-amber-500 text-xs mt-1">Minimal 3 karakter</p>
+            <p x-show="!errors.comment && comment.length >= 1000" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
         </div>
 
         {{-- Foto --}}
@@ -48,7 +73,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <p class="text-xs text-teal-600 font-bold" x-text="reviewPreviews.length ? reviewPreviews.length + ' foto dipilih' : 'Upload Foto'"></p>
-                    <input name="photos[]" type="file" accept="image/jpg,image/jpeg,image/png" class="sr-only" multiple
+                    <p class="text-[10px] text-gray-400">Maks 5MB per file</p>
+                    <input name="photos[]" type="file" accept="image/jpg,image/jpeg,image/png,image/webp" class="sr-only" multiple
                            @change="handleReviewPhotos($event)">
                 </div>
             </label>

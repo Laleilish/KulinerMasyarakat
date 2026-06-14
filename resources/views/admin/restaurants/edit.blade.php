@@ -66,8 +66,10 @@
                     {{-- Nama Tempat --}}
                     <div class="col-span-1 md:col-span-2">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Nama Restoran <span class="text-rose-500">*</span></label>
-                        <input type="text" name="name" id="name" x-model="name" required
+                        <input type="text" name="name" id="name" x-model="name" required maxlength="100" minlength="2"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors">
+                        <p x-show="name.length > 0 && name.length < 2" class="text-amber-500 text-xs mt-1">Minimal 2 karakter</p>
+                        <p x-show="name.length >= 100" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                     </div>
 
                     {{-- Kampus --}}
@@ -99,9 +101,11 @@
                     {{-- Tipe Makanan --}}
                     <div>
                         <label for="food_type" class="block text-sm font-semibold text-gray-700 mb-1">Tipe Makanan <span class="text-rose-500">*</span></label>
-                        <input type="text" name="food_type" id="food_type" x-model="food_type" required
+                        <input type="text" name="food_type" id="food_type" x-model="food_type" required maxlength="100" minlength="2"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"
                             placeholder="Contoh: Nasi Goreng, Ayam Geprek">
+                        <p x-show="food_type.length > 0 && food_type.length < 2" class="text-amber-500 text-xs mt-1">Minimal 2 karakter</p>
+                        <p x-show="food_type.length >= 100" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                     </div>
 
                     {{-- Rentang Harga --}}
@@ -110,12 +114,12 @@
                         <div class="flex items-center gap-2">
                             <div class="flex-1 relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">Rp</span>
-                                <input type="number" x-model="price_min" min="0" step="1000" class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors" placeholder="10000">
+                                <input type="number" x-model="price_min" min="0" max="99999999" step="1000" class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors" placeholder="10000">
                             </div>
                             <span class="text-gray-400 font-bold">—</span>
                             <div class="flex-1 relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">Rp</span>
-                                <input type="number" x-model="price_max" min="0" step="1000" class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors" placeholder="30000">
+                                <input type="number" x-model="price_max" min="0" max="99999999" step="1000" class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors" placeholder="30000">
                             </div>
                         </div>
                         <input type="hidden" name="price_range" :value="price_range">
@@ -151,9 +155,10 @@
                     {{-- Patokan (Landmark) --}}
                     <div class="col-span-1 md:col-span-2">
                         <label for="landmark" class="block text-sm font-semibold text-gray-700 mb-1">Patokan (Landmark)</label>
-                        <input type="text" name="landmark" id="landmark" x-model="landmark"
+                        <input type="text" name="landmark" id="landmark" x-model="landmark" maxlength="255"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"
                             placeholder="Samping minimarket...">
+                        <p x-show="landmark.length >= 255" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                     </div>
                     
                     {{-- Foto Patokan --}}
@@ -184,21 +189,24 @@
                     {{-- Deskripsi --}}
                     <div class="col-span-1 md:col-span-2">
                         <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi <span class="text-rose-500">*</span></label>
-                        <textarea name="description" id="description" rows="3" required x-model="description"
+                        <textarea name="description" id="description" rows="3" required x-model="description" maxlength="1000"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"></textarea>
+                        <p x-show="(description ? description.length : 0) >= 1000" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                     </div>
 
                     {{-- Alamat Lengkap --}}
                     <div class="col-span-1 md:col-span-2">
                         <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap <span class="text-rose-500">*</span></label>
-                        <textarea name="address" id="address" rows="2" required x-model="address"
+                        <textarea name="address" id="address" rows="2" required x-model="address" maxlength="500" minlength="5"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors"></textarea>
+                        <p x-show="address.length > 0 && address.length < 5" class="text-amber-500 text-xs mt-1">Minimal 5 karakter</p>
+                        <p x-show="address.length >= 500" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                     </div>
 
                     {{-- Link Google Maps --}}
                     <div class="col-span-1 md:col-span-2">
                         <label for="gmaps_link" class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps <span class="text-rose-500">*</span></label>
-                        <input type="url" name="gmaps_link" id="gmaps_link" value="{{ old('gmaps_link', $restaurant->gmaps_link) }}" required
+                        <input type="url" name="gmaps_link" id="gmaps_link" value="{{ old('gmaps_link', $restaurant->gmaps_link) }}" required maxlength="2048"
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#B87A29]/20 focus:border-[#B87A29] transition-colors">
                     </div>
 

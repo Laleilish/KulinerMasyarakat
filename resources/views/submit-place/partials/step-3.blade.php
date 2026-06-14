@@ -19,7 +19,8 @@
 
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Review</label>
-                                <textarea name="initial_review" rows="4" x-model="form.review" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700 resize-none" placeholder="Pelayanannya bagus, makanannya enak"></textarea>
+                                <textarea name="initial_review" rows="4" x-model="form.review" maxlength="1000" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700 resize-none" placeholder="Pelayanannya bagus, makanannya enak"></textarea>
+                                <p x-show="(form.review ? form.review.length : 0) >= 1000" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('initial_review')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 

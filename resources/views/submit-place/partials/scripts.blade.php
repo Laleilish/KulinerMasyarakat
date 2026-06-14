@@ -230,21 +230,42 @@ function submitPlaceForm() {
 
             if (stepNum === 1) {
                 if (!this.form.name.trim()) { this.errors.name = 'Nama restoran wajib diisi'; valid = false; }
+                else if (this.form.name.trim().length < 2) { this.errors.name = 'Nama restoran minimal 2 karakter'; valid = false; }
+                else if (this.form.name.trim().length > 100) { this.errors.name = 'Nama restoran maksimal 100 karakter'; valid = false; }
+
                 if (!this.form.category) { this.errors.category = 'Kategori wajib dipilih'; valid = false; }
+
                 if (!this.form.food_type.trim()) { this.errors.food_type = 'Jenis makanan wajib diisi'; valid = false; }
+                else if (this.form.food_type.trim().length < 2) { this.errors.food_type = 'Jenis makanan minimal 2 karakter'; valid = false; }
+                else if (this.form.food_type.trim().length > 100) { this.errors.food_type = 'Jenis makanan maksimal 100 karakter'; valid = false; }
+
                 if (!this.photoPreview) { this.errors.photo = 'Foto restoran wajib diupload'; valid = false; }
+
+                if (this.form.description && this.form.description.length > 1000) { this.errors.description = 'Deskripsi maksimal 1000 karakter'; valid = false; }
             }
 
             if (stepNum === 2) {
                 if (!this.form.address.trim()) { this.errors.address = 'Alamat wajib diisi'; valid = false; }
+                else if (this.form.address.trim().length < 5) { this.errors.address = 'Alamat minimal 5 karakter'; valid = false; }
+                else if (this.form.address.trim().length > 500) { this.errors.address = 'Alamat maksimal 500 karakter'; valid = false; }
+
                 if (!this.form.open_time || !this.form.close_time) { this.errors.open_hours = 'Jam buka dan tutup wajib diisi'; valid = false; }
+
                 if (!this.form.price_min || !this.form.price_max) { this.errors.price_range = 'Range harga wajib diisi'; valid = false; }
+                else if (Number(this.form.price_min) < 0) { this.errors.price_range = 'Harga minimal tidak boleh negatif'; valid = false; }
+                else if (Number(this.form.price_max) < 0) { this.errors.price_range = 'Harga maksimal tidak boleh negatif'; valid = false; }
+                else if (Number(this.form.price_min) > Number(this.form.price_max)) { this.errors.price_range = 'Harga minimum tidak boleh lebih besar dari harga maksimum'; valid = false; }
+                else if (Number(this.form.price_min) > 99999999 || Number(this.form.price_max) > 99999999) { this.errors.price_range = 'Harga terlalu besar'; valid = false; }
+
                 if (!this.form.gmaps_link.trim()) { this.errors.gmaps_link = 'Link Google Maps wajib diisi'; valid = false; }
+                else if (this.form.gmaps_link.trim().length > 2048) { this.errors.gmaps_link = 'Link Google Maps terlalu panjang'; valid = false; }
+
                 if (!this.landmarkPreview) { this.errors.landmark_photo = 'Foto patokan wajib diupload'; valid = false; }
             }
 
             if (stepNum === 3) {
                 if (this.form.rating < 1) { this.errors.rating = 'Rating wajib dipilih'; valid = false; }
+                if (this.form.review && this.form.review.length > 1000) { this.errors.review = 'Review maksimal 1000 karakter'; valid = false; }
             }
 
             return valid;

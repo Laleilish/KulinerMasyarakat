@@ -2,8 +2,10 @@
                         <div x-show="step === 1" x-transition.opacity.duration.300ms class="space-y-4">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Nama Restoran <span class="text-red-500">*</span></label>
-                                <input type="text" name="name" x-model="form.name" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Padang Banjir">
+                                <input type="text" name="name" x-model="form.name" maxlength="100" minlength="2" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Padang Banjir">
                                 <p x-show="errors.name" x-text="errors.name" class="text-red-500 text-xs mt-1"></p>
+                                <p x-show="!errors.name && form.name.length > 0 && form.name.length < 2" class="text-amber-500 text-xs mt-1">Minimal 2 karakter</p>
+                                <p x-show="!errors.name && form.name.length >= 100" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('name')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 
@@ -59,8 +61,10 @@
 
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Jenis Makanan <span class="text-red-500">*</span></label>
-                                <input type="text" name="food_type" x-model="form.food_type" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Nasi, Mie, Ayam, Sapi, dll">
+                                <input type="text" name="food_type" x-model="form.food_type" maxlength="20" minlength="2" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Nasi, Mie, Ayam, Sapi, dll">
                                 <p x-show="errors.food_type" x-text="errors.food_type" class="text-red-500 text-xs mt-1"></p>
+                                <p x-show="!errors.food_type && form.food_type.length > 0 && form.food_type.length < 2" class="text-amber-500 text-xs mt-1">Minimal 2 karakter</p>
+                                <p x-show="!errors.food_type && form.food_type.length >= 20" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('food_type')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 
@@ -105,7 +109,9 @@
 
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Deskripsi</label>
-                                <textarea name="description" rows="3" x-model="form.description" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700 resize-none" placeholder="Restoran cukup kecil...."></textarea>
+                                <textarea name="description" rows="3" x-model="form.description" maxlength="500" minlength="30" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700 resize-none" placeholder="Restoran cukup kecil...."></textarea>
+                                <p x-show="!errors.description && form.description.length > 0 && form.description.length < 30" class="text-amber-500 text-xs mt-1">Minimal 30 karakter</p>
+                                <p x-show="!errors.description && (form.description ? form.description.length : 0) >= 500" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('description')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 

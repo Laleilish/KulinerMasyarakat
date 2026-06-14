@@ -18,9 +18,18 @@ class ReviewController extends Controller
     {
         $validated = $request->validate([
             'rating'   => 'required|integer|min:1|max:5',
-            'comment'  => 'nullable|string|max:1000',
+            'comment'  => 'nullable|string|min:3|max:1000',
             'photos'   => 'nullable|array|max:5',
-            'photos.*' => 'image|mimes:jpg,jpeg,png|max:5120',
+            'photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
+        ], [
+            'rating.required' => 'Rating wajib dipilih.',
+            'rating.min'      => 'Rating minimal 1.',
+            'rating.max'      => 'Rating maksimal 5.',
+            'comment.min'     => 'Komentar minimal 3 karakter.',
+            'comment.max'     => 'Komentar maksimal 1000 karakter.',
+            'photos.max'      => 'Foto ulasan maksimal 5 file.',
+            'photos.*.max'    => 'Ukuran foto maksimal 5MB.',
+            'photos.*.mimes'  => 'Format foto harus JPG, JPEG, PNG, atau WEBP.',
         ]);
 
         // Check if user already reviewed this restaurant

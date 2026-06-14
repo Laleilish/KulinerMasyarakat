@@ -2,8 +2,10 @@
                         <div x-show="step === 2" x-transition.opacity.duration.300ms class="space-y-4" style="display: none;">
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
-                                <input type="text" name="address" x-model="form.address" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Jl Padang Banjir">
+                                <input type="text" name="address" x-model="form.address" maxlength="500" minlength="5" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Jl Padang Banjir">
                                 <p x-show="errors.address" x-text="errors.address" class="text-red-500 text-xs mt-1"></p>
+                                <p x-show="!errors.address && form.address.length > 0 && form.address.length < 5" class="text-amber-500 text-xs mt-1">Minimal 5 karakter</p>
+                                <p x-show="!errors.address && form.address.length >= 500" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 
@@ -62,12 +64,12 @@
                                 <div class="flex items-center gap-2">
                                     <div class="flex-1 relative">
                                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">Rp</span>
-                                        <input type="number" x-model="form.price_min" min="0" step="1000" class="w-full bg-gray-50 border-0 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="10000">
+                                        <input type="number" x-model="form.price_min" min="0" max="99999999" step="1000" class="w-full bg-gray-50 border-0 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="10000">
                                     </div>
                                     <span class="text-gray-400 font-bold">—</span>
                                     <div class="flex-1 relative">
                                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-semibold">Rp</span>
-                                        <input type="number" x-model="form.price_max" min="0" step="1000" class="w-full bg-gray-50 border-0 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="30000">
+                                        <input type="number" x-model="form.price_max" min="0" max="99999999" step="1000" class="w-full bg-gray-50 border-0 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="30000">
                                     </div>
                                 </div>
                                 <input type="hidden" name="price_range" :value="form.price_min && form.price_max ? 'Rp ' + Number(form.price_min).toLocaleString('id-ID') + ' - Rp ' + Number(form.price_max).toLocaleString('id-ID') : ''">
@@ -114,14 +116,16 @@
 
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Link Maps <span class="text-red-500">*</span></label>
-                                <input type="url" name="gmaps_link" x-model="form.gmaps_link" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="https://maps.app.goo.gl/...">
+                                <input type="url" name="gmaps_link" x-model="form.gmaps_link" maxlength="2048" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="https://maps.app.goo.gl/...">
                                 <p x-show="errors.gmaps_link" x-text="errors.gmaps_link" class="text-red-500 text-xs mt-1"></p>
+                                <p x-show="!errors.gmaps_link && form.gmaps_link.length >= 2048" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('gmaps_link')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-1">Patokan</label>
-                                <input type="text" name="landmark" x-model="form.landmark" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Depan indomaret...">
+                                <input type="text" name="landmark" x-model="form.landmark" maxlength="255" class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 text-gray-700" placeholder="Depan indomaret...">
+                                <p x-show="form.landmark.length >= 255" class="text-red-500 text-xs mt-1 font-semibold">Maksimal karakter tercapai</p>
                                 @error('landmark')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                             </div>
 
